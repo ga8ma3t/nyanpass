@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>サークルコンシェルジュ</title>
+  </head>
+  <body>
+    <h1>It works!</h1>
+    <div>
+      {{#user}}
+      <p>{{displayName}}</p>
+      <a href="/auth/logout">Logout</a>
+      {{/user}}
+      {{^user}}
+      <a href="/auth/twitter">Login</a>
+      {{/user}}
+    </div>
+    <script src="bundle.js"></script>
+  </body>
+</html>
