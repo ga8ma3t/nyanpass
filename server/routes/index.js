@@ -8,4 +8,11 @@ router.get('/', (req, res, next) => {
   });
 });
 
+router.get('/test', (req, res, next) => {
+  res.render('index', {
+    user: req.user,
+    token: req.csrfToken()
+  });
+});
+
 module.exports = router;

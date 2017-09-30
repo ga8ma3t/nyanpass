@@ -34,7 +34,7 @@ app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 
 //--------------------------------------------------
-// セッション保持
+// Session
 //--------------------------------------------------
 const sessionRedisClient = new Redis(process.env.SESSION_REDIS_URL);
 app.use(session({
