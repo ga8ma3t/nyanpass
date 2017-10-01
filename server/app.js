@@ -1,23 +1,26 @@
-const express = require('express');
-const path = require('path');
-const favicon = require('serve-favicon');
-const logger = require('morgan');
-const cookieParser = require('cookie-parser');
-const bodyParser = require('body-parser');
+import express from 'express'
+import path from 'path'
+import favicon from 'serve-favicon'
+import logger from 'morgan'
+import cookieParser from 'cookie-parser'
+import bodyParser from 'body-parser'
 
-const dotenv = require('dotenv').config();
-const helmet = require('helmet');
-const compression = require('compression');
-const session = require('express-session');
-const Redis = require('ioredis');
-const RedisStore = require('connect-redis')(session);
-const csrf = require('csurf');
-const passport = require('passport');
-const TwitterStrategy = require('passport-twitter').Strategy;
+import {} from 'dotenv/config'
+import helmet from 'helmet'
+import compression from 'compression'
+import session from 'express-session'
+import Redis from 'ioredis'
+import connectRedis from 'connect-redis'
+import csrf from 'csurf'
+import passport from 'passport'
+import passportTwitter from 'passport-twitter'
 
-const index = require('./routes/index');
-const User = require('./model/User');
-const app = express();
+import index from './routes/index'
+import User from './model/User'
+
+const TwitterStrategy = passportTwitter.Strategy
+const RedisStore = connectRedis(session)
+const app = express()
 
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
@@ -61,7 +64,7 @@ passport.use(new TwitterStrategy({
   },
   (tokenKey, tokenSecret, profile, callback) => {
     return Promise.resolve().then(() => {
-      return User.findOne({ twitterId: profile.id })
+      return User.findOne({where:{ twitterId: profile.id }})
     }).then((user) => {
       if (!user) {
         return User.create({
@@ -79,7 +82,7 @@ passport.use(new TwitterStrategy({
         }, {
           where: { twitterId: profile.id }
         }).then(() => {
-          return User.findOne({ twitterId: profile.id })
+          return User.findOne({where:{ twitterId: profile.id }})
         })
       }
       return user
