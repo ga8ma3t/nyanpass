@@ -1,4 +1,4 @@
-const Sequelize = require('sequelize');
+import Sequelize from 'sequelize';
 
 const databaseUrl = process.env.DATABASE_URL;
 const sequelize = new Sequelize(databaseUrl, {
@@ -7,4 +7,4 @@ const sequelize = new Sequelize(databaseUrl, {
 
 sequelize.sync({force: true})
 
-module.exports = sequelize;
+export default sequelize
