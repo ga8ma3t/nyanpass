@@ -66,18 +66,26 @@ passport.use(new TwitterStrategy({
     return Promise.resolve().then(() => {
       return User.findOne({where:{ twitterId: profile.id }})
     }).then((user) => {
+      const friendsCount = profile['_json']['friends_count']
       if (!user) {
         return User.create({
           twitterId: profile.id,
           twitterTokenKey: tokenKey,
           twitterTokenSecret: tokenSecret,
+          twitterFriendsCount: friendsCount,
           displayName: profile.displayName
         })
       }
-      if (user.twitterTokenKey !== tokenKey || user.displayName !== profile.displayName) {
+      if (
+        user.twitterTokenKey !== tokenKey ||
+        user.twitterTokenSecret !== tokenSecret ||
+        user.displayName !== profile.displayName ||
+        user.twitterFriendsCount !== friendsCount
+      ) {
         return User.update({
           twitterTokenKey: tokenKey,
           twitterTokenSecret: tokenSecret,
+          twitterFriendsCount: friendsCount,
           displayName: profile.displayName
         }, {
           where: { twitterId: profile.id }
@@ -99,6 +107,7 @@ passport.serializeUser((user, done) => {
     twitterId: user.twitterId,
     twitterTokenKey: user.twitterTokenKey,
     twitterTokenSecret: user.twitterTokenSecret,
+    twitterFriendsCount: user.twitterFriendsCount,
     displayName: user.displayName
   });
 });

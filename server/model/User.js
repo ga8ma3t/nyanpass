@@ -10,6 +10,7 @@ const User = database.define('user', {
   twitterId: Sequelize.STRING,
   twitterTokenKey: Sequelize.STRING,
   twitterTokenSecret: Sequelize.STRING,
+  twitterFriendsCount: Sequelize.INTEGER,
   displayName: Sequelize.STRING
 })
 
