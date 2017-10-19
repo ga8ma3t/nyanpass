@@ -1,21 +1,36 @@
 /**
+ * サークル情報集めるぞい
+ * @class
+ */
+export class FilterCircle {
+  constructor(eventName, dateArray) {
+    this.eventName = eventName
+    this.dateArray = dateArray
+  }
+
+  exec(targetList) {
+    if (!targetList || !this.eventName || !this.dateArray) {
+      throw new Error('Error FilterCircle')
+    }
+    return targetList.map(target => extractCircle(target, this.eventName, this.dateArray))
+  }
+}
+
+/**
  * サークル情報を抽出する
  * @param target
  * @param targetEvent
+ * @param dateArray
  */
-export function filterCircle(target, targetEvent) {
-
-  // MEMO 方針について
-  // 抽出する際、例外的な表記に対応するほど正確度が落ちてしまうので、必要以上に対応しない
-  // 代わりに抽出できた項目を基準に正確度を算出して、全部抽出できなかった場合も利用者判断できるようにする
-
-  if (!target || !targetEvent) {
+export function extractCircle(target, targetEvent, dateArray) {
+  const event = extractEvent(target, targetEvent)
+  if (!event) {
     return null
   }
-  const event = extractEvent(target, targetEvent)
   target = smoothString(target, targetEvent)
-  const day = extractDay(target)
-  const week = extractWeek(target)
+  const date = complementDate(extractDay(target), extractWeek(target), dateArray)
+  const day = date.day
+  const week = date.week
   const direction = extractDirection(target)
   const block = extractBlock(target)
   const seat = extractSeat(target)
@@ -58,9 +73,9 @@ export function extractEvent(target, targetEvent) {
  */
 export function extractDay(target) {
   // 「日」の左に数字があれば何日目として判定
-  const day = target.match(/\d日/)
-  if (day) {
-    return day[0].charAt(0)
+  const day = target.match(/.\d日/)
+  if (day && isNaN(day[0].charAt(0))) {
+    return day[0].charAt(1)
   }
   return null
 }
@@ -99,18 +114,21 @@ export function extractWeek(target) {
  * @example 東,西
  */
 export function extractDirection(target) {
-  // 東または西がサークル位置と併記されていれば特定
-  const direction1 = target.match(/[東西]\d?.\d\d[ABab]/)
-  if (direction1) {
-    return direction1[0].charAt(0)
-  }
-  // 東または西が一つだけならば特定
-  const direction2 = target.match(/[東西]/g)
-  if (direction2 && direction2.length === 1) {
-    return direction2[0].charAt(0)
-  }
-  // それ以外は駄目
-  return null
+  // 西館は企業ブース固定っぽいので
+  return '東'
+
+  // // 東または西がサークル位置と併記されていれば特定
+  // const direction1 = target.match(/[東西]\d?.\d\d[ABab]/)
+  // if (direction1) {
+  //   return direction1[0].charAt(0)
+  // }
+  // // 東または西が一つだけならば特定
+  // const direction2 = target.match(/[東西]/g)
+  // if (direction2 && direction2.length === 1) {
+  //   return direction2[0].charAt(0)
+  // }
+  // // それ以外は駄目
+  // return null
 }
 
 /**
@@ -136,4 +154,30 @@ export function extractSeat(target) {
     return result[0]
   }
   return null
+}
+
+/**
+ * 日付および曜日情報の補完
+ * @param day
+ * @param week
+ * @param dateArray
+ */
+export function complementDate(day, week, dateArray) {
+  if (day && week && dateArray[parseInt(day) - 1] === week) {
+    // 抽出した情報が正確ならば何もしない
+    return {day, week}
+  } else if (day && week) {
+    // 抽出した情報が不正確ならば曜日情報を優先して日付情報の修正を試みる
+    day = (dateArray.indexOf(week) + 1).toString()
+  } else if (day) {
+    // 日付情報のみならば曜日情報を補完する
+    week = dateArray[parseInt(day) - 1]
+  } else if (week) {
+    // 曜日情報のみならば日付情報を補完する
+    day = (dateArray.indexOf(week) + 1).toString()
+  }
+  if (day === '0' || !week) {
+    return { day: null, week: null }
+  }
+  return {day, week}
 }
