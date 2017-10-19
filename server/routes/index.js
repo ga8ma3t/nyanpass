@@ -1,5 +1,5 @@
 import express from 'express'
-import {fetchFriends} from '../model/Twitter'
+import {fetchFriends} from '../model/twitter'
 
 const router = express.Router();
 

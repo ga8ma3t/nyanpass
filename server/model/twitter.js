@@ -42,7 +42,7 @@ export function fetchFriends(twitterId, tokenKey, tokenSecret) {
     }
     loop(-1);
   }).then(friendsList => {
-    console.log(friendsList) // TODO ここから
+    // filterCircle(friendsList)
   }).catch(err => {
     console.warn(err)
   })
