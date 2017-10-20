@@ -8,11 +8,14 @@ export class FilterCircle {
     this.dateArray = dateArray
   }
 
-  exec(targetList) {
-    if (!targetList || !this.eventName || !this.dateArray) {
+  exec(target) {
+    if (!target || !this.eventName || !this.dateArray) {
       throw new Error('Error FilterCircle')
     }
-    return targetList.map(target => extractCircle(target, this.eventName, this.dateArray))
+    if (Array.isArray(target)) {
+      return target.map(t => extractCircle(t, this.eventName, this.dateArray))
+    }
+    return extractCircle(target, this.eventName, this.dateArray)
   }
 }
 
