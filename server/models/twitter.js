@@ -22,9 +22,9 @@ export function fetchFriends(twitterId, tokenKey, tokenSecret) {
       }).then(result => {
         const list = result.users.map(user => {
           return {
+            name: user.name, // 例：なのくろ
             twitterId: user.id,
-            twitterScreenName: user['screen_name'], // 例：nanocloudx
-            twitterDisplayName: user.name, // 例：なのくろ
+            twitterName: user['screen_name'], // 例：nanocloudx
             image: user['profile_image_url_https'] // TODO 文字列末尾の _normal.jpg を _200x200.jpg にする
           }
         })

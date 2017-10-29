@@ -16,7 +16,7 @@ import passport from 'passport'
 import passportTwitter from 'passport-twitter'
 
 import index from './routes/index'
-import User from './model/User'
+import User from './models/User'
 
 const TwitterStrategy = passportTwitter.Strategy
 const RedisStore = connectRedis(session)
@@ -39,7 +39,7 @@ app.use(express.static(path.join(__dirname, 'public')));
 //--------------------------------------------------
 // Session
 //--------------------------------------------------
-const sessionRedisClient = new Redis(process.env.SESSION_REDIS_URL);
+const sessionRedisClient = new Redis(process.env.REDIS_URL);
 app.use(session({
   secret: 'kurokuroworksSecret',
   resave: false,
@@ -66,27 +66,26 @@ passport.use(new TwitterStrategy({
     return Promise.resolve().then(() => {
       return User.findOne({where:{ twitterId: profile.id }})
     }).then((user) => {
-      const friendsCount = profile['_json']['friends_count']
       if (!user) {
         return User.create({
+          name: profile.displayName,
+          twitterName: profile.username,
           twitterId: profile.id,
           twitterTokenKey: tokenKey,
-          twitterTokenSecret: tokenSecret,
-          twitterFriendsCount: friendsCount,
-          displayName: profile.displayName
+          twitterTokenSecret: tokenSecret
         })
       }
       if (
         user.twitterTokenKey !== tokenKey ||
         user.twitterTokenSecret !== tokenSecret ||
-        user.displayName !== profile.displayName ||
-        user.twitterFriendsCount !== friendsCount
+        user.name !== profile.displayName ||
+        user.twitterName !== profile.username
       ) {
         return User.update({
+          name: profile.displayName,
+          twitterName: profile.username,
           twitterTokenKey: tokenKey,
-          twitterTokenSecret: tokenSecret,
-          twitterFriendsCount: friendsCount,
-          displayName: profile.displayName
+          twitterTokenSecret: tokenSecret
         }, {
           where: { twitterId: profile.id }
         }).then(() => {
@@ -104,11 +103,11 @@ passport.use(new TwitterStrategy({
 passport.serializeUser((user, done) => {
   done(null, {
     id: user.id,
+    name: user.name,
+    twitterName: user.twitterName,
     twitterId: user.twitterId,
     twitterTokenKey: user.twitterTokenKey,
-    twitterTokenSecret: user.twitterTokenSecret,
-    twitterFriendsCount: user.twitterFriendsCount,
-    displayName: user.displayName
+    twitterTokenSecret: user.twitterTokenSecret
   });
 });
 passport.deserializeUser((user, done) => {

@@ -7,7 +7,7 @@
     <h1>It works!</h1>
     <div>
       {{#user}}
-      <p>{{displayName}}</p>
+      <p>{{name}}</p>
       <a href="/auth/logout">Logout</a>
       {{/user}}
       {{^user}}

@@ -1,6 +1,7 @@
 import express from 'express'
-import {fetchFriends} from '../model/twitter'
-import {FilterCircle} from '../model/FilterCircle'
+import {fetchFriends} from '../models/twitter'
+import {FilterCircle} from '../models/FilterCircle'
+import redis from '../models/redis'
 
 const router = express.Router();
 
@@ -18,6 +19,12 @@ router.get('/api/fetch-circle-friends', (req, res, next) => {
   // 15分経過後に再試行するみたいな実装にすれば可能だが複雑度が増すので対応しない
 
   if (req.user) {
+
+    // TODO 先にRedisにキャッシュがあるか探索する(15分で揮発させる)
+    // extractCache::{userId} みないな key に探索結果を全部入れる
+    // 15分で揮発させて、redisにあればtwitterAPIを叩かない
+    redis.get('')
+
     fetchFriends(
       req.user.twitterId,
       req.user.twitterTokenKey,
@@ -25,7 +32,7 @@ router.get('/api/fetch-circle-friends', (req, res, next) => {
     ).then((friends) => {
       const filterCircle = new FilterCircle('c93', ['金','土','日'])
       const result = friends.map(friend => {
-        const circle = filterCircle.exec(friend.twitterDisplayName)
+        const circle = filterCircle.exec(friend.name)
         return circle ? Object.assign({ account: friend }, {circle}) : null
       }).filter(friend => !!friend)
       res.json(result)

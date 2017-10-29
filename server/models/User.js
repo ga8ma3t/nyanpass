@@ -7,11 +7,11 @@ const User = database.define('user', {
     defaultValue: Sequelize.UUIDV4,
     primaryKey: true
   },
+  name: Sequelize.STRING,
   twitterId: Sequelize.STRING,
+  twitterName: Sequelize.STRING,
   twitterTokenKey: Sequelize.STRING,
-  twitterTokenSecret: Sequelize.STRING,
-  twitterFriendsCount: Sequelize.INTEGER,
-  displayName: Sequelize.STRING
+  twitterTokenSecret: Sequelize.STRING
 })
 
 User.sync({force: false})

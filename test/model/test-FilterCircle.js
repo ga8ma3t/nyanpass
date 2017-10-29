@@ -10,7 +10,7 @@ import {
   extractBlock,
   extractSeat,
   complementDate
-} from '../../server/model/FilterCircle'
+} from '../../server/models/FilterCircle'
 
 test('事前文字列変換', t => {
   t.is(smoothString('c93一二三１２３ＸYzαβ', 'c93'), '123123XYzab')
