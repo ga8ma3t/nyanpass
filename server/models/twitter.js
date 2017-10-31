@@ -7,7 +7,6 @@ export function fetchFriends(twitterId, tokenKey, tokenSecret) {
     access_token_key: tokenKey,
     access_token_secret: tokenSecret
   })
-
   return new Promise((resolve, reject) => {
     let friendsList = []
     let limitCounter = 0
@@ -30,8 +29,8 @@ export function fetchFriends(twitterId, tokenKey, tokenSecret) {
         })
         Array.prototype.push.apply(friendsList, list);
         const nextCursor = result['next_cursor']
-        // 終端まで取得した、あるいはAPIを10回叩いた場合は終了
-        if (nextCursor === 0 || limitCounter >= 10) {
+        // 終端まで取得した、あるいはAPIを15回叩いた場合は終了
+        if (nextCursor === 0 || limitCounter >= 15) {
           resolve(friendsList)
         } else {
           loop(nextCursor)
