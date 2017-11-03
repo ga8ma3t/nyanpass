@@ -1,3 +1,5 @@
 # circle-concierge
 
-https://concierge.kurokuroworks.net/
+https://beta.nyanpass.net/
+
+（ ＾ω＾）おっ
