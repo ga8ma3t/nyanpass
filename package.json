@@ -9,7 +9,10 @@
     "build-client": "webpack",
     "build-server": "babel server -d dist",
     "build-server-static": "cpx \"./server/views/*\" ./dist/views & cpx \"./server/public/*\" ./dist/public",
-    "build-clean": "rimraf ./dist"
+    "build-clean": "rimraf ./dist",
+    "sequelize": "sequelize",
+    "env": "env",
+    "db-init": "sequelize db:drop && sequelize db:create && sequelize db:migrate"
   },
   "dependencies": {
     "body-parser": "~1.17.1",
@@ -29,7 +32,7 @@
     "passport-twitter": "^1.0.4",
     "pg": "^7.3.0",
     "pg-hstore": "^2.3.2",
-    "sequelize": "^4.8.4",
+    "sequelize": "^4.22.0",
     "serve-favicon": "~2.4.2",
     "twitter": "^1.7.1"
   },

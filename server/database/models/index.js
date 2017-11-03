@@ -40,14 +40,6 @@ export const Event = database.define('Event', {
   optional: Sequelize.JSON
 })
 
-export const UserSpaceRelation = database.define('UserSpaceRelation', {
-  id: {
-    type: Sequelize.UUID,
-    defaultValue: Sequelize.UUIDV4,
-    primaryKey: true
-  }
-})
-
 export const CatalogueRelation = database.define('CatalogueRelation', {
   id: {
     type: Sequelize.UUID,
@@ -57,12 +49,20 @@ export const CatalogueRelation = database.define('CatalogueRelation', {
   isBookmarked: Sequelize.BOOLEAN
 })
 
+export const SpaceOwnerRelation = database.define('SpaceOwnerRelation', {
+  id: {
+    type: Sequelize.UUID,
+    defaultValue: Sequelize.UUIDV4,
+    primaryKey: true
+  }
+})
+
 // Space has one Event
 Space.belongsTo(Event)
 
-// UserSpaceRelation
-Space.belongsToMany(User, {through: 'UserSpaceRelation'})
-User.belongsToMany(Space, {through: 'UserSpaceRelation'})
+// SpaceOwnerRelation
+Space.belongsToMany(User, {through: 'SpaceOwnerRelation'})
+User.belongsToMany(Space, {through: 'SpaceOwnerRelation'})
 
 // CatalogueRelation
 Space.belongsToMany(User, {through: 'CatalogueRelation'})
