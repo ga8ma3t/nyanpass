@@ -23,7 +23,9 @@ export const Space = database.define('Space', {
     defaultValue: Sequelize.UUIDV4,
     primaryKey: true
   },
+  name: Sequelize.STRING,
   date: Sequelize.INTEGER,
+  district: Sequelize.STRING,
   block: Sequelize.STRING,
   space: Sequelize.STRING
 })

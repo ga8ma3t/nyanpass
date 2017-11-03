@@ -42,3 +42,68 @@ export function fetchFriends(twitterId, tokenKey, tokenSecret) {
     loop(-1);
   })
 }
+
+export function searchTweets(accessCount = 1, cursor = null, sinceId = null) {
+  const client = new Twitter({
+    consumer_key: process.env.TWITTER_CONSUMER_KEY,
+    consumer_secret: process.env.TWITTER_CONSUMER_SECRET,
+    bearer_token: process.env.TWITTER_BEARER_TOKEN
+  })
+  return new Promise((resolve, reject) => {
+    let statusList = []
+    let limitCounter = 0
+
+    function loop(cursor) {
+      limitCounter++
+      const param = Object.assign(
+        {
+          'q': '◎貴サークル ブロック -rt -shindanmaker',
+          'lang': 'ja',
+          'result_type': 'recent',
+          'count': 100,
+          'include_entities': false
+        },
+        cursor ? {'max_id': cursor} : {},
+        sinceId ? {'since_id': sinceId} : {}
+      )
+
+      console.log(`limit:${limitCounter}, cursor:${cursor}`)
+
+      return client.get('search/tweets', param).then(result => {
+
+        // 終端処理
+        if (result.statuses.length === 1 && cursor === result.statuses[0]['id_str']) {
+          return resolve({cursor: null, statusList})
+        } else if (result.statuses.length === 0) {
+          return resolve({cursor: null, statusList})
+        }
+
+        const list = result.statuses.map(status => {
+          return {
+            id: status['id_str'],
+            text: status.text,
+            name: status.user.name, // 例：なのくろ
+            twitterId: status.user.id,
+            twitterName: status.user['screen_name'], // 例：nanocloudx
+          }
+        })
+        Array.prototype.push.apply(statusList, list);
+
+        console.log(statusList.length)
+
+        const nextCursor = result.statuses[result.statuses.length - 1]['id_str']
+
+        // APIを指定回数叩いた場合は終了
+        if (limitCounter >= accessCount) {
+          resolve({cursor: nextCursor, statusList})
+        } else {
+          loop(nextCursor)
+        }
+      }).catch((error) => {
+        reject({error, cursor, statusList})
+      });
+    }
+    loop(cursor);
+  })
+
+}

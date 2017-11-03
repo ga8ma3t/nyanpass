@@ -1,20 +1,5 @@
 import redis from '../models/redis'
 import {fetchFriends} from '../models/twitter'
-import {Event} from '../database/models/index'
-
-/**
- * カタログを取得します
- * @param eventId
- * @param twitterId
- * @param tokenKey
- * @param tokenSecret
- * @returns {Promise.<Object>}
- */
-export function fetchCatalogue(eventId, twitterId, tokenKey, tokenSecret) {
-  return Promise.resolve().then(() => {
-    return fetchFriendList(twitterId, tokenKey, tokenSecret)
-  })
-}
 
 /**
  * friendListを取得
@@ -69,16 +54,5 @@ function cacheFriendListToRedis(twitterId, friendList) {
     return redis.set(`friendList::${twitterId}`, JSON.stringify(friendList))
   }).then(() => {
     return redis.expire(`friendList::${twitterId}`, 60 * 15)
-  })
-}
-
-/**
- * イベントを取得
- * @param eventId
- * @returns {Promise.<Object>}
- */
-function fetchEvent(eventId) {
-  return Promise.resolve().then(() => {
-    return Event.findById(eventId)
   })
 }
