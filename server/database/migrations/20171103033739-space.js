@@ -8,7 +8,9 @@ module.exports = {
         defaultValue: Sequelize.UUIDV4,
         primaryKey: true
       },
+      name: Sequelize.STRING,
       date: Sequelize.INTEGER,
+      district: Sequelize.STRING,
       block: Sequelize.STRING,
       space: Sequelize.STRING,
       eventId: {

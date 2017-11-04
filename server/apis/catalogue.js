@@ -23,7 +23,7 @@ export function fetchCatalogue(eventId, twitterId, twitterTokenKey, twitterToken
   // 3-2: 抽出された一覧から、spaceIdに紐づくeventIdが指定されたイベントと一致したものだけを抽出する
   // 3-3: 結果をJSONで返す
 
-
+  
   // return Promise.resolve().then(() => {
   //   return Promise.all([
   //     fetchFriendList(twitterId, twitterTokenKey, twitterTokenSecret),
