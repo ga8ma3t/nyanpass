@@ -22,7 +22,7 @@ export function fetchFriends(twitterId, tokenKey, tokenSecret) {
         const list = result.users.map(user => {
           return {
             name: user.name, // 例：なのくろ
-            twitterId: user.id,
+            twitterId: user['id_str'],
             twitterName: user['screen_name'], // 例：nanocloudx
             image: user['profile_image_url_https'] // TODO 文字列末尾の _normal.jpg を _200x200.jpg にする
           }
@@ -83,7 +83,7 @@ export function searchTweets(accessCount = 1, cursor = null, sinceId = null) {
             id: status['id_str'],
             text: status.text,
             name: status.user.name, // 例：なのくろ
-            twitterId: status.user.id,
+            twitterId: status.user['id_str'],
             twitterName: status.user['screen_name'], // 例：nanocloudx
           }
         })
