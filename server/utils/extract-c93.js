@@ -1,3 +1,4 @@
+import uuidv4 from 'uuid/v4'
 import {searchTweets} from '../models/twitter'
 import {convertMultiByteToSingleByte} from './util'
 
@@ -27,11 +28,13 @@ function format(entry) {
       tweetId: entry.id
     },
     user: {
+      id: uuidv4(),
       name: entry.name,
       twitterId: entry.twitterId,
       twitterName: entry.twitterName
     },
     space: {
+      id: uuidv4(),
       name: parsed[1],
       date: convertWeekToDay(parsed[2]),
       district: parsed[3],
