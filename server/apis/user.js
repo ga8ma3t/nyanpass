@@ -5,7 +5,7 @@ import {User} from '../database/models/index'
  * @param twitterId
  * @returns {Promise.<Model>}
  */
-export function findByTwitterId(twitterId) {
+export function fetchUserByTwitterId(twitterId) {
   return User.findOne({where:{ twitterId: twitterId }})
 }
 
@@ -18,7 +18,7 @@ export function findByTwitterId(twitterId) {
  * @param twitterTokenKey
  * @param twitterTokenSecret
  */
-export function create(twitterId, name, twitterName, twitterTokenKey = null, twitterTokenSecret = null) {
+export function createUser(twitterId, name, twitterName, twitterTokenKey = null, twitterTokenSecret = null) {
   return User.create({twitterId, name, twitterName, twitterTokenKey, twitterTokenSecret})
 }
 
@@ -31,7 +31,7 @@ export function create(twitterId, name, twitterName, twitterTokenKey = null, twi
  * @param twitterTokenKey
  * @param twitterTokenSecret
  */
-export function update(twitterId, name, twitterName, twitterTokenKey = null, twitterTokenSecret = null) {
+export function updateUser(twitterId, name, twitterName, twitterTokenKey = null, twitterTokenSecret = null) {
   return User.update({name, twitterName, twitterTokenKey, twitterTokenSecret}, {where: {twitterId}})
 }
 
@@ -47,10 +47,10 @@ export function update(twitterId, name, twitterName, twitterTokenKey = null, twi
  */
 export function fetchUserForPassport(twitterId, name, twitterName, twitterTokenKey, twitterTokenSecret) {
   // 既にユーザーが存在しているか確認
-  return findByTwitterId(twitterId).then(user => {
+  return fetchUserByTwitterId(twitterId).then(user => {
     // 存在しない場合は新規作成して返す
     if (!user) {
-      return create(twitterId, name, twitterName, twitterTokenKey, twitterTokenSecret)
+      return createUser(twitterId, name, twitterName, twitterTokenKey, twitterTokenSecret)
     }
     // 存在するが差分がある場合は更新して返す
     if (
@@ -59,8 +59,8 @@ export function fetchUserForPassport(twitterId, name, twitterName, twitterTokenK
       user.name !== name ||
       user.twitterName !== twitterName
     ) {
-      return update(twitterId, name, twitterName, twitterTokenKey, twitterTokenSecret).then(() => {
-        return findByTwitterId(twitterId)
+      return updateUser(twitterId, name, twitterName, twitterTokenKey, twitterTokenSecret).then(() => {
+        return fetchUserByTwitterId(twitterId)
       })
     }
     // 存在して差分がない場合はそのまま返す
