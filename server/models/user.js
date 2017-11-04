@@ -1,7 +1,16 @@
 import {User} from '../database/models/index'
 
 /**
- * ユーザーを取得します
+ * ユーザーをIdから取得します
+ * @param userId
+ * @returns {Promise.<Model>}
+ */
+export function fetchUserById(userId) {
+  return User.findById(userId)
+}
+
+/**
+ * ユーザーをtwitterIdから取得します
  * @param twitterId
  * @returns {Promise.<Model>}
  */
@@ -20,6 +29,24 @@ export function fetchUserByTwitterId(twitterId) {
  */
 export function createUser(twitterId, name, twitterName, twitterTokenKey = null, twitterTokenSecret = null) {
   return User.create({twitterId, name, twitterName, twitterTokenKey, twitterTokenSecret})
+}
+
+/**
+ * ユーザーをtwitterIdから取得、無ければ作成します
+ *
+ * @param twitterId
+ * @param name
+ * @param twitterName
+ * @param twitterTokenKey
+ * @param twitterTokenSecret
+ * @returns {Promise.<Object>}
+ */
+export function findOrCreateUserByTwitterId(twitterId, name, twitterName, twitterTokenKey = null, twitterTokenSecret = null) {
+  return Promise.resolve().then(() => {
+    return fetchUserByTwitterId(twitterId)
+  }).then(user => {
+    return user || createUser(twitterId, name, twitterName, twitterTokenKey, twitterTokenSecret)
+  })
 }
 
 /**

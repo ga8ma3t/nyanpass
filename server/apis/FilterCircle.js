@@ -119,19 +119,6 @@ export function extractWeek(target) {
 export function extractDirection(target) {
   // 西館は企業ブース固定っぽいので
   return '東'
-
-  // // 東または西がサークル位置と併記されていれば特定
-  // const direction1 = target.match(/[東西]\d?.\d\d[ABab]/)
-  // if (direction1) {
-  //   return direction1[0].charAt(0)
-  // }
-  // // 東または西が一つだけならば特定
-  // const direction2 = target.match(/[東西]/g)
-  // if (direction2 && direction2.length === 1) {
-  //   return direction2[0].charAt(0)
-  // }
-  // // それ以外は駄目
-  // return null
 }
 
 /**
