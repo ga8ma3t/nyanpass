@@ -49,7 +49,8 @@ function insertEntry({user, space}) {
       where: {
         userId: user.id,
         spaceId: space.id
-      }
+      },
+      defaults: {}
     })
   }).catch((err) => {
     // 他のレコードは処理してほしいので、ログだけ出して続ける
