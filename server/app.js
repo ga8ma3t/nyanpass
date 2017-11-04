@@ -16,7 +16,7 @@ import passport from 'passport'
 import passportTwitter from 'passport-twitter'
 
 import index from './routes/index'
-import {fetchUserForPassport} from './apis/user'
+import {fetchUserForPassport} from './models/user'
 
 const TwitterStrategy = passportTwitter.Strategy
 const RedisStore = connectRedis(session)

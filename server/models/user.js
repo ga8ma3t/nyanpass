@@ -32,7 +32,9 @@ export function createUser(twitterId, name, twitterName, twitterTokenKey = null,
  * @param twitterTokenSecret
  */
 export function updateUser(twitterId, name, twitterName, twitterTokenKey = null, twitterTokenSecret = null) {
-  return User.update({name, twitterName, twitterTokenKey, twitterTokenSecret}, {where: {twitterId}})
+  return User.update({name, twitterName, twitterTokenKey, twitterTokenSecret}, {where: {twitterId}}).then(() => {
+    return fetchUserByTwitterId(twitterId)
+  })
 }
 
 /**
@@ -59,9 +61,7 @@ export function fetchUserForPassport(twitterId, name, twitterName, twitterTokenK
       user.name !== name ||
       user.twitterName !== twitterName
     ) {
-      return updateUser(twitterId, name, twitterName, twitterTokenKey, twitterTokenSecret).then(() => {
-        return fetchUserByTwitterId(twitterId)
-      })
+      return updateUser(twitterId, name, twitterName, twitterTokenKey, twitterTokenSecret)
     }
     // 存在して差分がない場合はそのまま返す
     return user
