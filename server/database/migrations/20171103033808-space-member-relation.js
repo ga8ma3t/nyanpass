@@ -34,7 +34,13 @@ module.exports = {
         allowNull: false,
         type: Sequelize.DATE
       }
-    })
+    }).then(() =>
+      queryInterface.addIndex(
+        'space_member_relations',
+        ['userId', 'spaceId'],
+        { indicesType: 'UNIQUE' }
+      )
+    )
   },
 
   down: (queryInterface, Sequelize) => {

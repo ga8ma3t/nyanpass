@@ -28,7 +28,13 @@ module.exports = {
         allowNull: false,
         type: Sequelize.DATE
       }
-    })
+    }).then(() =>
+      queryInterface.addIndex(
+        'spaces',
+        ['date', 'block', 'space', 'eventId'],
+        { indicesType: 'UNIQUE' }
+      )
+    )
   },
 
   down: (queryInterface, Sequelize) => {
