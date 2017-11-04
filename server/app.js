@@ -16,7 +16,7 @@ import passport from 'passport'
 import passportTwitter from 'passport-twitter'
 
 import index from './routes/index'
-import {User} from './database/models/index'
+import {fetchUserForPassport} from './apis/user'
 
 const TwitterStrategy = passportTwitter.Strategy
 const RedisStore = connectRedis(session)
@@ -62,38 +62,14 @@ passport.use(new TwitterStrategy({
     consumerSecret: process.env.TWITTER_CONSUMER_SECRET,
     callbackURL: process.env.TWITTER_CALLBACK_URL
   },
-  (tokenKey, tokenSecret, profile, callback) => {
-    return Promise.resolve().then(() => {
-      return User.findOne({where:{ twitterId: profile.id }})
-    }).then((user) => {
-      if (!user) {
-        return User.create({
-          name: profile.displayName,
-          twitterName: profile.username,
-          twitterId: profile.id,
-          twitterTokenKey: tokenKey,
-          twitterTokenSecret: tokenSecret
-        })
-      }
-      if (
-        user.twitterTokenKey !== tokenKey ||
-        user.twitterTokenSecret !== tokenSecret ||
-        user.name !== profile.displayName ||
-        user.twitterName !== profile.username
-      ) {
-        return User.update({
-          name: profile.displayName,
-          twitterName: profile.username,
-          twitterTokenKey: tokenKey,
-          twitterTokenSecret: tokenSecret
-        }, {
-          where: { twitterId: profile.id }
-        }).then(() => {
-          return User.findOne({where:{ twitterId: profile.id }})
-        })
-      }
-      return user
-    }).then((user) => {
+  (twitterTokenKey, twitterTokenSecret, profile, callback) => {
+    return fetchUserForPassport(
+      profile.id,
+      profile.displayName,
+      profile.username,
+      twitterTokenKey,
+      twitterTokenSecret
+    ).then((user) => {
       return callback(null, user)
     }).catch((err) => {
       return callback(err)
