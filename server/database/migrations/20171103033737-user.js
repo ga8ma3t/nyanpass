@@ -9,7 +9,10 @@ module.exports = {
         primaryKey: true
       },
       name: Sequelize.STRING,
-      twitterId: Sequelize.STRING,
+      twitterId: {
+        type: Sequelize.STRING,
+        unique: true
+      },
       twitterName: Sequelize.STRING,
       twitterTokenKey: Sequelize.STRING,
       twitterTokenSecret: Sequelize.STRING,
