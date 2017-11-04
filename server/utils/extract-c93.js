@@ -1,6 +1,7 @@
 import uuidv4 from 'uuid/v4'
 import {searchTweets} from '../models/twitter'
 import {convertMultiByteToSingleByte} from './util'
+import {Event, User, Space, SpaceMemberRelation} from '../database/models'
 
 export function extractC93LayoutReport(count, cursor, sinceId) {
   return Promise.resolve().then(() => {
@@ -11,6 +12,49 @@ export function extractC93LayoutReport(count, cursor, sinceId) {
   }).catch(err => {
     console.log(`cursor: ${err.cursor}, error: ${err.error}`)
     return err.statusList.map(format).filter(data => data)
+  }).then(entries => {
+    return Promise.all(entries.map(insertEntry)).then(() => entries);
+  })
+}
+
+function insertEntry({user, space}) {
+  return Promise.resolve().then(() => {
+    return Event.findOne({
+      where: { name: 'コミックマーケット93' }
+    })
+  }).then((event) => {
+    return Promise.all([
+      User.findOrCreate({
+        where: {
+          twitterId: user.twitterId
+        },
+        defaults: user
+      }),
+      Space.findOrCreate({
+        where: {
+          eventId: event.id,
+          date: space.date,
+          block: space.block,
+          space: space.space
+        },
+        defaults: {
+          id: space.id,
+          name: space.name,
+          district: space.district
+        }
+      })
+    ])
+  }).then(([[user], [space]]) => {
+    return SpaceMemberRelation.findOrCreate({
+      where: {
+        userId: user.id,
+        spaceId: space.id
+      }
+    })
+  }).catch((err) => {
+    // 他のレコードは処理してほしいので、ログだけ出して続ける
+    console.log(`space insert error: ${err}`)
+    return Promise.resolve()
   })
 }
 
