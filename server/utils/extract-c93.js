@@ -14,7 +14,7 @@ export function extractC93LayoutReport(count, cursor, sinceId) {
 }
 
 function parse(str) {
-  return str.match(/貴サークル「?(.*?)」?は、?(.)曜日.*([西東])地区(.+)ブロック.*?([0-9][0-9][ab])/)
+  return str.match(/貴サークル「?(.*?)」?は、?(.)曜日.*([東])地区(.+)ブロック.*?([0-9][0-9][ab])/)
 }
 
 function format(entry) {

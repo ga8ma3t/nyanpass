@@ -2,13 +2,12 @@
 
 module.exports = {
   up: (queryInterface, Sequelize) => {
-    return queryInterface.createTable('catalogue-relations', {
+    return queryInterface.createTable('space_member_relations', {
       id: {
         type: Sequelize.UUID,
         defaultValue: Sequelize.UUIDV4,
         primaryKey: true
       },
-      isBookmarked: Sequelize.BOOLEAN,
       userId: {
         type: Sequelize.UUID,
         references: {
@@ -39,6 +38,6 @@ module.exports = {
   },
 
   down: (queryInterface, Sequelize) => {
-    return queryInterface.dropTable('catalogue-relations');
+    return queryInterface.dropTable('space_member_relations');
   }
 }

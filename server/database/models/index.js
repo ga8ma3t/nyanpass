@@ -4,7 +4,7 @@ export const database = new Sequelize(process.env.DATABASE_URL, {
   // sequelize models options
 })
 
-export const User = database.define('User', {
+export const User = database.define('user', {
   id: {
     type: Sequelize.UUID,
     defaultValue: Sequelize.UUIDV4,
@@ -17,7 +17,7 @@ export const User = database.define('User', {
   twitterTokenSecret: Sequelize.STRING
 })
 
-export const Space = database.define('Space', {
+export const Space = database.define('space', {
   id: {
     type: Sequelize.UUID,
     defaultValue: Sequelize.UUIDV4,
@@ -30,7 +30,7 @@ export const Space = database.define('Space', {
   space: Sequelize.STRING
 })
 
-export const Event = database.define('Event', {
+export const Event = database.define('event', {
   id: {
     type: Sequelize.UUID,
     defaultValue: Sequelize.UUIDV4,
@@ -42,16 +42,7 @@ export const Event = database.define('Event', {
   optional: Sequelize.JSON
 })
 
-export const CatalogueRelation = database.define('CatalogueRelation', {
-  id: {
-    type: Sequelize.UUID,
-    defaultValue: Sequelize.UUIDV4,
-    primaryKey: true
-  },
-  isBookmarked: Sequelize.BOOLEAN
-})
-
-export const SpaceOwnerRelation = database.define('SpaceOwnerRelation', {
+export const SpaceMemberRelation = database.define('space_member_relation', {
   id: {
     type: Sequelize.UUID,
     defaultValue: Sequelize.UUIDV4,
@@ -62,12 +53,8 @@ export const SpaceOwnerRelation = database.define('SpaceOwnerRelation', {
 // Space has one Event
 Space.belongsTo(Event)
 
-// SpaceOwnerRelation
-Space.belongsToMany(User, {through: 'SpaceOwnerRelation'})
-User.belongsToMany(Space, {through: 'SpaceOwnerRelation'})
-
-// CatalogueRelation
-Space.belongsToMany(User, {through: 'CatalogueRelation'})
-User.belongsToMany(Space, {through: 'CatalogueRelation'})
+// SpaceMemberRelation
+Space.belongsToMany(User, {through: 'space_member_relation'})
+User.belongsToMany(Space, {through: 'space_member_relation'})
 
 database.sync({force: true})

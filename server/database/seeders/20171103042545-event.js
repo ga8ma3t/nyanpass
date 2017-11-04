@@ -6,8 +6,8 @@ module.exports = {
       id: 'a2894003-50e1-4cbb-898b-db31aee96996',
       name: 'コミックマーケット93',
       type: 'comiket',
-      date: '2017-12-31',
-      optional: 'null',
+      date: '2017-12-29',
+      optional: null,
       createdAt: new Date(),
       updatedAt: new Date()
     }])
