@@ -57,4 +57,4 @@ Space.belongsTo(Event)
 Space.belongsToMany(User, {through: 'space_member_relation'})
 User.belongsToMany(Space, {through: 'space_member_relation'})
 
-database.sync({force: true})
+database.sync()
