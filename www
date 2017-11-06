@@ -20,6 +20,8 @@ app.set('port', port);
  */
 
 const server = http.createServer(app);
+// twitter全取り込みのときに必要
+// server.timeout = 60 * 60 * 1000;
 
 /**
  * Listen on provided port, on all network interfaces.
