@@ -27,3 +27,13 @@ export function fetchSpaceByUniqueSpacePosition(space) {
 export function createSpace(space) {
   return Space.create(space)
 }
+
+export function addSpaceMember(space, user) {
+  return space.hasUser(user).then((result) => {
+    if (!result) {
+      return space.addUser(user)
+    } else {
+      return Promise.resolve()
+    }
+  })
+}

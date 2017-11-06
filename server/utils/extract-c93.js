@@ -1,7 +1,9 @@
 import uuidv4 from 'uuid/v4'
 import {searchTweets} from '../models/twitter'
 import {convertMultiByteToSingleByte} from './util'
-import {Event, User, Space, SpaceMemberRelation} from '../database/models'
+import { fetchEventByName } from "../models/event"
+import { findOrCreateUserByTwitterId } from "../models/user"
+import { findOrCreateSpace, addSpaceMember } from "../models/space"
 
 export function extractC93LayoutReport(count, cursor, sinceId) {
   return Promise.resolve().then(() => {
@@ -19,39 +21,14 @@ export function extractC93LayoutReport(count, cursor, sinceId) {
 
 function insertEntry({user, space}) {
   return Promise.resolve().then(() => {
-    return Event.findOne({
-      where: { name: 'コミックマーケット93' }
-    })
+    return fetchEventByName('コミックマーケット93')
   }).then((event) => {
     return Promise.all([
-      User.findOrCreate({
-        where: {
-          twitterId: user.twitterId
-        },
-        defaults: user
-      }),
-      Space.findOrCreate({
-        where: {
-          eventId: event.id,
-          date: space.date,
-          block: space.block,
-          space: space.space
-        },
-        defaults: {
-          id: space.id,
-          name: space.name,
-          district: space.district
-        }
-      })
+      findOrCreateUserByTwitterId(user),
+      findOrCreateSpace(Object.assign(space, { eventId: event.id}))
     ])
-  }).then(([[user], [space]]) => {
-    return SpaceMemberRelation.findOrCreate({
-      where: {
-        userId: user.id,
-        spaceId: space.id
-      },
-      defaults: {}
-    })
+  }).then(([user, space]) => {
+    addSpaceMember(space, user)
   }).catch((err) => {
     // 他のレコードは処理してほしいので、ログだけ出して続ける
     console.log(`space insert error: ${err}`)

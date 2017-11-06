@@ -34,18 +34,14 @@ export function createUser(twitterId, name, twitterName, twitterTokenKey = null,
 /**
  * ユーザーをtwitterIdから取得、無ければ作成します
  *
- * @param twitterId
- * @param name
- * @param twitterName
- * @param twitterTokenKey
- * @param twitterTokenSecret
+ * @param user
  * @returns {Promise.<Object>}
  */
-export function findOrCreateUserByTwitterId(twitterId, name, twitterName, twitterTokenKey = null, twitterTokenSecret = null) {
+export function findOrCreateUserByTwitterId(user) {
   return Promise.resolve().then(() => {
-    return fetchUserByTwitterId(twitterId)
-  }).then(user => {
-    return user || createUser(twitterId, name, twitterName, twitterTokenKey, twitterTokenSecret)
+    return fetchUserByTwitterId(user.twitterId)
+  }).then(result => {
+    return result || User.create(user)
   })
 }
 
