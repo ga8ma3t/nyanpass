@@ -5,18 +5,31 @@ import { fetchEventByName } from "../models/event"
 import { findOrCreateUserByTwitterId } from "../models/user"
 import { findOrCreateSpace, addSpaceMember } from "../models/space"
 
-export function extractC93LayoutReport(count, cursor, sinceId) {
-  return Promise.resolve().then(() => {
-    return searchTweets(count, cursor, sinceId)
-  }).then(result => {
-    console.log(`cursor: ${result.cursor}`)
-    return result.statusList.map(format).filter(data => data)
-  }).catch(err => {
-    console.log(`cursor: ${err.cursor}, error: ${err.error}`)
-    return err.statusList.map(format).filter(data => data)
-  }).then(entries => {
-    return Promise.all(entries.map(insertEntry)).then(() => entries);
-  })
+export async function extractC93LayoutReport(count, cursor, sinceId) {
+  var entryList = []
+  try {
+    for (var i = 0; i < count; i++) {
+      console.log(`limit:${i}, cursor:${cursor}`)
+      const result = await searchTweets(cursor, sinceId)
+      if (!result.cursor) {
+        cursor = null
+        break
+      }
+      const formatted = result.list.map(format).filter(data => data)
+      await Promise.all(formatted.map(insertEntry))
+      Array.prototype.push.apply(entryList, formatted);
+      console.log(entryList.length)
+      cursor = result.cursor
+    }
+    if (cursor) {
+      console.log(`cursor: ${result.cursor}`)
+    } else {
+      console.log('cursor: null')
+    }
+  } catch (err) {
+    console.log(`cursor: ${err.cursor}, error: ${err}`)
+  }
+  return entryList
 }
 
 function insertEntry({user, space}) {
