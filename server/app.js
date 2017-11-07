@@ -95,14 +95,32 @@ passport.deserializeUser((user, done) => {
 //--------------------------------------------------
 app.use('/', index);
 
-// Authentication
-app.get(
-  '/auth/twitter',
-  passport.authenticate('twitter', {
-    successRedirect: '/?auth=success',
-    failureRedirect: '/?auth=failure'
+app.get('/auth/status', (req, res) => {
+  res.json({
+    session: req.user ? {
+      id: req.user.id,
+      twitterId: req.user.twitterId,
+      name: req.user.name,
+      twitterName: req.user.twitterName,
+    } : null
   })
-);
+})
+app.get('/auth/twitter', (req, res, next) => {
+  passport.authenticate('twitter', (err, user, info) => {
+    if (err) {
+      return next(err)
+    }
+    if (!user) {
+      return res.redirect('/')
+    }
+    req.login(user, err => {
+      if (err) {
+        return next(err)
+      }
+      return res.redirect(req.header('Referer') || '/');
+    })
+  })(req, res, next)
+})
 app.get('/auth/logout', (req, res) => {
   req.logout();
   req.user = null;

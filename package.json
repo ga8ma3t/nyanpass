@@ -15,8 +15,10 @@
     "db-init": "sequelize db:drop && sequelize db:create && sequelize db:migrate"
   },
   "dependencies": {
+    "axios": "^0.17.0",
     "body-parser": "~1.17.1",
     "compression": "^1.7.0",
+    "connect-history-api-fallback": "^1.4.0",
     "connect-redis": "^3.3.0",
     "cookie-parser": "~1.4.3",
     "csurf": "^1.9.0",

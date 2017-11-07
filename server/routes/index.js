@@ -4,13 +4,6 @@ import {extractC93LayoutReport} from '../utils/extract-c93'
 
 const router = express.Router();
 
-router.get('/', (req, res, next) => {
-  res.render('index', {
-    user: req.user,
-    token: req.csrfToken()
-  });
-});
-
 router.get('/api/catalogue/:eventId', (req, res) => {
   fetchCatalogue(
     req.params.eventId,
@@ -29,5 +22,12 @@ router.get('/api/dangerzone/extract-c93', (req, res) => {
     res.json(err)
   })
 })
+
+router.get(['/', '/catalogue/:eventId'], (req, res, next) => {
+  res.render('index', {
+    user: req.user,
+    token: req.csrfToken()
+  });
+});
 
 export default router;

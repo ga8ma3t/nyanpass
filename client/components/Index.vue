@@ -1,7 +1,7 @@
 <template>
   <div class="index">
     <h1>{{ msg }}</h1>
-    <router-link to="/catalogue/0">Catalogue</router-link>
+    <router-link to="/catalogue/example">Catalogue</router-link>
   </div>
 </template>
 
