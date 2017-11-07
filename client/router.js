@@ -4,8 +4,6 @@ import Index from './components/Index.vue'
 import Catalogue from './components/Catalogue.vue'
 import request from 'axios'
 
-const isSession = !!document.getElementById('app').dataset.session
-console.log(isSession)
 Vue.use(Router)
 
 const router = new Router({

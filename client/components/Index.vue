@@ -1,7 +1,7 @@
 <template>
   <div class="index">
-    <h1>{{ msg }}</h1>
-    <router-link to="/catalogue/example">Catalogue</router-link>
+    <h2>イベント一覧</h2>
+    <router-link to="/catalogue/c93">コミックマーケット93</router-link>
   </div>
 </template>
 
@@ -10,7 +10,7 @@
     name: 'index',
     data () {
       return {
-        msg: 'It works!'
+        //
       }
     }
   }

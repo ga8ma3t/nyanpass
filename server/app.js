@@ -46,7 +46,7 @@ app.use(session({
   saveUninitialized: false,
   store: new RedisStore({
     client: sessionRedisClient,
-    prefix: 'session:',
+    prefix: 'session::',
     ttl: 60 * 60 * 24 * 3 // 3日間アクセスがない場合は Redis からセッション削除
   })
 }));
