@@ -1,16 +1,16 @@
 <template>
-  <div class="index">
-    <h1>{{ msg }}</h1>
-    <router-link to="/catalogue/0">Catalogue</router-link>
+  <div class="catalogue">
+    <h1>{{ $route.params.id }}</h1>
+    <router-link to="/">Index</router-link>
   </div>
 </template>
 
 <script>
   export default {
-    name: 'index',
+    name: 'catalogue',
     data () {
       return {
-        msg: 'It works!'
+        //
       }
     }
   }
