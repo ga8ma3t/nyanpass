@@ -38,6 +38,7 @@ export const Event = database.define('event', {
     defaultValue: Sequelize.UUIDV4,
     primaryKey: true
   },
+  alternateId: Sequelize.STRING,
   type: Sequelize.STRING,
   name: Sequelize.STRING,
   date: Sequelize.DATEONLY,
