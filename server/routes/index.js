@@ -4,6 +4,10 @@ import {extractC93LayoutReport} from '../utils/extract-c93'
 
 const router = express.Router();
 
+router.get('/api/events', (req, res) => {
+  res.json({}) // TODO
+})
+
 router.get('/api/catalogue/:eventId', (req, res) => {
   fetchCatalogue(
     req.params.eventId,
