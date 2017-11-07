@@ -7,3 +7,7 @@ export function fetchEvent(eventId) {
 export function fetchEventByName(name) {
   return Event.findOne({where: { name: name }})
 }
+
+export function fetchEventByAlternateId(id) {
+  return Event.findOne({where: { alternateId: id }})
+}

@@ -38,7 +38,7 @@ export function addSpaceMember(space, user) {
   })
 }
 
-export function fetchSpaceListByEventAndFriendList(eventId, friendList) {
+export function fetchSpaceListByEventAndFriendList(event, friendList) {
   const twitterIds = friendList.map((frined) => frined.twitterId)
   return Space.findAll({
     attributes: ['id', 'name', 'date', 'district', 'block', 'space'],
@@ -49,7 +49,7 @@ export function fetchSpaceListByEventAndFriendList(eventId, friendList) {
       through: { attributes: []}
     }],
     where: {
-      eventId: eventId
+      eventId: event.id
     }
   })
 }
