@@ -4,6 +4,7 @@
   "private": true,
   "scripts": {
     "start": "npm run build && node ./www",
+    "start:dev": "yarn install && yarn run sequelize db:migrate && yarn start",
     "test": "ava --verbose",
     "build": "npm run build-clean && npm run build-server-static && npm run build-server && npm run build-client",
     "build-client": "webpack",
