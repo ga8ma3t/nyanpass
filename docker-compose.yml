@@ -1,0 +1,44 @@
+version: '2'
+services:
+  app:
+    image: node:8.9-alpine
+    command: yarn start:dev
+    ports:
+      - '3000:3000'
+    volumes:
+      - .:/src
+      - ~/.yarn-cache:/root/.yarn-cache
+    working_dir: /src
+    links:
+      - postgres
+      - redis
+    environment:
+      DATABASE_URL: postgres://postgres@postgres/nyanpass
+      REDIS_URL: redis:6379
+  postgres:
+    restart: always
+    image: postgres:10.0-alpine
+    ports:
+      - '15432:5432'
+    environment:
+      POSTGRES_DB: nyanpass
+      TZ: Asia/Tokyo
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+
+  redis:
+    restart: always
+    image: redis:alpine
+    ports:
+      - '16379:6379'
+    environment:
+      TZ: Asia/Tokyo
+    volumes:
+      - rdsdata:/data
+    command: redis-server --appendonly yes
+
+volumes:
+  pgdata:
+    driver: local
+  rdsdata:
+    driver: local
