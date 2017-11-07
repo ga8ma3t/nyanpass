@@ -41,7 +41,7 @@ app.use(express.static(path.join(__dirname, 'public')));
 //--------------------------------------------------
 const sessionRedisClient = new Redis(process.env.REDIS_URL);
 app.use(session({
-  secret: 'kurokuroworksSecret',
+  secret: process.env.SESSION_SECRET,
   resave: false,
   saveUninitialized: false,
   store: new RedisStore({
