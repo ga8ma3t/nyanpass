@@ -1,5 +1,6 @@
 import redis from '../models/redis'
 import {fetchFriends} from '../models/twitter'
+import {fetchSpaceListByEventAndFriendList} from "../models/space";
 
 /**
  * ログインユーザーのフレンド一覧から指定したイベントに参加するサークルを取得します
@@ -22,11 +23,11 @@ export function fetchCatalogue(eventId, twitterId, twitterTokenKey, twitterToken
   // 3-2: 抽出された一覧から、spaceIdに紐づくeventIdが指定されたイベントと一致したものだけを抽出する
   // 3-3: 結果をJSONで返す
 
-  // return Promise.resolve().then(() => {
-  //   return fetchFriendList(twitterId, twitterTokenKey, twitterTokenSecret)
-  // }).then(friendList => {
-  //   return fetchSpaceListByEventAndFriendList(eventId, friendList)
-  // })
+  return Promise.resolve().then(() => {
+    return fetchFriendList(twitterId, twitterTokenKey, twitterTokenSecret)
+  }).then(friendList => {
+    return fetchSpaceListByEventAndFriendList(eventId, friendList)
+  })
 }
 
 /**

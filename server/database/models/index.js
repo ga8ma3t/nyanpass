@@ -1,5 +1,7 @@
 import Sequelize from 'sequelize';
 
+export const Op = Sequelize.Op
+
 export const database = new Sequelize(process.env.DATABASE_URL, {
   // sequelize models options
 })

@@ -1,4 +1,4 @@
-import {Space} from '../database/models/index'
+import {Space, User, Op} from '../database/models/index'
 
 /**
  * スペースを作るお（ ＾ω＾）
@@ -34,6 +34,19 @@ export function addSpaceMember(space, user) {
       return space.addUser(user)
     } else {
       return Promise.resolve()
+    }
+  })
+}
+
+export function fetchSpaceListByEventAndFriendList(eventId, friendList) {
+  const twitterIds = friendList.map((frined) => frined.twitterId)
+  return Space.findAll({
+    include: [{
+      model: User,
+      where: { twitterId: { [Op.in]: twitterIds} }
+    }],
+    where: {
+      eventId: eventId
     }
   })
 }
