@@ -24,29 +24,28 @@ router.get('/logout', (req, res) => {
 })
 
 router.get('/twitter', (req, res, next) => {
-
+  const from = req.query.from ? req.query.from : ''
   passport.use(new TwitterStrategy({
-      consumerKey: process.env.TWITTER_CONSUMER_KEY,
-      consumerSecret: process.env.TWITTER_CONSUMER_SECRET,
-      callbackURL: process.env.TWITTER_CALLBACK_URL + `?from=${req.query.from}`
-    },
-    (twitterTokenKey, twitterTokenSecret, profile, callback) => {
-      return fetchUserForPassport(
-        profile.id,
-        profile.displayName,
-        profile.username,
-        twitterTokenKey,
-        twitterTokenSecret
-      ).then((user) => {
-        return callback(null, user)
-      }).catch((err) => {
-        return callback(err)
-      })
-    }
-  ))
+    consumerKey: process.env.TWITTER_CONSUMER_KEY,
+    consumerSecret: process.env.TWITTER_CONSUMER_SECRET,
+    callbackURL: process.env.TWITTER_CALLBACK_URL + from
+  },
+  (twitterTokenKey, twitterTokenSecret, profile, callback) => {
+    return fetchUserForPassport(
+      profile.id,
+      profile.displayName,
+      profile.username,
+      twitterTokenKey,
+      twitterTokenSecret
+    ).then((user) => {
+      return callback(null, user)
+    }).catch((err) => {
+      return callback(err)
+    })
+  }))
 
   passport.authenticate('twitter', {
-    successRedirect: `${req.query.from}`,
+    successRedirect: from ? from : '/',
     failureRedirect: '/'
   })(req, res, next)
 
