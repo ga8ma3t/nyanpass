@@ -50,6 +50,11 @@ export function fetchSpaceListByEventAndFriendList(event, friendList) {
     }],
     where: {
       eventId: event.id
-    }
+    },
+    order: [
+      ['date', 'ASC'],
+      ['block', 'ASC'],
+      ['space', 'ASC']
+    ]
   })
 }

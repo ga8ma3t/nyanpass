@@ -1,6 +1,7 @@
 import redis from '../models/redis'
 import {fetchFriends} from '../models/twitter'
-import {fetchSpaceListByEventAndFriendList} from '../models/space'
+import {fetchUserWithSpaceByEventAndFriendList} from '../models/user'
+// import {fetchSpaceListByEventAndFriendList} from '../models/space'
 import {fetchEventByAlternateId} from '../models/event'
 
 // TODO すべきこと
@@ -26,7 +27,8 @@ export function fetchCatalogue(req, res) {
       fetchEventByAlternateId(eventId)
     ])
   }).then(([friendList, event]) => {
-    return fetchSpaceListByEventAndFriendList(event, friendList)
+    return fetchUserWithSpaceByEventAndFriendList(event, friendList)
+    // return fetchSpaceListByEventAndFriendList(event, friendList)
   }).then(result => {
     res.json(result)
   })

@@ -1,16 +1,22 @@
 <template>
   <div class="catalogue">
     <h2>{{event.name}}</h2>
-    <div class="loading" v-if="event === null || circleList === null">
+    <div class="loading" v-if="event === null || friendList === null">
       Loading...
     </div>
     <div class="result" v-else>
-      <p>{{circleList.length}}件</p>
+      <p>{{friendList.length}}件のフレンドが見つかりました</p>
       <ul>
-        <li v-for="circle in circleList">
-          <h4>{{circle.name}}</h4>
-          <p>{{event.date}}</p>
-          <p>{{circle.district}}地区 "{{circle.block}}"ブロック-{{circle.space}}</p>
+        <li v-for="friend in friendList">
+          <h4>
+            {{friend.name}}<span> @{{friend.twitterName}}</span>
+          </h4>
+          <p>
+            <template v-if="friend.spaces[0].date">{{friend.spaces[0].date}}日目 </template>
+            <template v-if="friend.spaces[0].district">{{friend.spaces[0].district}}地区 </template>
+            "{{friend.spaces[0].block}}"ブロック-{{friend.spaces[0].space}}
+            <template v-if="friend.spaces[0].name">「{{friend.spaces[0].name}}」</template>
+          </p>
         </li>
       </ul>
     </div>
@@ -24,12 +30,7 @@
     data() {
       return {
         event: null,
-        circleList: null
-      }
-    },
-    computed: {
-      now: function () {
-        return Date.now()
+        friendList: null
       }
     },
     created() {
@@ -53,7 +54,7 @@
           })
         }).then(() => {
           request.get(`/api/catalogues/${this.$route.params.id}`).then(result => {
-            this.circleList = result.data
+            this.friendList = result.data
           })
         })
       }

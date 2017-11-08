@@ -1,4 +1,4 @@
-import {User} from '../database/models/index'
+import {User, Space, Op} from '../database/models/index'
 
 /**
  * ユーザーをIdから取得します
@@ -88,5 +88,26 @@ export function fetchUserForPassport(twitterId, name, twitterName, twitterTokenK
     }
     // 存在して差分がない場合はそのまま返す
     return user
+  })
+}
+
+export function fetchUserWithSpaceByEventAndFriendList(event, friendList) {
+  const twitterIds = friendList.map(friend => friend.twitterId)
+  return User.findAll({
+    attributes: ['id', 'name', 'twitterId', 'twitterName'],
+    include: [{
+      model: Space,
+      attributes: ['id', 'name', 'date', 'district', 'block', 'space'],
+      where: {eventId: event.id},
+      through: {attributes: []}
+    }],
+    where: {
+      twitterId: {[Op.in]: twitterIds}
+    },
+    order: [
+      [Space, 'date', 'ASC'],
+      [Space, 'block', 'ASC'],
+      [Space, 'space', 'ASC']
+    ]
   })
 }
