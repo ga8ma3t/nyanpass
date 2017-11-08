@@ -7,7 +7,7 @@ import { fetchEventByName } from '../models/event'
 import { findOrCreateUserByTwitterId } from '../models/user'
 import { findOrCreateSpace, addSpaceMember } from '../models/space'
 
-export function extractC93LayoutReport (req, res) {
+export function extractC93LayoutReport(req, res) {
   const count = req.query.count
   const cursor = req.query.cursor
   const sinceId = req.query.sinceId
@@ -19,7 +19,7 @@ export function extractC93LayoutReport (req, res) {
   })
 }
 
-async function execute (count, cursor, sinceId) {
+async function execute(count, cursor, sinceId) {
   let entryList = []
   try {
     for (let i = 0; i < count; i++) {
@@ -46,7 +46,7 @@ async function execute (count, cursor, sinceId) {
   return entryList
 }
 
-function insertEntry ({user, space}) {
+function insertEntry({user, space}) {
   return Promise.resolve().then(() => {
     return fetchEventByName('コミックマーケット93')
   }).then((event) => {
@@ -63,11 +63,11 @@ function insertEntry ({user, space}) {
   })
 }
 
-function parse (str) {
+function parse(str) {
   return str.match(/貴サークル「?(.*?)」?は、?(.)曜日.*([東])地区(.+)ブロック.*?([0-9][0-9][ab])/)
 }
 
-function format (entry) {
+function format(entry) {
   const parsed = parse(entry.text)
   if (!parsed) {
     return
@@ -93,7 +93,7 @@ function format (entry) {
   }
 }
 
-function convertWeekToDay (week) {
+function convertWeekToDay(week) {
   switch (week) {
     case '金':
       return 1

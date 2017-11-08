@@ -98,7 +98,8 @@
     },
     "extends": "standard",
     "rules": {
-      "no-var": ["error"]
+      "no-var": ["error"],
+      "space-before-function-paren": ["error", "never"]
     },
     "plugins": [
       "html"

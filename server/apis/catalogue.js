@@ -14,7 +14,7 @@ import {fetchEventByAlternateId} from '../models/event'
 // 3-2: 抽出された一覧から、spaceIdに紐づくeventIdが指定されたイベントと一致したものだけを抽出する
 // 3-3: 結果をJSONで返す
 
-export function fetchCatalogue (req, res) {
+export function fetchCatalogue(req, res) {
   const eventId = req.params.eventId
   const twitterId = req.user.twitterId
   const twitterTokenKey = req.user.twitterTokenKey
@@ -39,7 +39,7 @@ export function fetchCatalogue (req, res) {
  * @param twitterTokenSecret
  * @returns {Promise.<Object>}
  */
-function fetchFriendList (twitterId, twitterTokenKey, twitterTokenSecret) {
+function fetchFriendList(twitterId, twitterTokenKey, twitterTokenSecret) {
   return Promise.resolve().then(() => {
     return fetchFriendListFromRedis(twitterId)
   }).then(friendList => {
@@ -52,7 +52,7 @@ function fetchFriendList (twitterId, twitterTokenKey, twitterTokenSecret) {
  * @param twitterId
  * @returns {Promise.<Object>}
  */
-function fetchFriendListFromRedis (twitterId) {
+function fetchFriendListFromRedis(twitterId) {
   return Promise.resolve().then(() => {
     return redis.get(`friendList::${twitterId}`)
   }).then(friendList => {
@@ -67,7 +67,7 @@ function fetchFriendListFromRedis (twitterId) {
  * @param twitterTokenSecret
  * @returns {Promise.<Object>}
  */
-function fetchFriendListFromTwitterAPI (twitterId, twitterTokenKey, twitterTokenSecret) {
+function fetchFriendListFromTwitterAPI(twitterId, twitterTokenKey, twitterTokenSecret) {
   return fetchFriends(twitterId, twitterTokenKey, twitterTokenSecret).then(friendList => {
     return cacheFriendListToRedis(twitterId, friendList)
   })
@@ -79,7 +79,7 @@ function fetchFriendListFromTwitterAPI (twitterId, twitterTokenKey, twitterToken
  * @param friendList
  * @returns {Promise.<Object>}
  */
-function cacheFriendListToRedis (twitterId, friendList) {
+function cacheFriendListToRedis(twitterId, friendList) {
   return Promise.resolve().then(() => {
     return redis.set(`friendList::${twitterId}`, JSON.stringify(friendList))
   }).then(() => {

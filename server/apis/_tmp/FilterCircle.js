@@ -3,12 +3,12 @@
  * @class
  */
 export class FilterCircle {
-  constructor (eventName, dateArray) {
+  constructor(eventName, dateArray) {
     this.eventName = eventName
     this.dateArray = dateArray
   }
 
-  exec (target) {
+  exec(target) {
     if (!target || !this.eventName || !this.dateArray) {
       throw new Error('Error FilterCircle')
     }
@@ -25,7 +25,7 @@ export class FilterCircle {
  * @param targetEvent
  * @param dateArray
  */
-export function extractCircle (target, targetEvent, dateArray) {
+export function extractCircle(target, targetEvent, dateArray) {
   const event = extractEvent(target, targetEvent)
   if (!event) {
     return null
@@ -45,7 +45,7 @@ export function extractCircle (target, targetEvent, dateArray) {
  * @param target
  * @param targetEvent
  */
-export function smoothString (target, targetEvent) {
+export function smoothString(target, targetEvent) {
   // イベント名を削除
   target = target.replace(targetEvent.toUpperCase(), '').replace(targetEvent.toLowerCase(), '')
   // αβをabに変換
@@ -64,7 +64,7 @@ export function smoothString (target, targetEvent) {
  * イベント特定
  * @example c93
  */
-export function extractEvent (target, targetEvent) {
+export function extractEvent(target, targetEvent) {
   target = target.toLowerCase()
   targetEvent = targetEvent.toLowerCase()
   return target.match(targetEvent) ? targetEvent : null
@@ -74,7 +74,7 @@ export function extractEvent (target, targetEvent) {
  * 日付特定
  * @example 1,2日,3日目
  */
-export function extractDay (target) {
+export function extractDay(target) {
   // 「日」の左に数字があれば何日目として判定
   const day = target.match(/.\d日/)
   if (day && isNaN(day[0].charAt(0))) {
@@ -87,7 +87,7 @@ export function extractDay (target) {
  * 曜日特定
  * @example 月,金,土曜,日曜日
  */
-export function extractWeek (target) {
+export function extractWeek(target) {
   // 「日」の左に数字があれば曜日ではないものとして消す(例: 3日日 -> 日)
   const day = target.match(/\d日/)
   if (day) {
@@ -116,7 +116,7 @@ export function extractWeek (target) {
  * 建物特定
  * @example 東,西
  */
-export function extractDirection () {
+export function extractDirection() {
   // 西館は企業ブース固定っぽいので
   return '東'
 }
@@ -125,7 +125,7 @@ export function extractDirection () {
  * ブロック特定
  * @example A,a,あ,ア
  */
-export function extractBlock (target) {
+export function extractBlock(target) {
   // 「01a」の左に隣接する文字列を取得
   const result = target.match(/[A-Za-zぁ-んァ-ヶ]\d\d[ABab]/)
   if (result) {
@@ -138,7 +138,7 @@ export function extractBlock (target) {
  * 席特定
  * @example 01a, 23b
  */
-export function extractSeat (target) {
+export function extractSeat(target) {
   const result = target.toLowerCase().match(/\d\d[ab]/)
   if (result) {
     return result[0]
@@ -152,7 +152,7 @@ export function extractSeat (target) {
  * @param week
  * @param dateArray
  */
-export function complementDate (day, week, dateArray) {
+export function complementDate(day, week, dateArray) {
   if (day && week && dateArray[parseInt(day) - 1] === week) {
     // 抽出した情報が正確ならば何もしない
     return {day, week}

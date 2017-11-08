@@ -5,7 +5,7 @@ import {Space, User, Op} from '../database/models/index'
  * @param space spaceObj
  * @returns {Promise.<Object>}
  */
-export function findOrCreateSpace (space) {
+export function findOrCreateSpace(space) {
   return Promise.resolve().then(() => {
     return fetchSpaceByUniqueSpacePosition(space)
   }).then(result => {
@@ -13,7 +13,7 @@ export function findOrCreateSpace (space) {
   })
 }
 
-export function fetchSpaceByUniqueSpacePosition (space) {
+export function fetchSpaceByUniqueSpacePosition(space) {
   return Space.findOne({
     where: {
       eventId: space.eventId,
@@ -24,11 +24,11 @@ export function fetchSpaceByUniqueSpacePosition (space) {
   })
 }
 
-export function createSpace (space) {
+export function createSpace(space) {
   return Space.create(space)
 }
 
-export function addSpaceMember (space, user) {
+export function addSpaceMember(space, user) {
   return space.hasUser(user).then((result) => {
     if (!result) {
       return space.addUser(user)
@@ -38,7 +38,7 @@ export function addSpaceMember (space, user) {
   })
 }
 
-export function fetchSpaceListByEventAndFriendList (event, friendList) {
+export function fetchSpaceListByEventAndFriendList(event, friendList) {
   const twitterIds = friendList.map(friend => friend.twitterId)
   return Space.findAll({
     attributes: ['id', 'name', 'date', 'district', 'block', 'space'],

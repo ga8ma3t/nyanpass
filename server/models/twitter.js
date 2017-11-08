@@ -1,6 +1,6 @@
 import Twitter from 'twitter'
 
-export function fetchFriends (twitterId, tokenKey, tokenSecret) {
+export function fetchFriends(twitterId, tokenKey, tokenSecret) {
   const client = new Twitter({
     consumer_key: process.env.TWITTER_CONSUMER_KEY,
     consumer_secret: process.env.TWITTER_CONSUMER_SECRET,
@@ -10,7 +10,7 @@ export function fetchFriends (twitterId, tokenKey, tokenSecret) {
   return new Promise((resolve, reject) => {
     let friendsList = []
     let limitCounter = 0
-    function loop (cursor) {
+    function loop(cursor) {
       limitCounter++
       return client.get('friends/list', {
         'user_id': twitterId,
@@ -43,7 +43,7 @@ export function fetchFriends (twitterId, tokenKey, tokenSecret) {
   })
 }
 
-export function searchTweets (cursor = null, sinceId = null) {
+export function searchTweets(cursor = null, sinceId = null) {
   const client = new Twitter({
     consumer_key: process.env.TWITTER_CONSUMER_KEY,
     consumer_secret: process.env.TWITTER_CONSUMER_SECRET,

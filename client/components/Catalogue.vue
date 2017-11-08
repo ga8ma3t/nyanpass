@@ -16,19 +16,19 @@
   import request from 'axios'
   export default {
     name: 'catalogue',
-    data () {
+    data() {
       return {
         data: null
       }
     },
-    created () {
+    created() {
       this.fetchData()
     },
     watch: {
       '$route': 'fetchData'
     },
     methods: {
-      fetchData () {
+      fetchData() {
         request.get(`/api/catalogue/${this.$route.params.id}`).then(result => {
           this.data = result.data
         })

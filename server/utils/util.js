@@ -3,7 +3,7 @@
  * @param obj
  * @returns {string}
  */
-export function parameters (obj) {
+export function parameters(obj) {
   return Object.keys(obj).map((k) => encodeURIComponent(k) + '=' + encodeURIComponent(obj[k])).join('&')
 }
 
@@ -12,7 +12,7 @@ export function parameters (obj) {
  * @param str
  * @returns {string|XML|*|void}
  */
-export function convertMultiByteToSingleByte (str) {
+export function convertMultiByteToSingleByte(str) {
   return str.replace(/[Ａ-Ｚａ-ｚ０-９]/g, s => {
     return String.fromCharCode(s.charCodeAt(0) - 65248)
   })

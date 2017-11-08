@@ -5,7 +5,7 @@ import {User} from '../database/models/index'
  * @param userId
  * @returns {Promise.<Model>}
  */
-export function fetchUserById (userId) {
+export function fetchUserById(userId) {
   return User.findById(userId)
 }
 
@@ -14,7 +14,7 @@ export function fetchUserById (userId) {
  * @param twitterId
  * @returns {Promise.<Model>}
  */
-export function fetchUserByTwitterId (twitterId) {
+export function fetchUserByTwitterId(twitterId) {
   return User.findOne({where: { twitterId: twitterId }})
 }
 
@@ -27,7 +27,7 @@ export function fetchUserByTwitterId (twitterId) {
  * @param twitterTokenKey
  * @param twitterTokenSecret
  */
-export function createUser (twitterId, name, twitterName, twitterTokenKey = null, twitterTokenSecret = null) {
+export function createUser(twitterId, name, twitterName, twitterTokenKey = null, twitterTokenSecret = null) {
   return User.create({twitterId, name, twitterName, twitterTokenKey, twitterTokenSecret})
 }
 
@@ -37,7 +37,7 @@ export function createUser (twitterId, name, twitterName, twitterTokenKey = null
  * @param user
  * @returns {Promise.<Object>}
  */
-export function findOrCreateUserByTwitterId (user) {
+export function findOrCreateUserByTwitterId(user) {
   return Promise.resolve().then(() => {
     return fetchUserByTwitterId(user.twitterId)
   }).then(result => {
@@ -54,7 +54,7 @@ export function findOrCreateUserByTwitterId (user) {
  * @param twitterTokenKey
  * @param twitterTokenSecret
  */
-export function updateUser (twitterId, name, twitterName, twitterTokenKey = null, twitterTokenSecret = null) {
+export function updateUser(twitterId, name, twitterName, twitterTokenKey = null, twitterTokenSecret = null) {
   return User.update({name, twitterName, twitterTokenKey, twitterTokenSecret}, {where: {twitterId}}).then(() => {
     return fetchUserByTwitterId(twitterId)
   })
@@ -70,7 +70,7 @@ export function updateUser (twitterId, name, twitterName, twitterTokenKey = null
  * @param twitterTokenSecret
  * @returns {Promise.<Object>}
  */
-export function fetchUserForPassport (twitterId, name, twitterName, twitterTokenKey, twitterTokenSecret) {
+export function fetchUserForPassport(twitterId, name, twitterName, twitterTokenKey, twitterTokenSecret) {
   // 既にユーザーが存在しているか確認
   return fetchUserByTwitterId(twitterId).then(user => {
     // 存在しない場合は新規作成して返す
