@@ -4,7 +4,6 @@
     <router-view></router-view>
     <router-link to="/about"><p>このサイトについて</p></router-link>
     <a href="/auth/logout" v-if="session"><p>ログアウト</p></a>
-    <a href="/auth/twitter" v-else><p>ログイン</p></a>
   </div>
 </template>
 
@@ -14,7 +13,7 @@
     name: 'app',
     data() {
       return {
-        session: null
+        session: null // TODO globalから見れるようにするか、propsみたいに渡したい
       }
     },
     created() {

@@ -1,7 +1,6 @@
 import redis from '../models/redis'
 import {fetchFriends} from '../models/twitter'
-import {fetchUserWithSpaceByEventAndFriendList} from '../models/user'
-// import {fetchSpaceListByEventAndFriendList} from '../models/space'
+import {fetchUserListWithSpaceByEventAndFriendList} from '../models/catalogue'
 import {fetchEventByAlternateId} from '../models/event'
 
 // TODO すべきこと
@@ -15,7 +14,13 @@ import {fetchEventByAlternateId} from '../models/event'
 // 3-2: 抽出された一覧から、spaceIdに紐づくeventIdが指定されたイベントと一致したものだけを抽出する
 // 3-3: 結果をJSONで返す
 
-export function fetchCatalogue(req, res) {
+export function fetchCatalogue(req, res, next) {
+  if (!req.user) {
+    const err = new Error('Unauthorized')
+    err.status = 401
+    next(err)
+    return
+  }
   const eventId = req.params.eventId
   const twitterId = req.user.twitterId
   const twitterTokenKey = req.user.twitterTokenKey
@@ -27,8 +32,7 @@ export function fetchCatalogue(req, res) {
       fetchEventByAlternateId(eventId)
     ])
   }).then(([friendList, event]) => {
-    return fetchUserWithSpaceByEventAndFriendList(event, friendList)
-    // return fetchSpaceListByEventAndFriendList(event, friendList)
+    return fetchUserListWithSpaceByEventAndFriendList(event, friendList)
   }).then(result => {
     res.json(result)
   })

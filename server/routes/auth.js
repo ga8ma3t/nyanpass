@@ -20,7 +20,7 @@ router.get('/status', (req, res) => {
 router.get('/logout', (req, res) => {
   req.logout()
   req.user = null
-  res.redirect('/?auth=logout')
+  res.redirect('/')
 })
 
 router.get('/twitter', (req, res, next) => {
@@ -28,7 +28,7 @@ router.get('/twitter', (req, res, next) => {
   passport.use(new TwitterStrategy({
     consumerKey: process.env.TWITTER_CONSUMER_KEY,
     consumerSecret: process.env.TWITTER_CONSUMER_SECRET,
-    callbackURL: process.env.TWITTER_CALLBACK_URL + from
+    callbackURL: process.env.TWITTER_CALLBACK_URL + '?from=' + from
   },
   (twitterTokenKey, twitterTokenSecret, profile, callback) => {
     return fetchUserForPassport(

@@ -1,10 +1,13 @@
 <template>
   <div class="catalogue">
     <h2>{{event.name}}</h2>
-    <div class="loading" v-if="event === null || friendList === null">
-      Loading...
+    <div v-if="isRequireLogin">
+      <a :href="`/auth/twitter?from=/catalogue/${this.$route.params.id}`">Twitterと連携する</a>
     </div>
-    <div class="result" v-else>
+    <div v-else-if="event === null || friendList === null">
+      よみこみちゅう...
+    </div>
+    <div v-else>
       <p>{{friendList.length}}件のフレンドが見つかりました</p>
       <ul>
         <li v-for="friend in friendList">
@@ -30,7 +33,8 @@
     data() {
       return {
         event: null,
-        friendList: null
+        friendList: null,
+        isRequireLogin: false
       }
     },
     created() {
@@ -41,21 +45,16 @@
     },
     methods: {
       initialize() {
-        Promise.resolve().then(() => {
-          return request.get('/auth/status')
-        }).then(result => {
-          if (!result.data.session) {
-            window.location = `/auth/twitter?from=/catalogue/${this.$route.params.id}`
-            return Promise.reject()
-          }
-        }).then(() => {
-          request.get(`/api/events/${this.$route.params.id}`).then(result => {
+        return Promise.resolve().then(() => {
+          return request.get(`/api/events/${this.$route.params.id}`).then(result => {
             this.event = result.data
           })
         }).then(() => {
-          request.get(`/api/catalogues/${this.$route.params.id}`).then(result => {
+          return request.get(`/api/catalogues/${this.$route.params.id}`).then(result => {
             this.friendList = result.data
           })
+        }).catch((err) => {
+          this.isRequireLogin = true
         })
       }
     }
