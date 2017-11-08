@@ -97,6 +97,9 @@
       "es6": true
     },
     "extends": "standard",
+    "rules": {
+      "no-var": ["error"]
+    },
     "plugins": [
       "html"
     ]

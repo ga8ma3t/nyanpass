@@ -20,9 +20,9 @@ export function extractC93LayoutReport (req, res) {
 }
 
 async function execute (count, cursor, sinceId) {
-  var entryList = []
+  let entryList = []
   try {
-    for (var i = 0; i < count; i++) {
+    for (let i = 0; i < count; i++) {
       console.log(`limit:${i}, cursor:${cursor}`)
       const result = await searchTweets(cursor, sinceId)
       if (!result.cursor) {
