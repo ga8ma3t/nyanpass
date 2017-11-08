@@ -18,26 +18,26 @@ const router = new Router({
       path: '/catalogue/:id',
       name: 'Catalogue',
       component: Catalogue,
-      meta: {
-        auth: true
-      }
+      // meta: {
+      //   auth: true
+      // }
     }
 
   ]
 })
 
-router.beforeEach((to, from, next) => {
-  if (to.matched.some(record => record.meta.auth)) {
-    request.get('/auth/status').then(result => {
-      if (!result.data.session) {
-        window.location = '/auth/twitter'
-      } else {
-        next()
-      }
-    })
-  } else {
-    next()
-  }
-})
+// router.beforeEach((to, from, next) => {
+//   if (to.matched.some(record => record.meta.auth)) {
+//     request.get('/auth/status').then(result => {
+//       if (!result.data.session) {
+//         window.location = '/auth/twitter'
+//       } else {
+//         next()
+//       }
+//     })
+//   } else {
+//     next()
+//   }
+// })
 
 export default router

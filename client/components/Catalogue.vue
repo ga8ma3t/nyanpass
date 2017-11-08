@@ -22,15 +22,24 @@
       }
     },
     created() {
-      this.fetchData()
+      this.initialize()
     },
     watch: {
-      '$route': 'fetchData'
+      '$route': 'initialize'
     },
     methods: {
-      fetchData() {
-        request.get(`/api/catalogue/${this.$route.params.id}`).then(result => {
-          this.data = result.data
+      initialize() {
+        Promise.resolve().then(() => {
+          return request.get('/auth/status')
+        }).then(result => {
+          if (!result.data.session) {
+            window.location = `/auth/twitter?from=/catalogue/${this.$route.params.id}`
+            return Promise.reject()
+          }
+        }).then(() => {
+          request.get(`/api/catalogue/${this.$route.params.id}`).then(result => {
+            this.data = result.data
+          })
         })
       }
     }

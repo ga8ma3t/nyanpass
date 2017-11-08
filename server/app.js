@@ -13,12 +13,10 @@ import Redis from 'ioredis'
 import connectRedis from 'connect-redis'
 import csrf from 'csurf'
 import passport from 'passport'
-import passportTwitter from 'passport-twitter'
 
 import index from './routes/index'
-import {fetchUserForPassport} from './models/user'
+import auth from './routes/auth'
 
-const TwitterStrategy = passportTwitter.Strategy
 const RedisStore = connectRedis(session)
 const app = express()
 
@@ -57,25 +55,6 @@ app.use(session({
 app.use(csrf({ cookie: true }))
 app.use(passport.initialize())
 app.use(passport.session())
-passport.use(new TwitterStrategy({
-  consumerKey: process.env.TWITTER_CONSUMER_KEY,
-  consumerSecret: process.env.TWITTER_CONSUMER_SECRET,
-  callbackURL: process.env.TWITTER_CALLBACK_URL
-},
-(twitterTokenKey, twitterTokenSecret, profile, callback) => {
-  return fetchUserForPassport(
-    profile.id,
-    profile.displayName,
-    profile.username,
-    twitterTokenKey,
-    twitterTokenSecret
-  ).then((user) => {
-    return callback(null, user)
-  }).catch((err) => {
-    return callback(err)
-  })
-}
-))
 passport.serializeUser((user, done) => {
   done(null, {
     id: user.id,
@@ -94,38 +73,7 @@ passport.deserializeUser((user, done) => {
 // Routing
 // --------------------------------------------------
 app.use('/', index)
-
-app.get('/auth/status', (req, res) => {
-  res.json({
-    session: req.user ? {
-      id: req.user.id,
-      twitterId: req.user.twitterId,
-      name: req.user.name,
-      twitterName: req.user.twitterName
-    } : null
-  })
-})
-app.get('/auth/twitter', (req, res, next) => {
-  passport.authenticate('twitter', (err, user) => {
-    if (err) {
-      return next(err)
-    }
-    if (!user) {
-      return res.redirect('/')
-    }
-    req.login(user, err => {
-      if (err) {
-        return next(err)
-      }
-      return res.redirect(req.header('Referer') || '/')
-    })
-  })(req, res, next)
-})
-app.get('/auth/logout', (req, res) => {
-  req.logout()
-  req.user = null
-  res.redirect('/?auth=logout')
-})
+app.use('/auth', auth)
 
 // catch 404 and forward to error handler
 app.use((req, res, next) => {
