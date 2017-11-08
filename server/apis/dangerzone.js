@@ -1,11 +1,25 @@
+/* eslint-disable no-console */
+
 import uuidv4 from 'uuid/v4'
 import {searchTweets} from '../models/twitter'
-import {convertMultiByteToSingleByte} from './util'
-import { fetchEventByName } from "../models/event"
-import { findOrCreateUserByTwitterId } from "../models/user"
-import { findOrCreateSpace, addSpaceMember } from "../models/space"
+import {convertMultiByteToSingleByte} from '../utils/util'
+import { fetchEventByName } from '../models/event'
+import { findOrCreateUserByTwitterId } from '../models/user'
+import { findOrCreateSpace, addSpaceMember } from '../models/space'
 
-export async function extractC93LayoutReport(count, cursor, sinceId) {
+export function extractC93LayoutReport (req, res) {
+  const count = req.query.count
+  const cursor = req.query.cursor
+  const sinceId = req.query.sinceId
+
+  execute(count, cursor, sinceId).then(result => {
+    res.json(result)
+  }).catch(err => {
+    res.json(err)
+  })
+}
+
+async function execute (count, cursor, sinceId) {
   var entryList = []
   try {
     for (var i = 0; i < count; i++) {
@@ -17,12 +31,12 @@ export async function extractC93LayoutReport(count, cursor, sinceId) {
       }
       const formatted = result.list.map(format).filter(data => data)
       await Promise.all(formatted.map(insertEntry))
-      Array.prototype.push.apply(entryList, formatted);
+      Array.prototype.push.apply(entryList, formatted)
       console.log(entryList.length)
       cursor = result.cursor
     }
     if (cursor) {
-      console.log(`cursor: ${result.cursor}`)
+      console.log(`cursor: ${cursor}`)
     } else {
       console.log('cursor: null')
     }
@@ -32,13 +46,13 @@ export async function extractC93LayoutReport(count, cursor, sinceId) {
   return entryList
 }
 
-function insertEntry({user, space}) {
+function insertEntry ({user, space}) {
   return Promise.resolve().then(() => {
     return fetchEventByName('コミックマーケット93')
   }).then((event) => {
     return Promise.all([
       findOrCreateUserByTwitterId(user),
-      findOrCreateSpace(Object.assign(space, { eventId: event.id}))
+      findOrCreateSpace(Object.assign(space, {eventId: event.id}))
     ])
   }).then(([user, space]) => {
     addSpaceMember(space, user)
@@ -49,11 +63,11 @@ function insertEntry({user, space}) {
   })
 }
 
-function parse(str) {
+function parse (str) {
   return str.match(/貴サークル「?(.*?)」?は、?(.)曜日.*([東])地区(.+)ブロック.*?([0-9][0-9][ab])/)
 }
 
-function format(entry) {
+function format (entry) {
   const parsed = parse(entry.text)
   if (!parsed) {
     return
@@ -79,7 +93,7 @@ function format(entry) {
   }
 }
 
-function convertWeekToDay(week) {
+function convertWeekToDay (week) {
   switch (week) {
     case '金':
       return 1

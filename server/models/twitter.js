@@ -1,6 +1,6 @@
 import Twitter from 'twitter'
 
-export function fetchFriends(twitterId, tokenKey, tokenSecret) {
+export function fetchFriends (twitterId, tokenKey, tokenSecret) {
   const client = new Twitter({
     consumer_key: process.env.TWITTER_CONSUMER_KEY,
     consumer_secret: process.env.TWITTER_CONSUMER_SECRET,
@@ -10,7 +10,7 @@ export function fetchFriends(twitterId, tokenKey, tokenSecret) {
   return new Promise((resolve, reject) => {
     let friendsList = []
     let limitCounter = 0
-    function loop(cursor) {
+    function loop (cursor) {
       limitCounter++
       return client.get('friends/list', {
         'user_id': twitterId,
@@ -27,7 +27,7 @@ export function fetchFriends(twitterId, tokenKey, tokenSecret) {
             image: user['profile_image_url_https'] // TODO 文字列末尾の _normal.jpg を _200x200.jpg にする
           }
         })
-        Array.prototype.push.apply(friendsList, list);
+        Array.prototype.push.apply(friendsList, list)
         const nextCursor = result['next_cursor']
         // 終端まで取得した、あるいはAPIを15回叩いた場合は終了
         if (nextCursor === 0 || limitCounter >= 15) {
@@ -37,13 +37,13 @@ export function fetchFriends(twitterId, tokenKey, tokenSecret) {
         }
       }).catch((error) => {
         reject(error)
-      });
+      })
     }
-    loop(-1);
+    loop(-1)
   })
 }
 
-export function searchTweets(cursor = null, sinceId = null) {
+export function searchTweets (cursor = null, sinceId = null) {
   const client = new Twitter({
     consumer_key: process.env.TWITTER_CONSUMER_KEY,
     consumer_secret: process.env.TWITTER_CONSUMER_SECRET,
@@ -64,24 +64,23 @@ export function searchTweets(cursor = null, sinceId = null) {
   return client.get('search/tweets', param).then(result => {
     // 終端処理
     if (result.statuses.length === 1 && cursor === result.statuses[0]['id_str']) {
-      return Promise.resolve({ cursor: null, list: [] })
+      return { cursor: null, list: [] }
     } else if (result.statuses.length === 0) {
-      return Promise.resolve({ cursor: null, list: [] })
+      return { cursor: null, list: [] }
     }
-
     const list = result.statuses.map(status => {
       return {
         id: status['id_str'],
         text: status.text,
         name: status.user.name, // 例：なのくろ
         twitterId: status.user['id_str'],
-        twitterName: status.user['screen_name'], // 例：nanocloudx
+        twitterName: status.user['screen_name'] // 例：nanocloudx
       }
     })
-
     const nextCursor = result.statuses[result.statuses.length - 1]['id_str']
-    return Promise.resolve({ cursor: nextCursor, list })
-  }).catch((error) => {
-    return Promise.reject({ error, cursor, list: [] })
-  });
+    return {cursor: nextCursor, list}
+  }).catch(error => {
+    // eslint-disable-next-line prefer-promise-reject-errors
+    return Promise.reject({error, cursor, list: []})
+  })
 }

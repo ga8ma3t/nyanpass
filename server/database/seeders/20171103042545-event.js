@@ -1,7 +1,7 @@
-'use strict';
+'use strict'
 
 module.exports = {
-  up: (queryInterface, Sequelize) => {
+  up: (queryInterface) => {
     return queryInterface.bulkInsert('events', [{
       id: 'a2894003-50e1-4cbb-898b-db31aee96996',
       alternateId: 'c93',
@@ -14,7 +14,7 @@ module.exports = {
     }])
   },
 
-  down: (queryInterface, Sequelize) => {
+  down: (queryInterface) => {
     return Promise.all([
       queryInterface.bulkDelete('events', {id: 'a2894003-50e1-4cbb-898b-db31aee96996'}, {})
     ])

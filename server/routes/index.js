@@ -1,37 +1,18 @@
 import express from 'express'
+import {fetchEventList} from '../apis/event'
 import {fetchCatalogue} from '../apis/catalogue'
-import {extractC93LayoutReport} from '../utils/extract-c93'
+import {extractC93LayoutReport} from '../apis/dangerzone'
 
-const router = express.Router();
+const router = express.Router()
 
-router.get('/api/events', (req, res) => {
-  res.json({}) // TODO
-})
-
-router.get('/api/catalogue/:eventId', (req, res) => {
-  fetchCatalogue(
-    req.params.eventId,
-    req.user.twitterId,
-    req.user.twitterTokenKey,
-    req.user.twitterTokenSecret
-  ).then(result => {
-    res.json(result)
-  })
-})
-
-router.get('/api/dangerzone/extract-c93', (req, res) => {
-  extractC93LayoutReport(req.query.count, req.query.cursor, req.query.sinceId).then(result => {
-    res.json(result)
-  }).catch(err => {
-    res.json(err)
-  })
-})
-
-router.get(['/', '/catalogue/:eventId'], (req, res, next) => {
+router.get('/api/events', fetchEventList)
+router.get('/api/catalogue/:eventId', fetchCatalogue)
+router.get('/api/dangerzone/extract-c93', extractC93LayoutReport)// TODO デプロイ時には消す!!!
+router.get(['/', '/catalogue/:eventId'], (req, res) => {
   res.render('index', {
     user: req.user,
     token: req.csrfToken()
-  });
-});
+  })
+})
 
-export default router;
+export default router

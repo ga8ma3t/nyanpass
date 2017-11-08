@@ -1,19 +1,19 @@
 module.exports = {
   development: {
     url: process.env.DATABASE_URL,
-    dialect: "postgres",
+    dialect: 'postgres',
     dialectOptions: {
-      timezone: "+09:00"
+      timezone: '+09:00'
     }
   },
   production: {
     url: process.env.DATABASE_URL,
-    dialect: "postgres",
+    dialect: 'postgres',
     dialectOptions: {
       ssl: {
         require: true
       },
-      timezone: "+09:00"
+      timezone: '+09:00'
     }
   }
 }

@@ -61,17 +61,17 @@ test('席判定', t => {
 })
 
 test('日付曜日補完', t => {
-  t.deepEqual(complementDate('1', '金', ['金','土','日']), { day: '1', week: '金' })
-  t.deepEqual(complementDate(null, '土', ['金','土','日']), { day: '2', week: '土' })
-  t.deepEqual(complementDate('3', null, ['金','土','日']), { day: '3', week: '日' })
-  t.deepEqual(complementDate('1', '日', ['金','土','日']), { day: '3', week: '日' })
-  t.deepEqual(complementDate('4', null, ['金','土','日']), { day: null, week: null })
-  t.deepEqual(complementDate(null, '月', ['金','土','日']), { day: null, week: null })
-  t.deepEqual(complementDate(null, null, ['金','土','日']), { day: null, week: null })
+  t.deepEqual(complementDate('1', '金', ['金', '土', '日']), { day: '1', week: '金' })
+  t.deepEqual(complementDate(null, '土', ['金', '土', '日']), { day: '2', week: '土' })
+  t.deepEqual(complementDate('3', null, ['金', '土', '日']), { day: '3', week: '日' })
+  t.deepEqual(complementDate('1', '日', ['金', '土', '日']), { day: '3', week: '日' })
+  t.deepEqual(complementDate('4', null, ['金', '土', '日']), { day: null, week: null })
+  t.deepEqual(complementDate(null, '月', ['金', '土', '日']), { day: null, week: null })
+  t.deepEqual(complementDate(null, null, ['金', '土', '日']), { day: null, week: null })
 })
 
 test('総合テスト', t => {
-  const filterCircle = new FilterCircle('c93', ['金','土','日'])
+  const filterCircle = new FilterCircle('c93', ['金', '土', '日'])
   t.deepEqual(filterCircle.exec([
     'xxx@C93土曜モ01b',
     'xxx@C93 🍭日ハ24a',
@@ -81,12 +81,12 @@ test('総合テスト', t => {
     'xxx@C93 3日目日曜日東ウ23b',
     'ああああああああああ'
   ]), [
-    {event:'c93',day:'2',week:'土',direction:'東',block:'モ',seat:'01b'},
-    {event:'c93',day:'3',week:'日',direction:'東',block:'ハ',seat:'24a'},
-    {event:'c93',day:'3',week:'日',direction:'東',block:'ヌ',seat:'03b'},
-    {event:'c93',day:'1',week:'金',direction:'東',block:'ホ',seat:'44b'},
-    {event:'c93',day:'2',week:'土',direction:'東',block:'F',seat:'39b'},
-    {event:'c93',day:'3',week:'日',direction:'東',block:'ウ',seat:'23b'},
+    {event: 'c93', day: '2', week: '土', direction: '東', block: 'モ', seat: '01b'},
+    {event: 'c93', day: '3', week: '日', direction: '東', block: 'ハ', seat: '24a'},
+    {event: 'c93', day: '3', week: '日', direction: '東', block: 'ヌ', seat: '03b'},
+    {event: 'c93', day: '1', week: '金', direction: '東', block: 'ホ', seat: '44b'},
+    {event: 'c93', day: '2', week: '土', direction: '東', block: 'F', seat: '39b'},
+    {event: 'c93', day: '3', week: '日', direction: '東', block: 'ウ', seat: '23b'},
     null
   ])
 })

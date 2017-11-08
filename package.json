@@ -1,11 +1,27 @@
 {
-  "name": "circle-concierge",
-  "version": "0.0.0",
+  "name": "nyanpass",
+  "version": "1.0.0",
+  "description": "www.nyanpass.net",
+  "author": {
+    "name": "kurokuroworks",
+    "url": "https://www.kurokuroworks.net/"
+  },
+  "contributors": [
+    {
+      "name": "nanocloudx",
+      "email": "nanocloudx@gmail.com"
+    },
+    {
+      "name": "kokuyouwind",
+      "email": "kokuyouwind@gmail.com"
+    }
+  ],
   "private": true,
   "scripts": {
     "start": "npm run build && node ./www",
     "start:dev": "yarn install && yarn run sequelize db:migrate && yarn start",
     "test": "ava --verbose",
+    "lint": "eslint --fix --ext .js,.vue .",
     "build": "npm run build-clean && npm run build-server-static && npm run build-server && npm run build-client",
     "build-client": "webpack",
     "build-server": "babel server -d dist",
@@ -15,6 +31,9 @@
     "env": "env",
     "db-init": "sequelize db:drop && sequelize db:create && sequelize db:migrate && sequelize db:seed:all"
   },
+  "pre-commit": [
+    "lint"
+  ],
   "dependencies": {
     "axios": "^0.17.0",
     "body-parser": "~1.17.1",
@@ -45,12 +64,20 @@
     "ava": "^0.22.0",
     "babel-cli": "^6.26.0",
     "babel-core": "^6.26.0",
+    "babel-eslint": "^8.0.2",
     "babel-loader": "^7.1.2",
     "babel-plugin-transform-es2015-modules-commonjs": "^6.26.0",
     "babel-register": "^6.26.0",
     "cpx": "^1.5.0",
     "css-loader": "^0.28.7",
-    "eslint": "^4.7.0",
+    "eslint": "^4.10.0",
+    "eslint-config-standard": "^10.2.1",
+    "eslint-loader": "^1.9.0",
+    "eslint-plugin-html": "^3.2.2",
+    "eslint-plugin-import": "^2.8.0",
+    "eslint-plugin-node": "^5.2.1",
+    "eslint-plugin-promise": "^3.6.0",
+    "eslint-plugin-standard": "^3.0.1",
     "node-sass": "^4.6.0",
     "rimraf": "^2.6.2",
     "sass-loader": "^6.0.6",
@@ -60,5 +87,21 @@
     "vue-router": "^3.0.1",
     "vue-template-compiler": "^2.5.3",
     "webpack": "^3.6.0"
-  }
+  },
+  "eslintConfig": {
+    "root": true,
+    "parser": "babel-eslint",
+    "env": {
+      "browser": true,
+      "node": true,
+      "es6": true
+    },
+    "extends": "standard",
+    "plugins": [
+      "html"
+    ]
+  },
+  "eslintIgnore": [
+    "/dist/**/*"
+  ]
 }
