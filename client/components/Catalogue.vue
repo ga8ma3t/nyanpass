@@ -1,19 +1,19 @@
 <template>
   <div class="catalogue">
     <h2>{{event.name}}</h2>
-    <div class="loading" v-if="data === null">
+    <div class="loading" v-if="event === null || circleList === null">
       Loading...
     </div>
-    <div class="result" v-if="data !== null">
+    <div class="result" v-else>
       <p>{{circleList.length}}件</p>
       <ul>
         <li v-for="circle in circleList">
           <h4>{{circle.name}}</h4>
-          <p>{{circle.district}}地区"{{circle.block}}"ブロック{{circle.space}}</p>
+          <p>{{event.date}}</p>
+          <p>{{circle.district}}地区 "{{circle.block}}"ブロック-{{circle.space}}</p>
         </li>
       </ul>
     </div>
-    <router-link to="/">Index</router-link>
   </div>
 </template>
 
@@ -25,6 +25,11 @@
       return {
         event: null,
         circleList: null
+      }
+    },
+    computed: {
+      now: function () {
+        return Date.now()
       }
     },
     created() {

@@ -1,7 +1,8 @@
 <template>
   <div id="app">
-    <h1>にゃんぱす！v2</h1>
+    <router-link to="/"><h1>にゃんぱす！v2</h1></router-link>
     <router-view></router-view>
+    <router-link to="/about"><p>このサイトについて</p></router-link>
   </div>
 </template>
 

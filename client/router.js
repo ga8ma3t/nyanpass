@@ -2,6 +2,7 @@ import Vue from 'vue'
 import Router from 'vue-router'
 import Index from './components/Index.vue'
 import Catalogue from './components/Catalogue.vue'
+import About from './components/About.vue'
 import request from 'axios'
 
 Vue.use(Router)
@@ -17,27 +18,13 @@ const router = new Router({
     {
       path: '/catalogue/:id',
       name: 'Catalogue',
-      component: Catalogue,
-      // meta: {
-      //   auth: true
-      // }
+      component: Catalogue
+    },
+    {
+      path: '/about',
+      name: 'About',
+      component: About
     }
-
   ]
 })
-
-// router.beforeEach((to, from, next) => {
-//   if (to.matched.some(record => record.meta.auth)) {
-//     request.get('/auth/status').then(result => {
-//       if (!result.data.session) {
-//         window.location = '/auth/twitter'
-//       } else {
-//         next()
-//       }
-//     })
-//   } else {
-//     next()
-//   }
-// })
-
 export default router
