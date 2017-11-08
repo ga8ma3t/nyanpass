@@ -26,6 +26,9 @@
     },
     methods: {
       fetchEventList() {
+        if (this.eventList) {
+          return
+        }
         request.get(`/api/events`).then(result => {
           this.eventList = result.data
         })
