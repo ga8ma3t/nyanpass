@@ -25,7 +25,7 @@ export function fetchFriends(twitterId, tokenKey, tokenSecret) {
             name: user.name, // 例：なのくろ
             twitterId: user['id_str'],
             twitterName: user['screen_name'], // 例：nanocloudx
-            image: user['profile_image_url_https'] // TODO 文字列末尾の _normal.jpg を _200x200.jpg にする
+            image: convertTwitterImageUrl(user['profile_image_url_https'])
           }
         })
         Array.prototype.push.apply(friendsList, list)

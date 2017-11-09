@@ -1,6 +1,6 @@
 import redis from '../models/redis'
 import {fetchFriends} from '../models/twitter'
-import {fetchUserListWithSpaceByEventAndFriendList} from '../models/catalogue'
+import {fetchUserListWithSpaceByEventAndFriendList, updateUsersByFriendList} from '../models/catalogue'
 import {fetchEventByAlternateId} from '../models/event'
 
 // TODO すべきこと
@@ -32,7 +32,12 @@ export function fetchCatalogue(req, res, next) {
       fetchEventByAlternateId(eventId)
     ])
   }).then(([friendList, event]) => {
-    return fetchUserListWithSpaceByEventAndFriendList(event, friendList)
+    return Promise.all([
+      fetchUserListWithSpaceByEventAndFriendList(event, friendList),
+      friendList
+    ])
+  }).then(([userList, friendList]) => {
+    return updateUsersByFriendList(userList, friendList)
   }).then(result => {
     res.json(result)
   })
