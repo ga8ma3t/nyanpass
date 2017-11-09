@@ -5,7 +5,9 @@
       <h3>フレンドのサークル</h3>
       <div v-if="isRequireLogin">
         <p>Twitterアカウントと連携すると、フォローしているフレンドのサークル一覧を表示できます</p>
-        <a :href="`/auth/twitter?from=/catalogues/${this.$route.params.id}`">Twitterと連携する</a>
+        <a :href="`/auth/twitter?from=/catalogues/${this.$route.params.id}`">
+          <el-button type="primary">Twitterと連携する</el-button>
+        </a>
       </div>
       <div v-else-if="event === null || friendList === null">
         よみこみちゅう...
