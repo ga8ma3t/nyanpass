@@ -22,16 +22,16 @@ export function fetchUserListWithSpaceByEventAndFriendList(event, friendList) {
 }
 
 export function updateUsersByFriendList(users, friendList) {
-  const twitterIdMap = friendList.reduce((map, friend )=> {
+  const twitterIdMap = friendList.reduce((map, friend) => {
     map[friend.twitterId] = friend
     return map
   }, {})
   return Promise.all(users.map((user) => {
     const friend = twitterIdMap[user.twitterId]
     if (friend &&
-      (user.name !== friend.name
-        || user.twitterName !== friend.twitterName
-        || user.imageUrl !== friend.image)) {
+      (user.name !== friend.name ||
+        user.twitterName !== friend.twitterName ||
+        user.imageUrl !== friend.image)) {
       user.name = friend.name
       user.twitterName = friend.twitterName
       user.imageUrl = friend.image
