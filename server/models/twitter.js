@@ -60,7 +60,6 @@ export function searchTweets(cursor = null, sinceId = null) {
     cursor ? { 'max_id': cursor } : {},
     sinceId ? { 'since_id': sinceId } : {}
   )
-
   return client.get('search/tweets', param).then(result => {
     // 終端処理
     if (result.statuses.length === 1 && cursor === result.statuses[0]['id_str']) {
@@ -73,6 +72,7 @@ export function searchTweets(cursor = null, sinceId = null) {
         id: status['id_str'],
         text: status.text,
         name: status.user.name, // 例：なのくろ
+        imageUrl: convertImageUrl(status.user['profile_image_url_https']),
         twitterId: status.user['id_str'],
         twitterName: status.user['screen_name'] // 例：nanocloudx
       }
@@ -83,4 +83,8 @@ export function searchTweets(cursor = null, sinceId = null) {
     // eslint-disable-next-line prefer-promise-reject-errors
     return Promise.reject({error, cursor, list: []})
   })
+}
+
+function convertImageUrl(url) {
+  return url.replace(/_normal\./, '_bigger.')
 }

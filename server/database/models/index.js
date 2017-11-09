@@ -13,6 +13,7 @@ export const User = database.define('user', {
     primaryKey: true
   },
   name: Sequelize.STRING,
+  imageUrl: Sequelize.STRING,
   twitterId: Sequelize.STRING,
   twitterName: Sequelize.STRING,
   twitterTokenKey: Sequelize.STRING,

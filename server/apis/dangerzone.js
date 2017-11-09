@@ -64,6 +64,7 @@ function insertEntry({user, space}) {
 }
 
 function parse(str) {
+  str = str.replace(/\s+/g, '')
   return str.match(/貴サークル「?(.*?)」?は、?(.)曜日.*([東])地区(.+)ブロック.*?([0-9][0-9][ab])/)
 }
 
@@ -79,6 +80,7 @@ function format(entry) {
     user: {
       id: uuidv4(),
       name: entry.name,
+      imageUrl: entry.imageUrl,
       twitterId: entry.twitterId,
       twitterName: entry.twitterName
     },

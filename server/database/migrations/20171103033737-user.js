@@ -9,6 +9,7 @@ module.exports = {
         primaryKey: true
       },
       name: Sequelize.STRING,
+      imageUrl: Sequelize.STRING,
       twitterId: {
         type: Sequelize.STRING,
         unique: true
