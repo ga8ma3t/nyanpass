@@ -3,7 +3,7 @@ import {Space, User, Op} from '../database/models/index'
 export function fetchUserListWithSpaceByEventAndFriendList(event, friendList) {
   const twitterIds = friendList.map(friend => friend.twitterId)
   return User.findAll({
-    attributes: ['id', 'name', 'twitterId', 'twitterName'],
+    attributes: ['id', 'name', 'imageUrl', 'twitterId', 'twitterName'],
     include: [{
       model: Space,
       attributes: ['id', 'name', 'date', 'district', 'block', 'space'],
@@ -27,7 +27,7 @@ export function fetchSpaceListWithUserByEventAndFriendList(event, friendList) {
     attributes: ['id', 'name', 'date', 'district', 'block', 'space'],
     include: [{
       model: User,
-      attributes: ['id', 'name', 'twitterId', 'twitterName'],
+      attributes: ['id', 'name', 'imageUrl', 'twitterId', 'twitterName'],
       where: {twitterId: {[Op.in]: twitterIds}},
       through: {attributes: []}
     }],

@@ -14,6 +14,7 @@
           <h4>
             {{friend.name}}<span> @{{friend.twitterName}}</span>
           </h4>
+          <img :src="friend.imageUrl" />
           <p>
             <template v-if="friend.space.date">{{friend.space.date}}日目 </template>
             <template v-if="friend.space.district">{{friend.space.district}}地区 </template>
@@ -56,6 +57,7 @@
               return {
                 id: friend.id,
                 name: friend.name,
+                imageUrl: friend.imageUrl,
                 twitterId: friend.twitterId,
                 twitterName: friend.twitterName,
                 space: friend.spaces[0]
