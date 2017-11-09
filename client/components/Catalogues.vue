@@ -1,28 +1,36 @@
 <template>
   <div class="catalogues">
     <h2>{{event.name}}</h2>
-    <div v-if="isRequireLogin">
-      <a :href="`/auth/twitter?from=/catalogues/${this.$route.params.id}`">Twitterと連携する</a>
+    <div>
+      <h3>フレンドのサークル</h3>
+      <div v-if="isRequireLogin">
+        <p>Twitterアカウントと連携すると、フォローしているフレンドのサークル一覧を表示できます</p>
+        <a :href="`/auth/twitter?from=/catalogues/${this.$route.params.id}`">Twitterと連携する</a>
+      </div>
+      <div v-else-if="event === null || friendList === null">
+        よみこみちゅう...
+      </div>
+      <div v-else>
+        <ul>
+          <li v-for="friend in friendList">
+            <h4>
+              {{friend.name}}<span> @{{friend.twitterName}}</span>
+            </h4>
+            <img :src="friend.imageUrl" />
+            <p>
+              <template v-if="friend.space.date">{{friend.space.date}}日目 </template>
+              <template v-if="friend.space.district">{{friend.space.district}}地区 </template>
+              "{{friend.space.block}}"ブロック-{{friend.space.space}}
+              <template v-if="friend.space.name">「{{friend.space.name}}」</template>
+            </p>
+          </li>
+        </ul>
+      </div>
     </div>
-    <div v-else-if="event === null || friendList === null">
-      よみこみちゅう...
-    </div>
-    <div v-else>
-      <p>{{friendList.length}}件のフレンドが見つかりました</p>
-      <ul>
-        <li v-for="friend in friendList">
-          <h4>
-            {{friend.name}}<span> @{{friend.twitterName}}</span>
-          </h4>
-          <img :src="friend.imageUrl" />
-          <p>
-            <template v-if="friend.space.date">{{friend.space.date}}日目 </template>
-            <template v-if="friend.space.district">{{friend.space.district}}地区 </template>
-            "{{friend.space.block}}"ブロック-{{friend.space.space}}
-            <template v-if="friend.space.name">「{{friend.space.name}}」</template>
-          </p>
-        </li>
-      </ul>
+
+    <div>
+      <h3>おすすめのサークル</h3>
+      <p>準備中です</p>
     </div>
   </div>
 </template>

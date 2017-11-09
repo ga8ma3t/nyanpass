@@ -1,9 +1,19 @@
 <template>
   <div id="app">
-    <router-link to="/"><h1>にゃんぱす！v2</h1></router-link>
+    <header>
+      <router-link to="/"><h1>にゃんぱす！v2</h1></router-link>
+    </header>
     <router-view></router-view>
-    <router-link to="/about"><p>このサイトについて</p></router-link>
-    <a href="/auth/logout" v-if="session"><p>ログアウト</p></a>
+    <footer>
+      <ul>
+        <li>
+          <router-link to="/about"><p>このサイトについて</p></router-link>
+        </li>
+        <li v-if="session">
+          <a href="/auth/logout"><p>ログアウト</p></a>
+        </li>
+      </ul>
+    </footer>
   </div>
 </template>
 
