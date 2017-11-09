@@ -15,10 +15,12 @@
       <div v-else>
         <ul>
           <li v-for="friend in friendList">
-            <h4>
-              {{friend.name}}<span> @{{friend.twitterName}}</span>
-            </h4>
-            <img :src="friend.imageUrl" />
+            <a :href="`https://twitter.com/${friend.twitterName}`" target="_blank" rel="noopener">
+              <h4>
+                {{friend.name}}<span> @{{friend.twitterName}}</span>
+              </h4>
+              <img :src="friend.imageUrl" />
+            </a>
             <p>
               <template v-if="friend.space.date">{{friend.space.date}}日目 </template>
               <template v-if="friend.space.district">{{friend.space.district}}地区 </template>
