@@ -3,7 +3,7 @@
     <h2>イベント一覧</h2>
     <ul>
       <li v-for="event in eventList">
-        <router-link :to="`/catalogue/${event.alternateId}`">{{event.name}}</router-link>
+        <router-link :to="`/catalogues/${event.alternateId}`">{{event.name}}</router-link>
       </li>
     </ul>
   </div>

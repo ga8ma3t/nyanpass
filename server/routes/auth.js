@@ -45,10 +45,9 @@ router.get('/twitter', (req, res, next) => {
   }))
 
   passport.authenticate('twitter', {
-    successRedirect: from ? from : '/',
+    successRedirect: from || '/',
     failureRedirect: '/'
   })(req, res, next)
-
 })
 
 export default router

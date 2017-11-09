@@ -1,9 +1,8 @@
 import Vue from 'vue'
 import Router from 'vue-router'
 import Index from './components/Index.vue'
-import Catalogue from './components/Catalogue.vue'
+import Catalogues from './components/Catalogues.vue'
 import About from './components/About.vue'
-import request from 'axios'
 
 Vue.use(Router)
 
@@ -16,9 +15,9 @@ const router = new Router({
       component: Index
     },
     {
-      path: '/catalogue/:id',
-      name: 'Catalogue',
-      component: Catalogue
+      path: '/catalogues/:id',
+      name: 'Catalogues',
+      component: Catalogues
     },
     {
       path: '/about',

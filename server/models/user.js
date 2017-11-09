@@ -1,4 +1,4 @@
-import {User, Space, Op} from '../database/models/index'
+import {User} from '../database/models/index'
 
 /**
  * ユーザーをIdから取得します

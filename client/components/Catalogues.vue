@@ -1,8 +1,8 @@
 <template>
-  <div class="catalogue">
+  <div class="catalogues">
     <h2>{{event.name}}</h2>
     <div v-if="isRequireLogin">
-      <a :href="`/auth/twitter?from=/catalogue/${this.$route.params.id}`">Twitterと連携する</a>
+      <a :href="`/auth/twitter?from=/catalogues/${this.$route.params.id}`">Twitterと連携する</a>
     </div>
     <div v-else-if="event === null || friendList === null">
       よみこみちゅう...
@@ -15,10 +15,10 @@
             {{friend.name}}<span> @{{friend.twitterName}}</span>
           </h4>
           <p>
-            <template v-if="friend.spaces[0].date">{{friend.spaces[0].date}}日目 </template>
-            <template v-if="friend.spaces[0].district">{{friend.spaces[0].district}}地区 </template>
-            "{{friend.spaces[0].block}}"ブロック-{{friend.spaces[0].space}}
-            <template v-if="friend.spaces[0].name">「{{friend.spaces[0].name}}」</template>
+            <template v-if="friend.space.date">{{friend.space.date}}日目 </template>
+            <template v-if="friend.space.district">{{friend.space.district}}地区 </template>
+            "{{friend.space.block}}"ブロック-{{friend.space.space}}
+            <template v-if="friend.space.name">「{{friend.space.name}}」</template>
           </p>
         </li>
       </ul>
@@ -29,7 +29,7 @@
 <script>
   import request from 'axios'
   export default {
-    name: 'catalogue',
+    name: 'catalogues',
     data() {
       return {
         event: null,
@@ -52,8 +52,17 @@
         }).then(() => {
           return request.get(`/api/catalogues/${this.$route.params.id}`).then(result => {
             this.friendList = result.data
+            this.friendList = this.friendList.map(friend => {
+              return {
+                id: friend.id,
+                name: friend.name,
+                twitterId: friend.twitterId,
+                twitterName: friend.twitterName,
+                space: friend.spaces[0]
+              }
+            })
           })
-        }).catch((err) => {
+        }).catch(() => {
           this.isRequireLogin = true
         })
       }

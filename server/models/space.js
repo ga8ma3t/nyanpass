@@ -1,4 +1,4 @@
-import {Space, User, Op} from '../database/models/index'
+import {Space} from '../database/models/index'
 
 /**
  * スペースを作るお（ ＾ω＾）
