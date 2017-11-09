@@ -61,6 +61,7 @@ passport.serializeUser((user, done) => {
     name: user.name,
     twitterName: user.twitterName,
     twitterId: user.twitterId,
+    imageUrl: user.imageUrl,
     twitterTokenKey: user.twitterTokenKey,
     twitterTokenSecret: user.twitterTokenSecret
   })

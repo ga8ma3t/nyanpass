@@ -1,4 +1,5 @@
 import Twitter from 'twitter'
+import {convertTwitterImageUrl} from '../utils/util'
 
 export function fetchFriends(twitterId, tokenKey, tokenSecret) {
   const client = new Twitter({
@@ -72,7 +73,7 @@ export function searchTweets(cursor = null, sinceId = null) {
         id: status['id_str'],
         text: status.text,
         name: status.user.name, // 例：なのくろ
-        imageUrl: convertImageUrl(status.user['profile_image_url_https']),
+        imageUrl: convertTwitterImageUrl(status.user['profile_image_url_https']),
         twitterId: status.user['id_str'],
         twitterName: status.user['screen_name'] // 例：nanocloudx
       }
@@ -83,8 +84,4 @@ export function searchTweets(cursor = null, sinceId = null) {
     // eslint-disable-next-line prefer-promise-reject-errors
     return Promise.reject({error, cursor, list: []})
   })
-}
-
-function convertImageUrl(url) {
-  return url.replace(/_normal\./, '_bigger.')
 }

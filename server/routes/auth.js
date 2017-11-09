@@ -2,6 +2,7 @@ import express from 'express'
 import passport from 'passport'
 import passportTwitter from 'passport-twitter'
 import {fetchUserForPassport} from '../models/user'
+import {convertTwitterImageUrl} from '../utils/util'
 
 const TwitterStrategy = passportTwitter.Strategy
 const router = express.Router()
@@ -12,7 +13,8 @@ router.get('/status', (req, res) => {
       id: req.user.id,
       twitterId: req.user.twitterId,
       name: req.user.name,
-      twitterName: req.user.twitterName
+      twitterName: req.user.twitterName,
+      imageUrl: req.user.imageUrl
     } : null
   })
 })
@@ -35,6 +37,7 @@ router.get('/twitter', (req, res, next) => {
       profile.id,
       profile.displayName,
       profile.username,
+      convertTwitterImageUrl(profile._json['profile_image_url_https']),
       twitterTokenKey,
       twitterTokenSecret
     ).then((user) => {

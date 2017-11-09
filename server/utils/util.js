@@ -17,3 +17,11 @@ export function convertMultiByteToSingleByte(str) {
     return String.fromCharCode(s.charCodeAt(0) - 65248)
   })
 }
+
+/**
+ * TwitterAPIで取得する画像を大きくする
+ * @param url
+ */
+export function convertTwitterImageUrl(url) {
+  return url.replace(/_normal\./, '_bigger.')
+}
