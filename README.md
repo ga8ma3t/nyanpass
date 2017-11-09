@@ -2,4 +2,4 @@
 
 https://www.nyanpass.net/
 
-にゃーん
+（ ＾ω＾）にゃーん
