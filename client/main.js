@@ -1,26 +1,10 @@
 import Vue from 'vue'
 import App from './App.vue'
 import router from './router'
-import {
-  Container,
-  Header,
-  Main,
-  Footer,
-  Row,
-  Col,
-  Button
-} from 'element-ui'
+import ElementUI from 'element-ui'
+import 'element-ui/lib/theme-chalk/index.css'
 
-// Layouts
-Vue.use(Container)
-Vue.use(Header)
-Vue.use(Main)
-Vue.use(Footer)
-Vue.use(Row)
-Vue.use(Col)
-
-// Forms
-Vue.use(Button)
+Vue.use(ElementUI)
 
 export default new Vue({
   el: '#app',

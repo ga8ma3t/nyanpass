@@ -2,11 +2,11 @@ import Sequelize from 'sequelize'
 
 export const Op = Sequelize.Op
 
-export const database = new Sequelize(process.env.DATABASE_URL, {
+export const sequelize = new Sequelize(process.env.DATABASE_URL, {
   // sequelize models options
 })
 
-export const User = database.define('user', {
+export const User = sequelize.define('user', {
   id: {
     type: Sequelize.UUID,
     defaultValue: Sequelize.UUIDV4,
@@ -20,7 +20,7 @@ export const User = database.define('user', {
   twitterTokenSecret: Sequelize.STRING
 })
 
-export const Space = database.define('space', {
+export const Space = sequelize.define('space', {
   id: {
     type: Sequelize.UUID,
     defaultValue: Sequelize.UUIDV4,
@@ -33,7 +33,7 @@ export const Space = database.define('space', {
   space: Sequelize.STRING
 })
 
-export const Event = database.define('event', {
+export const Event = sequelize.define('event', {
   id: {
     type: Sequelize.UUID,
     defaultValue: Sequelize.UUIDV4,
@@ -46,7 +46,7 @@ export const Event = database.define('event', {
   optional: Sequelize.JSON
 })
 
-export const SpaceMemberRelation = database.define('space_member_relation', {
+export const SpaceMemberRelation = sequelize.define('space_member_relation', {
   id: {
     type: Sequelize.UUID,
     defaultValue: Sequelize.UUIDV4,
@@ -61,4 +61,4 @@ Space.belongsTo(Event)
 Space.belongsToMany(User, {through: 'space_member_relation'})
 User.belongsToMany(Space, {through: 'space_member_relation'})
 
-database.sync()
+sequelize.sync()

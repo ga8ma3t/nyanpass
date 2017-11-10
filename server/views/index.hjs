@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>にゃんぱす！</title>
     <meta name="description" content="にゃんぱす！同人活動をちょっと快適にするウェブサービス">
+    <link rel="stylesheet" href="/reset.css">
   </head>
   <body>
     <div id="app"></div>
