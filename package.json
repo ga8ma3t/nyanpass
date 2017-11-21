@@ -30,7 +30,7 @@
     "build-server": "babel server -d dist",
     "build-static": "cpx \"./server/views/*\" ./dist/views & cpx \"./server/public/*\" ./dist/public",
     "build-clean": "rimraf ./dist",
-    "heroku-postbuild": "yarn run build && yarn run db:migrate",
+    "heroku-postbuild": "yarn run db:migrate",
     "sequelize": "sequelize",
     "env": "env",
     "db:migrate": "sequelize db:migrate",
