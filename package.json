@@ -33,6 +33,7 @@
     "heroku-postbuild": "yarn run build && yarn run db:migrate",
     "sequelize": "sequelize",
     "env": "env",
+    "db:migrate": "sequelize db:migrate",
     "db-init": "sequelize db:drop && sequelize db:create && sequelize db:migrate && sequelize db:seed:all"
   },
   "pre-commit": [
