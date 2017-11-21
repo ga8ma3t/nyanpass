@@ -1,7 +1,7 @@
 version: '2'
 services:
   app:
-    image: node:8.9-alpine
+    image: node:9.1-alpine
     command: yarn start:dev
     ports:
       - '3000:3000'
@@ -16,7 +16,6 @@ services:
       DATABASE_URL: postgres://postgres@postgres/nyanpass
       REDIS_URL: redis:6379
   postgres:
-    restart: always
     image: postgres:10.0-alpine
     ports:
       - '15432:5432'
@@ -27,7 +26,6 @@ services:
       - pgdata:/var/lib/postgresql/data
 
   redis:
-    restart: always
     image: redis:alpine
     ports:
       - '16379:6379'
