@@ -1,18 +1,12 @@
 <template>
-  <el-menu :default-active="activeIndex" router="true" class="el-menu-demo" mode="horizontal" @select="handleSelect">
-    <el-menu-item index="/">
-      <h1>にゃんぱす！</h1>
-    </el-menu-item>
-    <el-menu-item index="/about">
-      <p>このサイトについて</p>
-    </el-menu-item>
-    <el-menu-item v-if="session" index="/auth/logout">
-      <p>ログアウト</p>
-    </el-menu-item>
-    <el-menu-item v-else index="/auth/twitter">
-      <p>ログイン</p>
-    </el-menu-item>
-  </el-menu>
+  <header>
+    <ul>
+      <li><router-link to="/"><h1>にゃんぱす！</h1></router-link></li>
+      <li><router-link to="/about"><p>このサイトについて</p></router-link></li>
+      <li v-if="session"><router-link to="/auth/logout"><p>ログアウト</p></router-link></li>
+      <li v-else><router-link to="/auth/twitter"><p>ログイン</p></router-link></li>
+    </ul>
+  </header>
 </template>
 
 <script>

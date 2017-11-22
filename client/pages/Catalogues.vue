@@ -1,18 +1,12 @@
 <template>
   <div class="catalogues">
-
-    <el-breadcrumb>
-      <el-breadcrumb-item :to="{ path: '/' }">にゃんぱす！</el-breadcrumb-item>
-      <el-breadcrumb-item :to="{path: `/catalogues/${event.alternateId}`}">{{event.name}}</el-breadcrumb-item>
-    </el-breadcrumb>
-
     <h2>{{event.name}}</h2>
     <div>
       <h3>フレンドのサークル</h3>
       <div v-if="isRequireLogin">
         <p>Twitterアカウントと連携すると、フォローしているフレンドのサークル一覧を表示できます</p>
         <a :href="`/auth/twitter?from=/catalogues/${this.$route.params.id}`">
-          <el-button type="primary">Twitterと連携する</el-button>
+          <button>Twitterと連携する</button>
         </a>
       </div>
       <div v-else>
@@ -22,7 +16,7 @@
 
     <div>
       <h3>おすすめのサークル</h3>
-      <circle-list :circle-list="recommendList"></circle-list>
+      <circle-card :circle-list="recommendList"></circle-card>
     </div>
   </div>
 </template>
@@ -30,11 +24,9 @@
 <script>
   import request from 'axios'
   import CircleCard from '../components/CircleCard.vue'
-  import CircleList from '../components/CircleList.vue'
   export default {
     components: {
-      CircleCard,
-      CircleList
+      CircleCard
     },
     name: 'catalogues',
     data() {

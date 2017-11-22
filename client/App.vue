@@ -1,25 +1,17 @@
 <template>
   <div id="app">
-    <el-container>
-      <el-header>
-        <header-menu :session="session"></header-menu>
-      </el-header>
-      <el-main>
-        <router-view></router-view>
-      </el-main>
-    </el-container>
+    <div class="container">
+      <header-menu :session="session"></header-menu>
+      <router-view></router-view>
+    </div>
   </div>
 </template>
 
 <script>
   import request from 'axios'
-  import ElMain from '../node_modules/element-ui/packages/main/src/main.vue'
-  import ElContainer from '../node_modules/element-ui/packages/container/src/main.vue'
   import HeaderMenu from './components/HeaderMenu.vue'
   export default {
     components: {
-      ElContainer,
-      ElMain,
       HeaderMenu
     },
     name: 'app',
