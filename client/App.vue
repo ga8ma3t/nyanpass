@@ -77,7 +77,7 @@
     font-size: 16px;
     border: none;
     border-radius: 3px;
-    background-color: #3399cc;
+    background-color: #00aced;
     color: #ffffff;
   }
   li {

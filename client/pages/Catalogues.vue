@@ -12,7 +12,7 @@
       <div class="container">
         <h3>ブックマークしたサークル</h3>
         <div class="center" v-if="isRequireLogin">
-          <img src="/images/login.png">
+          <img src="/images/book.png">
           <p>Twitterアカウントを連携すると、お気に入りのサークルをブックマークできます</p>
           <a :href="`/auth/twitter?from=/catalogues/${this.$route.params.id}`">
             <button>Twitterと連携する</button>
