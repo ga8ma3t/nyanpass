@@ -4,20 +4,40 @@
     <div class="event-wrapper">
       <div class="container">
         <h2>{{event.name}}</h2>
-        <p>ほげほげほげほげ</p>
+        <p>場所：{{event.place}}(未実装) 日付：{{event.date}}</p>
+      </div>
+    </div>
+
+    <div class="catalogue-wrapper">
+      <div class="container">
+        <h3>ブックマークしたサークル</h3>
+        <div class="center" v-if="isRequireLogin">
+          <img src="/images/login.png">
+          <p>Twitterアカウントを連携すると、お気に入りのサークルをブックマークできます</p>
+          <a :href="`/auth/twitter?from=/catalogues/${this.$route.params.id}`">
+            <button>Twitterと連携する</button>
+          </a>
+        </div>
+        <div v-else>
+          <p>ブックマーク機能は準備中です...</p>
+          <!--<Loading v-show="!bookmarkList"></Loading>-->
+          <!--<circle-card :circle-list="bookmarkList"></circle-card>-->
+        </div>
       </div>
     </div>
 
     <div class="catalogue-wrapper">
       <div class="container">
         <h3>フレンドのサークル</h3>
-        <div v-if="isRequireLogin">
-          <p>Twitterアカウントと連携すると、フォローしているフレンドのサークル一覧を表示できます</p>
+        <div class="center" v-if="isRequireLogin">
+          <img src="/images/login.png">
+          <p>Twitterアカウントを連携すると、フォローしているフレンドのサークル一覧を表示できます</p>
           <a :href="`/auth/twitter?from=/catalogues/${this.$route.params.id}`">
             <button>Twitterと連携する</button>
           </a>
         </div>
         <div v-else>
+          <Loading v-show="!friendList"></Loading>
           <circle-card :circle-list="friendList"></circle-card>
         </div>
       </div>
@@ -26,6 +46,7 @@
     <div class="catalogue-wrapper">
       <div class="container">
         <h3>おすすめのサークル</h3>
+        <Loading v-show="!recommendList"></Loading>
         <circle-card :circle-list="recommendList"></circle-card>
       </div>
     </div>
@@ -36,14 +57,17 @@
 <script>
   import request from 'axios'
   import CircleCard from '../components/CircleCard.vue'
+  import Loading from '../components/Loading.vue'
   export default {
     components: {
-      CircleCard
+      CircleCard,
+      Loading
     },
     name: 'catalogues',
     data() {
       return {
         event: null,
+        bookmarkList: null,
         friendList: null,
         recommendList: null,
         isRequireLogin: false
@@ -99,10 +123,13 @@
 <style lang="scss" scoped>
   .event-wrapper {
     padding: 20px 0;
+    p {
+      margin-bottom: 20px;
+    }
   }
   .catalogue-wrapper {
     background-color: #fafafa;
-    margin: 20px 0;
     padding: 20px 0;
+    margin-bottom: 10px;
   }
 </style>

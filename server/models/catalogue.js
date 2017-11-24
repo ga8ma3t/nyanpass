@@ -10,7 +10,7 @@ export function fetchRecommendUserListWithSpaceByEvent(event) {
       through: {attributes: []},
       duplicating: false
     }],
-    limit: 10,
+    limit: 15,
     order: [
       sequelize.fn('RANDOM')
     ]
