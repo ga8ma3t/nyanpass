@@ -4,7 +4,7 @@
     <div class="event-wrapper">
       <div class="container">
         <h2>{{event.name}}</h2>
-        <p>場所：{{event.place}}(未実装) 日付：{{event.date}}</p>
+        <p>場所：{{event.place}}(未実装) 日付：{{event.dates}}</p>
       </div>
     </div>
 
@@ -19,7 +19,7 @@
           </a>
         </div>
         <div v-else>
-          <p class="center">ブックマーク機能は準備中です...</p>
+          <p class="center">ブックマーク機能は準備中です</p>
           <!--<Loading v-show="!bookmarkList"></Loading>-->
           <!--<circle-card :circle-list="bookmarkList"></circle-card>-->
         </div>
