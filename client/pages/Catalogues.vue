@@ -1,22 +1,25 @@
 <template>
   <div class="catalogues">
-    <h2>{{event.name}}</h2>
-    <div>
-      <h3>フレンドのサークル</h3>
-      <div v-if="isRequireLogin">
-        <p>Twitterアカウントと連携すると、フォローしているフレンドのサークル一覧を表示できます</p>
-        <a :href="`/auth/twitter?from=/catalogues/${this.$route.params.id}`">
-          <button>Twitterと連携する</button>
-        </a>
-      </div>
-      <div v-else>
-        <circle-card :circle-list="friendList"></circle-card>
-      </div>
-    </div>
+    <div class="container">
+      <h2>{{event.name}}</h2>
 
-    <div>
-      <h3>おすすめのサークル</h3>
-      <circle-card :circle-list="recommendList"></circle-card>
+      <div>
+        <h3>フレンドのサークル</h3>
+        <div v-if="isRequireLogin">
+          <p>Twitterアカウントと連携すると、フォローしているフレンドのサークル一覧を表示できます</p>
+          <a :href="`/auth/twitter?from=/catalogues/${this.$route.params.id}`">
+            <button>Twitterと連携する</button>
+          </a>
+        </div>
+        <div v-else>
+          <circle-card :circle-list="friendList"></circle-card>
+        </div>
+      </div>
+
+      <div>
+        <h3>おすすめのサークル</h3>
+        <circle-card :circle-list="recommendList"></circle-card>
+      </div>
     </div>
   </div>
 </template>

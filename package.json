@@ -28,7 +28,7 @@
     "build": "yarn run build-clean && yarn run build-static && yarn run build-server && yarn run build-client",
     "build-client": "webpack",
     "build-server": "babel server -d dist",
-    "build-static": "cpx \"./server/views/*\" ./dist/views & cpx \"./server/public/*\" ./dist/public",
+    "build-static": "cpx \"./server/views/*\" ./dist/views & cpx \"./server/public/**/*\" ./dist/public",
     "build-clean": "rimraf ./dist",
     "heroku-postbuild": "yarn run db:migrate",
     "sequelize": "sequelize",

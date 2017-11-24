@@ -46,6 +46,18 @@
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
   }
+  .container {
+    margin: 0 auto;
+    @media screen and (min-width: 615px) {
+      max-width: 600px;
+    }
+    @media screen and (min-width: 815px) {
+      max-width: 800px;
+    }
+    @media screen and (min-width: 1015px) {
+      max-width: 1000px;
+    }
+  }
   header {
     height: 70px;
     margin: 0 auto;
