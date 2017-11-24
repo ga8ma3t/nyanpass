@@ -14,7 +14,7 @@ export function fetchRecommendsCatalogue(req, res, next) {
   }).then(event => {
     return fetchUserListWithSpaceByEvent(event)
   }).then(result => {
-    res.json(result)
+    res.json({ recommend: result })
   })
 }
 

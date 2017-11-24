@@ -63,7 +63,7 @@
           })
         }).then(() => {
           return request.get(`/api/catalogues/${this.$route.params.id}`).then(result => {
-            this.recommendList = result.data
+            this.recommendList = result.data.recommend
             this.recommendList = this.recommendList.map(recommend => {
               return {
                 id: recommend.id,
