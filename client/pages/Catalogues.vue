@@ -122,13 +122,13 @@
 
 <style lang="scss" scoped>
   .event-wrapper {
+    background-color: #ffffff;
     padding: 20px 0;
     p {
       margin-bottom: 20px;
     }
   }
   .catalogue-wrapper {
-    background-color: #fafafa;
     padding: 20px 0;
     margin-bottom: 10px;
   }

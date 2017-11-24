@@ -42,10 +42,10 @@
     background-color: #555555;
   }
   body {
-    background-color: #ffffff;
+    background: #fafafa;
   }
   #app {
-    font-family: "Helvetica Neue", Helvetica, "Hiragino Sans GB", Arial, sans-serif;
+    font-family: "Helvetica Neue", Helvetica, "Hiragino Kaku Gothic ProN", Arial, sans-serif;
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
     color: #444444;

@@ -9,13 +9,17 @@
 <style lang="scss" scoped>
   header {
     height: 50px;
-    margin: 0 auto;
-    border-bottom: 1px solid #eeeeee;
-    background-color: #3399cc;
+    background-color: #00aced;
     box-sizing: border-box;
     .logo {
       height: 34px;
       padding: 8px 0;
+      display: block;
+      margin: 0 auto;
+      @media screen and (min-width: 835px) {
+        display: inherit;
+        margin: inherit;
+      }
     }
   }
 </style>
