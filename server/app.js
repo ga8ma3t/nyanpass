@@ -8,7 +8,6 @@ import bodyParser from 'body-parser'
 import {} from 'dotenv/config'
 import helmet from 'helmet'
 import compression from 'compression'
-import basicAuthConnect from 'basic-auth-connect'
 import session from 'express-session'
 import Redis from 'ioredis'
 import connectRedis from 'connect-redis'
@@ -35,15 +34,6 @@ app.use(bodyParser.json())
 app.use(bodyParser.urlencoded({ extended: false }))
 app.use(cookieParser())
 app.use(express.static(path.join(dirname, 'public')))
-
-// --------------------------------------------------
-// BasicAuth (for Staging Environment)
-// --------------------------------------------------
-const basicAuthUsername = process.env.BASIC_AUTH_USERNAME
-const basicAuthPassword = process.env.BASIC_AUTH_PASSWORD
-if (basicAuthUsername && basicAuthPassword) {
-  app.use(basicAuthConnect(basicAuthUsername, basicAuthPassword))
-}
 
 // --------------------------------------------------
 // Session
