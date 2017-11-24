@@ -46,7 +46,11 @@
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
   }
-  .container {
-    margin: 0 20px;
+  header {
+    height: 70px;
+    margin: 0 auto;
+    @media screen and (min-width:768px) {
+      margin: inherit;
+    }
   }
 </style>
