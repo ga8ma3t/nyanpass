@@ -1,7 +1,9 @@
 <template>
   <div id="app">
     <header>
-      <router-link to="/"><h1>にゃんぱす！</h1></router-link>
+      <div class="container">
+        <router-link to="/"><h1>にゃんぱす！</h1></router-link>
+      </div>
     </header>
     <router-view></router-view>
     <footer>
@@ -45,24 +47,32 @@
     font-family: "Helvetica Neue", Helvetica, "Hiragino Sans GB", Arial, sans-serif;
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
+    color: #444444;
   }
   .container {
     margin: 0 auto;
-    @media screen and (min-width: 615px) {
+    padding: 0 10px;
+    @media screen and (min-width: 635px) {
       max-width: 600px;
     }
-    @media screen and (min-width: 815px) {
+    @media screen and (min-width: 835px) {
       max-width: 800px;
     }
-    @media screen and (min-width: 1015px) {
+    @media screen and (min-width: 1035px) {
       max-width: 1000px;
     }
   }
   header {
-    height: 70px;
+    height: 50px;
     margin: 0 auto;
-    @media screen and (min-width:768px) {
-      margin: inherit;
-    }
+    border-bottom: 1px solid #eeeeee;
+  }
+  h2 {
+    font-size: 32px;
+    padding: 20px 0;
+  }
+  h3 {
+    font-size: 22px;
+    padding: 20px 0;
   }
 </style>
