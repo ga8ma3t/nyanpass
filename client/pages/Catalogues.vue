@@ -77,7 +77,7 @@
           })
         }).then(() => {
           return request.get(`/api/catalogues/${this.$route.params.id}/friends`).then(result => {
-            this.friendList = result.data
+            this.friendList = result.data.friends
             this.friendList = this.friendList.map(friend => {
               return {
                 id: friend.id,

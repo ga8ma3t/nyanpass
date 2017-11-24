@@ -26,7 +26,7 @@ export async function fetchFriendsCatalogue(req, res, next) {
   const event = await fetchEventByAlternateId(eventId)
   const userList = await fetchUserListWithSpaceByEventAndFriendList(event, friendList)
   const friends = await updateUsersByFriendList(userList, friendList)
-  res.json(friends)
+  res.json({ friends })
 }
 
 /**
