@@ -22,10 +22,7 @@ export async function fetchFriendsCatalogue(req, res, next) {
     return
   }
   const eventId = req.params.eventId
-  const twitterId = req.user.twitterId
-  const twitterTokenKey = req.user.twitterTokenKey
-  const twitterTokenSecret = req.user.twitterTokenSecret
-  const friendList = await fetchFriendList(twitterId, twitterTokenKey, twitterTokenSecret)
+  const friendList = await fetchFriendList(req.user.twitterId, req.user.twitterTokenKey, req.user.twitterTokenSecret)
   const event = await fetchEventByAlternateId(eventId)
   const userList = await fetchUserListWithSpaceByEventAndFriendList(event, friendList)
   const friends = await updateUsersByFriendList(userList, friendList)
