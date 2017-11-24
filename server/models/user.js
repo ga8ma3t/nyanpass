@@ -95,12 +95,12 @@ export function fetchUserForPassport(twitterId, name, twitterName, imageUrl, twi
   })
 }
 
-export async function bulkApply(f, loop_max = 300, limit = 100) {
+export async function bulkApply(f, loopMax = 300, limit = 100) {
   let offset = 0
-  for (let i = 0; i < loop_max; i++) {
+  for (let i = 0; i < loopMax; i++) {
     let users = await User.findAll({ limit, offset })
-    if (users.length == 0) {
-      break;
+    if (users.length === 0) {
+      break
     }
     await f(users)
     offset += users.length
