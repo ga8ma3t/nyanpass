@@ -25,6 +25,7 @@
     "dev": "yarn install && yarn run sequelize db:migrate && yarn run build-dev && (webpack --watch & nodemon www-dev --exec babel-node)",
     "test": "ava --verbose",
     "lint": "eslint --fix --ext .js,.vue .",
+    "lint:ci": "eslint --ext .js,.vue .",
     "build": "yarn run build-clean && yarn run build-static && yarn run build-server && yarn run build-client",
     "build-dev": "yarn run build-clean && yarn run build-static",
     "build-client": "webpack",

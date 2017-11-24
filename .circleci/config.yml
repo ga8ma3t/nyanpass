@@ -1,0 +1,17 @@
+version: 2
+jobs:
+  build:
+    docker:
+      - image: circleci/node:9.1
+    steps:
+      - checkout
+      - run: sudo npm install -g yarn@latest
+      - restore_cache:
+          key: dependency-cache-{{ arch }}-{{ checksum "yarn.lock" }}
+      - run: yarn install --pure-lockfile
+      - save_cache:
+          key: dependency-cache-{{ arch }}-{{ checksum "yarn.lock" }}
+          paths:
+            - ./node_modules
+      - run: yarn run lint:ci
+      - run: yarn run test
