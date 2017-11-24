@@ -3,7 +3,7 @@ import {fetchFriends} from '../models/twitter'
 import {
   fetchRecommendUserListWithSpaceByEvent, fetchRecommendUserListWithSpaceByFriends,
   fetchUserListWithSpaceByEventAndFriendList,
-  updateUsersByFriendList
+  updateUsersByTwitterUserList
 } from '../models/catalogue'
 import {fetchEventByAlternateId} from '../models/event'
 
@@ -27,7 +27,7 @@ function pickTwitterAuth(req) {
 async function fetchLoggedInCatalogue(event, twitterAuth) {
   const friendList = await fetchFriendList(...twitterAuth)
   const userList = await fetchUserListWithSpaceByEventAndFriendList(event, friendList)
-  const friends = await updateUsersByFriendList(userList, friendList)
+  const friends = await updateUsersByTwitterUserList(userList, friendList)
   const recommend = await fetchRecommendUserListWithSpaceByFriends(event, friends)
   return { recommend, friends }
 }
