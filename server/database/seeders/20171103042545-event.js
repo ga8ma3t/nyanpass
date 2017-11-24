@@ -8,6 +8,7 @@ module.exports = {
       name: 'コミックマーケット93',
       type: 'comiket',
       date: '2017-12-29',
+      place: '東京ビッグサイト',
       optional: null,
       createdAt: new Date(),
       updatedAt: new Date()
