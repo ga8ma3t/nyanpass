@@ -85,3 +85,18 @@ export function searchTweets(cursor = null, sinceId = null) {
     return Promise.reject({error, cursor, list: []})
   })
 }
+
+export async function lookupUsers(ids) {
+  const client = new Twitter({
+    consumer_key: process.env.TWITTER_CONSUMER_KEY,
+    consumer_secret: process.env.TWITTER_CONSUMER_SECRET,
+    bearer_token: process.env.TWITTER_BEARER_TOKEN
+  })
+  const result = await client.get('users/lookup', {user_id: ids.join(',')})
+  return result.map(user => ({
+    name: user.name, // 例：なのくろ
+    twitterId: user['id_str'],
+    twitterName: user['screen_name'], // 例：nanocloudx
+    image: convertTwitterImageUrl(user['profile_image_url_https'])
+  }))
+}
