@@ -1,6 +1,6 @@
 import {Space, User, Op, sequelize} from '../database/models/index'
 
-export function fetchUserListWithSpaceByEvent(event) {
+export function fetchRecommendUserListWithSpaceByEvent(event) {
   return User.findAll({
     attributes: ['id', 'name', 'imageUrl', 'twitterId', 'twitterName'],
     include: [{
@@ -11,6 +11,33 @@ export function fetchUserListWithSpaceByEvent(event) {
       duplicating: false
     }],
     limit: 15,
+    order: [
+      sequelize.fn( 'RANDOM' ),
+    ]
+  })
+}
+
+export function fetchRecommendUserListWithSpaceByFriends(event, friends) {
+  const blocks = friends.map(friend => {
+    const space = friend.spaces[0]
+    return { date: space.date, block: space.block }
+  })
+  return User.findAll({
+    attributes: ['id', 'name', 'imageUrl', 'twitterId', 'twitterName'],
+    include: [{
+      model: Space,
+      attributes: ['id', 'name', 'date', 'district', 'block', 'space'],
+      where: {
+        id: {
+          [Op.notIn]: friends.map(friend => friend.spaces[0].id)
+        },
+        eventId: event.id,
+        [Op.or]: Array.from(new Set(blocks)),
+      },
+      through: {attributes: []},
+      duplicating: false
+    }],
+    limit: 10,
     order: [
       sequelize.fn( 'RANDOM' ),
     ]
