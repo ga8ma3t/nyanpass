@@ -12,7 +12,7 @@ export function fetchRecommendUserListWithSpaceByEvent(event) {
     }],
     limit: 15,
     order: [
-      sequelize.fn( 'RANDOM' ),
+      sequelize.fn('RANDOM')
     ]
   })
 }
@@ -32,14 +32,14 @@ export function fetchRecommendUserListWithSpaceByFriends(event, friends) {
           [Op.notIn]: friends.map(friend => friend.spaces[0].id)
         },
         eventId: event.id,
-        [Op.or]: Array.from(new Set(blocks)),
+        [Op.or]: Array.from(new Set(blocks))
       },
       through: {attributes: []},
       duplicating: false
     }],
     limit: 10,
     order: [
-      sequelize.fn( 'RANDOM' ),
+      sequelize.fn('RANDOM')
     ]
   })
 }

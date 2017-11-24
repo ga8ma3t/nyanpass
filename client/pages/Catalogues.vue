@@ -99,7 +99,7 @@
               }
             })
             this.friendList = result.data.friends || null
-            if(this.friendList) {
+            if (this.friendList) {
               this.friendList = this.friendList.map(friend => {
                 return {
                   id: friend.id,
