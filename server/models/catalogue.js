@@ -17,6 +17,33 @@ export function fetchRecommendUserListWithSpaceByEvent(event) {
   })
 }
 
+export function fetchRecommendUserListWithSpaceByFriends(event, friends) {
+  const blocks = friends.map(friend => {
+    const space = friend.spaces[0]
+    return { date: space.date, block: space.block }
+  })
+  return User.findAll({
+    attributes: ['id', 'name', 'imageUrl', 'twitterId', 'twitterName'],
+    include: [{
+      model: Space,
+      attributes: ['id', 'name', 'date', 'district', 'block', 'space'],
+      where: {
+        id: {
+          [Op.notIn]: friends.map(friend => friend.spaces[0].id)
+        },
+        eventId: event.id,
+        [Op.or]: Array.from(new Set(blocks)),
+      },
+      through: {attributes: []},
+      duplicating: false
+    }],
+    limit: 10,
+    order: [
+      sequelize.fn( 'RANDOM' ),
+    ]
+  })
+}
+
 export function fetchUserListWithSpaceByEventAndFriendList(event, friendList) {
   const twitterIds = friendList.map(friend => friend.twitterId)
   return User.findAll({
