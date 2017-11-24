@@ -1,11 +1,12 @@
 <template>
   <div class="index">
-    <h2>イベント一覧</h2>
-    <ul>
-      <li v-for="event in eventList">
-        <router-link :to="`/catalogues/${event.alternateId}`">{{event.name}}</router-link>
-      </li>
-    </ul>
+    <div class="container">
+      <ul>
+        <li v-for="event in eventList">
+          <router-link :to="`/catalogues/${event.alternateId}`">{{event.name}}</router-link>
+        </li>
+      </ul>
+    </div>
   </div>
 </template>
 
