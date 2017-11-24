@@ -22,18 +22,19 @@ const RedisStore = connectRedis(session)
 const app = express()
 
 // view engine setup
-app.set('views', path.join(__dirname, 'views'))
+const dirname = __dirname.match(/server/) ? path.join(__dirname, '..', 'dist') : __dirname
+app.set('views', path.join(dirname, 'views'))
 app.set('view engine', 'hjs')
 app.enable('trust proxy')
 app.disable('x-powered-by')
 app.use(helmet())
 app.use(compression())
-// app.use(favicon(path.join(__dirname, 'public', 'favicon.ico')));
+// app.use(favicon(path.join(dirname, 'public', 'favicon.ico')));
 app.use(logger('dev'))
 app.use(bodyParser.json())
 app.use(bodyParser.urlencoded({ extended: false }))
 app.use(cookieParser())
-app.use(express.static(path.join(__dirname, 'public')))
+app.use(express.static(path.join(dirname, 'public')))
 
 // --------------------------------------------------
 // BasicAuth (for Staging Environment)
