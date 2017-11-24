@@ -19,7 +19,7 @@
           </a>
         </div>
         <div v-else>
-          <p>ブックマーク機能は準備中です...</p>
+          <p class="center">ブックマーク機能は準備中です...</p>
           <!--<Loading v-show="!bookmarkList"></Loading>-->
           <!--<circle-card :circle-list="bookmarkList"></circle-card>-->
         </div>

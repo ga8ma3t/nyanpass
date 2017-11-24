@@ -29,7 +29,19 @@ async function fetchLoggedInCatalogue(event, twitterAuth) {
   const userList = await fetchUserListWithSpaceByEventAndFriendList(event, friendList)
   const friends = await updateUsersByFriendList(userList, friendList)
   const recommend = await fetchRecommendUserListWithSpaceByFriends(event, friends)
-  return { recommend, friends }
+  // TODO 破壊
+  return {
+    recommend: {
+      '2017-12-29': recommend.filter(user => user.circles[0].date === 1),
+      '2017-12-30': recommend.filter(user => user.circles[0].date === 2),
+      '2017-12-31': recommend.filter(user => user.circles[0].date === 3)
+    },
+    friends: {
+      '2017-12-29': friends.filter(user => user.circles[0].date === 1),
+      '2017-12-30': friends.filter(user => user.circles[0].date === 2),
+      '2017-12-31': friends.filter(user => user.circles[0].date === 3)
+    }
+  }
 }
 
 /**
