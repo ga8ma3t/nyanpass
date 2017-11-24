@@ -1,9 +1,15 @@
 <template>
   <div class="catalogues">
-    <div class="container">
-      <h2>{{event.name}}</h2>
 
-      <div>
+    <div class="event-wrapper">
+      <div class="container">
+        <h2>{{event.name}}</h2>
+        <p>ほげほげほげほげ</p>
+      </div>
+    </div>
+
+    <div class="catalogue-wrapper">
+      <div class="container">
         <h3>フレンドのサークル</h3>
         <div v-if="isRequireLogin">
           <p>Twitterアカウントと連携すると、フォローしているフレンドのサークル一覧を表示できます</p>
@@ -15,12 +21,15 @@
           <circle-card :circle-list="friendList"></circle-card>
         </div>
       </div>
+    </div>
 
-      <div>
+    <div class="catalogue-wrapper">
+      <div class="container">
         <h3>おすすめのサークル</h3>
         <circle-card :circle-list="recommendList"></circle-card>
       </div>
     </div>
+
   </div>
 </template>
 
@@ -89,5 +98,12 @@
 </script>
 
 <style lang="scss" scoped>
-
+  .event-wrapper {
+    padding: 20px 0;
+  }
+  .catalogue-wrapper {
+    background-color: #fafafa;
+    margin: 20px 0;
+    padding: 20px 0;
+  }
 </style>
