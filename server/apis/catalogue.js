@@ -9,6 +9,7 @@ import {fetchEventByAlternateId} from '../models/event'
 
 export async function fetchCatalogue(req, res) {
   const event = await fetchEventByAlternateId(req.params.eventId)
+  console.log(req.user)
   const result = req.user
     ? await fetchLoggedInCatalogue(event, pickTwitterAuth(req))
     : await fetchAnonymousCatalogue(event)
