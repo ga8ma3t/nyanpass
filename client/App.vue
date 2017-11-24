@@ -1,24 +1,19 @@
 <template>
   <div id="app">
-    <header>
-      <div class="container">
-        <router-link to="/"><h1>にゃんぱす！</h1></router-link>
-      </div>
-    </header>
+    <header-component></header-component>
     <router-view></router-view>
-    <footer>
-      <li v-if="session" class="right"><router-link to="/auth/logout"><p>ログアウト</p></router-link></li>
-      <li v-else class="right"><router-link to="/auth/twitter"><p>ログイン</p></router-link></li>
-      <li class="right"><router-link to="/about"><p>このサイトについて</p></router-link></li>
-    </footer>
+    <footer-component></footer-component>
   </div>
 </template>
 
 <script>
   import request from 'axios'
+  import HeaderComponent from './components/header'
+  import FooterComponent from './components/footer'
   export default {
     components: {
-      //
+      HeaderComponent,
+      FooterComponent
     },
     name: 'app',
     data() {
@@ -43,6 +38,12 @@
 </script>
 
 <style lang="scss">
+  html {
+    background-color: #555555;
+  }
+  body {
+    background-color: #ffffff;
+  }
   #app {
     font-family: "Helvetica Neue", Helvetica, "Hiragino Sans GB", Arial, sans-serif;
     -webkit-font-smoothing: antialiased;
@@ -74,5 +75,20 @@
   h3 {
     font-size: 22px;
     padding: 20px 0;
+  }
+  button {
+    margin: 20px;
+    padding: 10px 40px;
+    font-size: 16px;
+    border: none;
+    border-radius: 3px;
+    background-color: #54b2ff;
+    color: #ffffff;
+  }
+  li {
+    list-style: none;
+  }
+  .center {
+    text-align: center;
   }
 </style>
