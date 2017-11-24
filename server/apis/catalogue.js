@@ -7,44 +7,29 @@ import {
 } from '../models/catalogue'
 import {fetchEventByAlternateId} from '../models/event'
 
-export function fetchRecommendsCatalogue(req, res, next) {
-  const eventId = req.params.eventId
-  Promise.resolve().then(() => {
-    return fetchEventByAlternateId(eventId)
-  }).then(event => {
-    return fetchUserListWithSpaceByEvent(event)
-  }).then(result => {
-    res.json(result)
-  })
+export async function fetchCatalogue(req, res) {
+  const event = await fetchEventByAlternateId(req.params.eventId)
+  const result = req.user
+    ? await fetchLoggedInCatalogue(event, pickTwitterAuth(req))
+    : await fetchAnonymousCatalogue(event)
+  res.json(result)
 }
 
-export function fetchFriendsCatalogue(req, res, next) {
-  if (!req.user) {
-    const err = new Error('Unauthorized')
-    err.status = 401
-    next(err)
-    return
-  }
-  const eventId = req.params.eventId
-  const twitterId = req.user.twitterId
-  const twitterTokenKey = req.user.twitterTokenKey
-  const twitterTokenSecret = req.user.twitterTokenSecret
+async function fetchAnonymousCatalogue(event) {
+  const recommend = await fetchUserListWithSpaceByEvent(event)
+  return { recommend }
+}
 
-  Promise.resolve().then(() => {
-    return Promise.all([
-      fetchFriendList(twitterId, twitterTokenKey, twitterTokenSecret),
-      fetchEventByAlternateId(eventId)
-    ])
-  }).then(([friendList, event]) => {
-    return Promise.all([
-      fetchUserListWithSpaceByEventAndFriendList(event, friendList),
-      friendList
-    ])
-  }).then(([userList, friendList]) => {
-    return updateUsersByFriendList(userList, friendList)
-  }).then(result => {
-    res.json(result)
-  })
+function pickTwitterAuth(req) {
+  return [req.user.twitterId, req.user.twitterTokenKey, req.user.twitterTokenSecret]
+}
+
+async function fetchLoggedInCatalogue(event, twitterAuth) {
+  const friendList = await fetchFriendList(...twitterAuth)
+  const userList = await fetchUserListWithSpaceByEventAndFriendList(event, friendList)
+  const recommend = await fetchUserListWithSpaceByEvent(event)
+  const friends = await updateUsersByFriendList(userList, friendList)
+  return { recommend, friends }
 }
 
 /**
