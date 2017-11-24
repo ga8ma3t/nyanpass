@@ -7,10 +7,12 @@ import {
 } from '../models/catalogue'
 import {fetchEventByAlternateId} from '../models/event'
 
-export async function fetchRecommendsCatalogue(req, res, next) {
-  const eventId = req.params.eventId
-  const event = await fetchEventByAlternateId(eventId)
-  res.json(await fetchAnonymousCatalogue(event))
+export async function fetchCatalogue(req, res) {
+  const event = await fetchEventByAlternateId(req.params.eventId)
+  const result = req.user
+    ? await fetchLoggedInCatalogue(event, pickTwitterAuth(req))
+    : await fetchAnonymousCatalogue(event)
+  res.json(result)
 }
 
 async function fetchAnonymousCatalogue(event) {
@@ -26,15 +28,19 @@ export async function fetchFriendsCatalogue(req, res, next) {
     return
   }
   const event = await fetchEventByAlternateId(req.params.eventId)
-  const twitterAuth = [req.user.twitterId, req.user.twitterTokenKey, req.user.twitterTokenSecret]
-  res.json(await fetchLoggedInCatalogue(event, twitterAuth))
+  res.json(await fetchLoggedInCatalogue(event, pickTwitterAuth(req)))
+}
+
+function pickTwitterAuth(req) {
+  return [req.user.twitterId, req.user.twitterTokenKey, req.user.twitterTokenSecret]
 }
 
 async function fetchLoggedInCatalogue(event, twitterAuth) {
   const friendList = await fetchFriendList(...twitterAuth)
   const userList = await fetchUserListWithSpaceByEventAndFriendList(event, friendList)
+  const recommend = await fetchUserListWithSpaceByEvent(event)
   const friends = await updateUsersByFriendList(userList, friendList)
-  return { friends }
+  return { recommend, friends }
 }
 
 /**
