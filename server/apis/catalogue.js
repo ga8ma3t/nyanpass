@@ -10,8 +10,12 @@ import {fetchEventByAlternateId} from '../models/event'
 export async function fetchRecommendsCatalogue(req, res, next) {
   const eventId = req.params.eventId
   const event = await fetchEventByAlternateId(eventId)
+  res.json(await fetchAnonymousCatalogue(event))
+}
+
+async function fetchAnonymousCatalogue(event) {
   const recommend = await fetchUserListWithSpaceByEvent(event)
-  res.json({ recommend })
+  return { recommend }
 }
 
 export async function fetchFriendsCatalogue(req, res, next) {
@@ -21,12 +25,16 @@ export async function fetchFriendsCatalogue(req, res, next) {
     next(err)
     return
   }
-  const eventId = req.params.eventId
-  const friendList = await fetchFriendList(req.user.twitterId, req.user.twitterTokenKey, req.user.twitterTokenSecret)
-  const event = await fetchEventByAlternateId(eventId)
+  const event = await fetchEventByAlternateId(req.params.eventId)
+  const twitterAuth = [req.user.twitterId, req.user.twitterTokenKey, req.user.twitterTokenSecret]
+  res.json(await fetchLoggedInCatalogue(event, twitterAuth))
+}
+
+async function fetchLoggedInCatalogue(event, twitterAuth) {
+  const friendList = await fetchFriendList(...twitterAuth)
   const userList = await fetchUserListWithSpaceByEventAndFriendList(event, friendList)
   const friends = await updateUsersByFriendList(userList, friendList)
-  res.json({ friends })
+  return { friends }
 }
 
 /**
