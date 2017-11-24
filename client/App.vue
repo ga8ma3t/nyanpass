@@ -63,11 +63,6 @@
       max-width: 1000px;
     }
   }
-  header {
-    height: 50px;
-    margin: 0 auto;
-    border-bottom: 1px solid #eeeeee;
-  }
   h2 {
     font-size: 32px;
     padding: 20px 0;
@@ -82,7 +77,7 @@
     font-size: 16px;
     border: none;
     border-radius: 3px;
-    background-color: #54b2ff;
+    background-color: #3399cc;
     color: #ffffff;
   }
   li {

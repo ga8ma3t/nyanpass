@@ -1,13 +1,12 @@
 <template>
   <div class="about container">
-
-    <div>
-      <h3>このサイトについて</h3>
+    <div class="message">
+      <h2>このサイトについて</h2>
+      <img src="/images/bigsight.png">
       <p>にゃんぱす！は同人活動をちょっと快適にするウェブサービスです。</p>
-      <p>同人活動に役立ちそうな機能をちょっとずつ開発していく予定です。</p>
       <p>現在の主な機能として、あなたがフォローしているフレンドのサークル一覧を表示できます。</p>
+      <p>今後も同人活動に役立ちそうな機能をちょっとずつ開発していく予定です。</p>
     </div>
-
     <div>
       <h3>おことわり</h3>
       <ul>
@@ -23,7 +22,6 @@
         <li>本サービスに起因して生じたあらゆる損害について、開発者は一切の責任を負いません。</li>
       </ul>
     </div>
-
     <div>
       <h3>しつもん</h3>
       <dl>
@@ -31,21 +29,19 @@
         <dd>twitterから発見できなかった可能性があります</dd>
       </dl>
     </div>
-
     <div>
       <h3>れんらく</h3>
-      <p>何かございましたら @nanocloudx までDMをお願い致しますm(_ _)m</p>
+      <p>ご質問等ございましたら @nanocloudx までダイレクトメッセージをお願い致しますm(_ _)m</p>
     </div>
-
   </div>
 </template>
 
-<script>
-
-</script>
-
 <style lang="scss" scoped>
   .about {
+    .message {
+      text-align: center;
+      margin: 30px 0;
+    }
     ul {
       li {
         list-style: disc;
