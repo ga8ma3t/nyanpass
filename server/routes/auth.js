@@ -9,7 +9,7 @@ const router = express.Router()
 
 router.get('/status', (req, res) => {
   res.json({
-    session: req.user ? {
+    session: req.user && req.user.id ? {
       id: req.user.id,
       twitterId: req.user.twitterId,
       name: req.user.name,

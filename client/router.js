@@ -1,8 +1,8 @@
 import Vue from 'vue'
 import Router from 'vue-router'
-import Index from './components/Index.vue'
-import Catalogues from './components/Catalogues.vue'
-import About from './components/About.vue'
+import Index from './pages/Index.vue'
+import Catalogues from './pages/Catalogues.vue'
+import About from './pages/About.vue'
 
 Vue.use(Router)
 
@@ -23,7 +23,22 @@ const router = new Router({
       path: '/about',
       name: 'About',
       component: About
+    },
+    {
+      path: '/auth/*',
+      meta: {
+        forceReload: true
+      }
     }
   ]
 })
+
+router.beforeEach((to, from, next) => {
+  if (to.matched.some(record => record.meta.forceReload)) {
+    location.href = to.path
+  } else {
+    next()
+  }
+})
+
 export default router

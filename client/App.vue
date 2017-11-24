@@ -1,34 +1,22 @@
 <template>
   <div id="app">
-    <el-container>
-      <el-header>
-        <router-link to="/"><h1>にゃんぱす！v2</h1></router-link>
-      </el-header>
-      <el-main>
-        <router-view></router-view>
-      </el-main>
-      <el-footer>
-        <ul>
-          <li>
-            <router-link to="/about"><p>このサイトについて</p></router-link>
-          </li>
-          <li v-if="session">
-            <a href="/auth/logout"><p>ログアウト</p></a>
-          </li>
-        </ul>
-      </el-footer>
-    </el-container>
+    <header>
+      <router-link to="/"><h1>にゃんぱす！</h1></router-link>
+    </header>
+    <router-view></router-view>
+    <footer>
+      <li v-if="session" class="right"><router-link to="/auth/logout"><p>ログアウト</p></router-link></li>
+      <li v-else class="right"><router-link to="/auth/twitter"><p>ログイン</p></router-link></li>
+      <li class="right"><router-link to="/about"><p>このサイトについて</p></router-link></li>
+    </footer>
   </div>
 </template>
 
 <script>
   import request from 'axios'
-  import ElMain from '../node_modules/element-ui/packages/main/src/main.vue'
-  import ElContainer from '../node_modules/element-ui/packages/container/src/main.vue'
   export default {
     components: {
-      ElContainer,
-      ElMain
+      //
     },
     name: 'app',
     data() {
@@ -57,5 +45,8 @@
     font-family: "Helvetica Neue", Helvetica, "Hiragino Sans GB", Arial, sans-serif;
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
+  }
+  .container {
+    margin: 0 20px;
   }
 </style>

@@ -1,5 +1,24 @@
 import {Space, User, Op} from '../database/models/index'
 
+// TODO IMPORTANT 雑に書いた、助けて黒曜さん :pray: :innocent:
+export function fetchUserListWithSpaceByEvent(event) {
+  return User.findAll({
+    attributes: ['id', 'name', 'imageUrl', 'twitterId', 'twitterName'],
+    include: [{
+      model: Space,
+      attributes: ['id', 'name', 'date', 'district', 'block', 'space'],
+      where: {eventId: event.id},
+      through: {attributes: []}
+    }],
+    limit: 10,
+    order: [
+      [Space, 'date', 'ASC'],
+      [Space, 'block', 'ASC'],
+      [Space, 'space', 'ASC']
+    ]
+  })
+}
+
 export function fetchUserListWithSpaceByEventAndFriendList(event, friendList) {
   const twitterIds = friendList.map(friend => friend.twitterId)
   return User.findAll({
