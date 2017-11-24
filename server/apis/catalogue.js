@@ -20,17 +20,6 @@ async function fetchAnonymousCatalogue(event) {
   return { recommend }
 }
 
-export async function fetchFriendsCatalogue(req, res, next) {
-  if (!req.user) {
-    const err = new Error('Unauthorized')
-    err.status = 401
-    next(err)
-    return
-  }
-  const event = await fetchEventByAlternateId(req.params.eventId)
-  res.json(await fetchLoggedInCatalogue(event, pickTwitterAuth(req)))
-}
-
 function pickTwitterAuth(req) {
   return [req.user.twitterId, req.user.twitterTokenKey, req.user.twitterTokenSecret]
 }
