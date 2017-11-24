@@ -2,7 +2,7 @@ version: '2'
 services:
   app:
     image: node:9.1-alpine
-    command: yarn start:dev
+    command: yarn dev
     ports:
       - '3000:3000'
     volumes:
