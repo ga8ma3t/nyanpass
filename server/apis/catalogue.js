@@ -7,18 +7,14 @@ import {
 } from '../models/catalogue'
 import {fetchEventByAlternateId} from '../models/event'
 
-export function fetchRecommendsCatalogue(req, res, next) {
+export async function fetchRecommendsCatalogue(req, res, next) {
   const eventId = req.params.eventId
-  Promise.resolve().then(() => {
-    return fetchEventByAlternateId(eventId)
-  }).then(event => {
-    return fetchUserListWithSpaceByEvent(event)
-  }).then(result => {
-    res.json({ recommend: result })
-  })
+  const event = await fetchEventByAlternateId(eventId)
+  const recommend = await fetchUserListWithSpaceByEvent(event)
+  res.json({ recommend })
 }
 
-export function fetchFriendsCatalogue(req, res, next) {
+export async function fetchFriendsCatalogue(req, res, next) {
   if (!req.user) {
     const err = new Error('Unauthorized')
     err.status = 401
@@ -29,22 +25,11 @@ export function fetchFriendsCatalogue(req, res, next) {
   const twitterId = req.user.twitterId
   const twitterTokenKey = req.user.twitterTokenKey
   const twitterTokenSecret = req.user.twitterTokenSecret
-
-  Promise.resolve().then(() => {
-    return Promise.all([
-      fetchFriendList(twitterId, twitterTokenKey, twitterTokenSecret),
-      fetchEventByAlternateId(eventId)
-    ])
-  }).then(([friendList, event]) => {
-    return Promise.all([
-      fetchUserListWithSpaceByEventAndFriendList(event, friendList),
-      friendList
-    ])
-  }).then(([userList, friendList]) => {
-    return updateUsersByFriendList(userList, friendList)
-  }).then(result => {
-    res.json(result)
-  })
+  const friendList = await fetchFriendList(twitterId, twitterTokenKey, twitterTokenSecret)
+  const event = await fetchEventByAlternateId(eventId)
+  const userList = await fetchUserListWithSpaceByEventAndFriendList(event, friendList)
+  const friends = await updateUsersByFriendList(userList, friendList)
+  res.json(friends)
 }
 
 /**
