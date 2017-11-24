@@ -2,7 +2,7 @@
   <div id="app">
     <header-component></header-component>
     <router-view></router-view>
-    <footer-component></footer-component>
+    <footer-component :session="session"></footer-component>
   </div>
 </template>
 

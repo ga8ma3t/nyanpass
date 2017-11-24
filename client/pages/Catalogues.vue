@@ -13,14 +13,15 @@
         <h3>ブックマークしたサークル</h3>
         <div class="center" v-if="isRequireLogin">
           <img src="/images/login.png">
-          <p>Twitterアカウントを連携すると、サークルをブックマークできます</p>
+          <p>Twitterアカウントを連携すると、お気に入りのサークルをブックマークできます</p>
           <a :href="`/auth/twitter?from=/catalogues/${this.$route.params.id}`">
             <button>Twitterと連携する</button>
           </a>
         </div>
         <div v-else>
-          <Loading v-show="!bookmarkList"></Loading>
-          <circle-card :circle-list="bookmarkList"></circle-card>
+          <p>ブックマーク機能は準備中です...</p>
+          <!--<Loading v-show="!bookmarkList"></Loading>-->
+          <!--<circle-card :circle-list="bookmarkList"></circle-card>-->
         </div>
       </div>
     </div>
