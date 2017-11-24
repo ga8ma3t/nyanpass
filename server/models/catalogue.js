@@ -1,6 +1,6 @@
 import {Space, User, Op, sequelize} from '../database/models/index'
 
-export function fetchUserListWithSpaceByEvent(event) {
+export function fetchRecommendUserListWithSpaceByEvent(event) {
   return User.findAll({
     attributes: ['id', 'name', 'imageUrl', 'twitterId', 'twitterName'],
     include: [{
