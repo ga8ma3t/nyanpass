@@ -74,23 +74,22 @@
                 space: recommend.spaces[0]
               }
             })
+            this.friendList = result.data.friends || null
+            if(this.friendList) {
+              this.friendList = this.friendList.map(friend => {
+                return {
+                  id: friend.id,
+                  name: friend.name,
+                  imageUrl: friend.imageUrl,
+                  twitterId: friend.twitterId,
+                  twitterName: friend.twitterName,
+                  space: friend.spaces[0]
+                }
+              })
+            } else {
+              this.isRequireLogin = true
+            }
           })
-        }).then(() => {
-          return request.get(`/api/catalogues/${this.$route.params.id}/friends`).then(result => {
-            this.friendList = result.data.friends
-            this.friendList = this.friendList.map(friend => {
-              return {
-                id: friend.id,
-                name: friend.name,
-                imageUrl: friend.imageUrl,
-                twitterId: friend.twitterId,
-                twitterName: friend.twitterName,
-                space: friend.spaces[0]
-              }
-            })
-          })
-        }).catch(() => {
-          this.isRequireLogin = true
         })
       }
     }
