@@ -1,18 +1,22 @@
 <template>
   <div id="app">
-    <div class="container">
-      <header-menu :session="session"></header-menu>
-      <router-view></router-view>
-    </div>
+    <header>
+      <router-link to="/"><h1>にゃんぱす！</h1></router-link>
+    </header>
+    <router-view></router-view>
+    <footer>
+      <li v-if="session" class="right"><router-link to="/auth/logout"><p>ログアウト</p></router-link></li>
+      <li v-else class="right"><router-link to="/auth/twitter"><p>ログイン</p></router-link></li>
+      <li class="right"><router-link to="/about"><p>このサイトについて</p></router-link></li>
+    </footer>
   </div>
 </template>
 
 <script>
   import request from 'axios'
-  import HeaderMenu from './components/HeaderMenu.vue'
   export default {
     components: {
-      HeaderMenu
+      //
     },
     name: 'app',
     data() {
@@ -41,5 +45,8 @@
     font-family: "Helvetica Neue", Helvetica, "Hiragino Sans GB", Arial, sans-serif;
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
+  }
+  .container {
+    margin: 0 20px;
   }
 </style>
