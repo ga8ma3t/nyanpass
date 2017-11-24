@@ -43,6 +43,11 @@
         width: 200px;
         padding: 0 10px 20px;
       }
+      &:hover {
+        .circle-card-info {
+          box-shadow: 0 1px 1px rgba(0,0,0,0.1);
+        }
+      }
       .circle-card-image {
         width: 100%;
         display: block;

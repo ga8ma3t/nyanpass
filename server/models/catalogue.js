@@ -37,7 +37,7 @@ export function fetchRecommendUserListWithSpaceByFriends(event, friends) {
       through: {attributes: []},
       duplicating: false
     }],
-    limit: 10,
+    limit: 15,
     order: [
       sequelize.fn('RANDOM')
     ]
