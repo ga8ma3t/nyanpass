@@ -1,20 +1,18 @@
-import {Space, User, Op} from '../database/models/index'
+import {Space, User, Op, sequelize} from '../database/models/index'
 
-// TODO IMPORTANT 雑に書いた、助けて黒曜さん :pray: :innocent:
 export function fetchUserListWithSpaceByEvent(event) {
   return User.findAll({
     attributes: ['id', 'name', 'imageUrl', 'twitterId', 'twitterName'],
     include: [{
       model: Space,
       attributes: ['id', 'name', 'date', 'district', 'block', 'space'],
-      where: {eventId: event.id},
-      through: {attributes: []}
+      where: {eventId: event.id, block: 'あ'},
+      through: {attributes: []},
+      duplicating: false
     }],
     limit: 10,
     order: [
-      [Space, 'date', 'ASC'],
-      [Space, 'block', 'ASC'],
-      [Space, 'space', 'ASC']
+      sequelize.fn( 'RANDOM' ),
     ]
   })
 }
