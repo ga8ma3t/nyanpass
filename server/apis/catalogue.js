@@ -22,7 +22,7 @@ function pickTwitterAuth(req) {
 async function fetchAnonymousCatalogue(event) {
   const recommends = await fetchRecommendUserListWithSpaceByEvent(event)
   return {
-    recommends: [recommends, recommends, recommends]
+    recommends: splitByDate(event, recommends)
   }
 }
 
@@ -32,18 +32,13 @@ async function fetchLoggedInCatalogue(event, twitterAuth) {
   const friends = await updateUsersByTwitterUserList(userList, friendList)
   const recommends = await fetchRecommendUserListWithSpaceByFriends(event, friends)
   return {
-    // TODO 現在は3日ある前提だが、実際は自動判別すべきなのでそのうち直す必要あり
-    recommends: [
-      recommends.filter(recommend => recommend.space.date === 1),
-      recommends.filter(recommend => recommend.space.date === 2),
-      recommends.filter(recommend => recommend.space.date === 3)
-    ],
-    friends: [
-      friends.filter(friend => friend.space.date === 1),
-      friends.filter(friend => friend.space.date === 2),
-      friends.filter(friend => friend.space.date === 3)
-    ]
+    recommends: splitByDate(event, recommends),
+    friends: splitByDate(event, friends)
   }
+}
+
+function splitByDate(event, users) {
+  return event.dates.map((_, i) => users.filter(user => user.space.date === i + 1))
 }
 
 /**
