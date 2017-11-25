@@ -1,17 +1,21 @@
 <template>
   <div>
     <div v-for="(circleList, index) in circleListGroup">
-      <h4>{{index + 1}}日目</h4>
+      <h4 v-if="circleListGroup.length > 1">{{index + 1}}日目</h4>
       <p class="nothing" v-if="circleList.length === 0">みつかりませんでした</p>
       <div class="circle-card-container">
-        <div class="circle-card" v-for="circle in circleList">
+        <div class="circle-card" v-for="circle in circleList" @click="onClickCircleCard(circle.space.id)">
           <p class="bookmark" v-show="circle.space.isBookmarked"></p>
           <img :src="circle.imageUrl" class="circle-card-image" onerror="this.src='/images/noimage.jpg'">
           <div class="circle-card-info">
             <p class="circle-card-info-space">{{circle.space.district}} {{circle.space.block}}-{{circle.space.space}}</p>
             <p class="circle-card-info-circle-name">{{circle.space.name}}</p>
             <p class="circle-card-info-account-name">{{circle.name}}</p>
-            <p class="circle-card-info-account-twitter">@{{circle.twitterName}}</p>
+            <p class="circle-card-info-account-twitter">
+              <a :href="`https://twitter.com/${circle.twitterName}`" target="_blank" rel="noopener">
+                <i class="fa fa-twitter" aria-hidden="true"></i>@{{circle.twitterName}}
+              </a>
+            </p>
           </div>
         </div>
       </div>
@@ -26,6 +30,11 @@
       isLoading() {
         return !this.circleListGroup
       }
+    },
+    methods: {
+      onClickCircleCard(spaceId) {
+        this.$emit('onUpdateBookmark', spaceId)
+      }
     }
   }
 </script>
@@ -34,7 +43,7 @@
   h4 {
     text-align: center;
     font-size: 20px;
-    margin: 10px 2%;
+    margin: 10px -10px;
     padding: 10px 0;
     background-color: #0084b4;
     color: #ffffff;
@@ -84,6 +93,10 @@
       }
       .circle-card-info-account-name, .circle-card-info-account-twitter {
         font-size: 12px;
+      }
+      .circle-card-info-account-twitter a {
+        color: #0084b4;
+        text-decoration: none;
       }
       .bookmark {
         position: absolute;

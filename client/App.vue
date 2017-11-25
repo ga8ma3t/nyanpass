@@ -79,6 +79,7 @@
     border-radius: 3px;
     background-color: #00aced;
     color: #ffffff;
+    cursor: pointer;
   }
   li {
     list-style: none;
