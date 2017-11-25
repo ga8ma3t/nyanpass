@@ -1,25 +1,21 @@
-/* eslint-disable no-console */
-
+import gulp from 'gulp'
 import uuidv4 from 'uuid/v4'
-import {searchTweets} from '../models/twitter'
-import {convertMultiByteToSingleByte} from '../utils/util'
-import { fetchEventByName } from '../models/event'
-import { findOrCreateUserByTwitterId } from '../models/user'
-import { findOrCreateSpace, addSpaceMember } from '../models/space'
+import { searchTweets } from '../server/models/twitter'
+import { fetchEventByName } from '../server/models/event'
+import { findOrCreateUserByTwitterId } from '../server/models/user'
+import { addSpaceMember, findOrCreateSpace } from '../server/models/space'
+import { convertMultiByteToSingleByte } from '../server/utils/util'
 
-export function extractC93LayoutReport(req, res) {
-  const count = req.query.count
-  const cursor = req.query.cursor
-  const sinceId = req.query.sinceId
+gulp.task('events:crawlSpaces:c93', async() => {
+  await crawlC93()
+  process.exit()
+})
 
-  execute(count, cursor, sinceId).then(result => {
-    res.json(result)
-  }).catch(err => {
-    res.json(err)
-  })
-}
+async function crawlC93() {
+  const count = 100
+  let cursor = null
+  let sinceId = null
 
-async function execute(count, cursor, sinceId) {
   let entryList = []
   try {
     for (let i = 0; i < count; i++) {
@@ -78,6 +74,7 @@ function format(entry) {
       tweetId: entry.id
     },
     user: {
+
       id: uuidv4(),
       name: entry.name,
       imageUrl: entry.imageUrl,

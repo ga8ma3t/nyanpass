@@ -66,7 +66,7 @@ export function fetchUserListWithSpaceByEventAndFriendList(event, friendList) {
   }).then(users => users.map(user => omit(Object.assign(user.get({plain: true}), {space: user.spaces[0]}), 'spaces')))
 }
 
-export function updateUsersByFriendList(users, friendList) {
+export function updateUsersByTwitterUserList(users, friendList) {
   const twitterIdMap = friendList.reduce((map, friend) => {
     map[friend.twitterId] = friend
     return map
