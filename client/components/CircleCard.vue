@@ -5,7 +5,7 @@
       <p class="nothing" v-if="circleList.length === 0">みつかりませんでした</p>
       <div class="circle-card-container">
         <div class="circle-card" v-for="circle in circleList">
-          <p class="bookmark"></p>
+          <p class="bookmark" v-show="circle.space.isBookmarked"></p>
           <img :src="circle.imageUrl" class="circle-card-image" onerror="this.src='/images/noimage.jpg'">
           <div class="circle-card-info">
             <p class="circle-card-info-space">{{circle.space.district}} {{circle.space.block}}-{{circle.space.space}}</p>
@@ -86,7 +86,6 @@
         font-size: 12px;
       }
       .bookmark {
-        display: block;
         position: absolute;
         border-right: 50px solid #ffc423;
         border-bottom: 50px solid transparent;
