@@ -11,7 +11,6 @@
     border-bottom: 2px solid rgba(0,0,0,0.5);
     height: 50px;
     background-color: #00aced;
-    /*box-sizing: border-box;*/
     .logo {
       height: 34px;
       padding: 8px 0;
