@@ -43,6 +43,7 @@ export const Event = sequelize.define('event', {
   type: Sequelize.STRING,
   name: Sequelize.STRING,
   date: Sequelize.DATEONLY,
+  place: Sequelize.STRING,
   optional: Sequelize.JSON
 })
 

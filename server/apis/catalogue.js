@@ -15,21 +15,35 @@ export async function fetchCatalogue(req, res) {
   res.json(result)
 }
 
-async function fetchAnonymousCatalogue(event) {
-  const recommend = await fetchRecommendUserListWithSpaceByEvent(event)
-  return { recommend }
-}
-
 function pickTwitterAuth(req) {
   return [req.user.twitterId, req.user.twitterTokenKey, req.user.twitterTokenSecret]
+}
+
+async function fetchAnonymousCatalogue(event) {
+  const recommends = await fetchRecommendUserListWithSpaceByEvent(event)
+  return {
+    recommends: [recommends, recommends, recommends]
+  }
 }
 
 async function fetchLoggedInCatalogue(event, twitterAuth) {
   const friendList = await fetchFriendList(...twitterAuth)
   const userList = await fetchUserListWithSpaceByEventAndFriendList(event, friendList)
   const friends = await updateUsersByTwitterUserList(userList, friendList)
-  const recommend = await fetchRecommendUserListWithSpaceByFriends(event, friends)
-  return { recommend, friends }
+  const recommends = await fetchRecommendUserListWithSpaceByFriends(event, friends)
+  return {
+    // TODO 現在は3日ある前提だが、実際は自動判別すべきなのでそのうち直す必要あり
+    recommends: [
+      recommends.filter(recommend => recommend.space.date === 1),
+      recommends.filter(recommend => recommend.space.date === 2),
+      recommends.filter(recommend => recommend.space.date === 3)
+    ],
+    friends: [
+      friends.filter(friend => friend.space.date === 1),
+      friends.filter(friend => friend.space.date === 2),
+      friends.filter(friend => friend.space.date === 3)
+    ]
+  }
 }
 
 /**

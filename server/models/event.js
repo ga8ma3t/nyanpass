@@ -6,7 +6,7 @@ export function fetchEvent(eventId) {
 
 export function fetchEvents() {
   return Event.findAll({
-    attributes: ['alternateId', 'name', 'date']
+    attributes: ['alternateId', 'name', 'date', 'place']
   })
 }
 

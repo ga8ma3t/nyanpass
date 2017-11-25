@@ -68,7 +68,12 @@
     padding: 20px 0;
   }
   h3 {
-    font-size: 22px;
+    font-size: 24px;
+    padding: 20px 0;
+  }
+  h4 {
+    text-align: center;
+    font-size: 20px;
     padding: 20px 0;
   }
   button {
@@ -77,13 +82,14 @@
     font-size: 16px;
     border: none;
     border-radius: 3px;
-    background-color: #3399cc;
+    background-color: #00aced;
     color: #ffffff;
   }
   li {
     list-style: none;
   }
   .center {
+    margin: 0 auto;
     text-align: center;
   }
 </style>

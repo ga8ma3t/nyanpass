@@ -1,3 +1,4 @@
+import omit from 'lodash.omit'
 import {Space, User, Op, sequelize} from '../database/models/index'
 
 export function fetchRecommendUserListWithSpaceByEvent(event) {
@@ -14,12 +15,12 @@ export function fetchRecommendUserListWithSpaceByEvent(event) {
     order: [
       sequelize.fn('RANDOM')
     ]
-  })
+  }).then(users => users.map(user => omit(Object.assign(user.get({plain: true}), {space: user.spaces[0]}), 'spaces')))
 }
 
 export function fetchRecommendUserListWithSpaceByFriends(event, friends) {
   const blocks = friends.map(friend => {
-    const space = friend.spaces[0]
+    const space = friend.space
     return { date: space.date, block: space.block }
   })
   return User.findAll({
@@ -29,7 +30,7 @@ export function fetchRecommendUserListWithSpaceByFriends(event, friends) {
       attributes: ['id', 'name', 'date', 'district', 'block', 'space'],
       where: {
         id: {
-          [Op.notIn]: friends.map(friend => friend.spaces[0].id)
+          [Op.notIn]: friends.map(friend => friend.space.id)
         },
         eventId: event.id,
         [Op.or]: Array.from(new Set(blocks))
@@ -41,7 +42,7 @@ export function fetchRecommendUserListWithSpaceByFriends(event, friends) {
     order: [
       sequelize.fn('RANDOM')
     ]
-  })
+  }).then(users => users.map(user => omit(Object.assign(user.get({plain: true}), {space: user.spaces[0]}), 'spaces')))
 }
 
 export function fetchUserListWithSpaceByEventAndFriendList(event, friendList) {
@@ -62,7 +63,7 @@ export function fetchUserListWithSpaceByEventAndFriendList(event, friendList) {
       [Space, 'block', 'ASC'],
       [Space, 'space', 'ASC']
     ]
-  })
+  }).then(users => users.map(user => omit(Object.assign(user.get({plain: true}), {space: user.spaces[0]}), 'spaces')))
 }
 
 export function updateUsersByTwitterUserList(users, friendList) {
@@ -84,25 +85,4 @@ export function updateUsersByTwitterUserList(users, friendList) {
       return user
     }
   }))
-}
-
-export function fetchSpaceListWithUserByEventAndFriendList(event, friendList) {
-  const twitterIds = friendList.map(friend => friend.twitterId)
-  return Space.findAll({
-    attributes: ['id', 'name', 'date', 'district', 'block', 'space'],
-    include: [{
-      model: User,
-      attributes: ['id', 'name', 'imageUrl', 'twitterId', 'twitterName'],
-      where: {twitterId: {[Op.in]: twitterIds}},
-      through: {attributes: []}
-    }],
-    where: {
-      eventId: event.id
-    },
-    order: [
-      ['date', 'ASC'],
-      ['block', 'ASC'],
-      ['space', 'ASC']
-    ]
-  })
 }
