@@ -1,8 +1,11 @@
 <template>
   <div>
-    <div class="circle-card-container">
-      <div v-for="circleList in circleListGroup">
-        <div>n日目</div>
+    <div v-for="(circleList, index) in circleListGroup">
+      <h4>{{index + 1}}日目</h4>
+      <div class="circle-card-container">
+        <div v-if="circleList.length === 0">
+          <p>サークルはありません</p>
+        </div>
         <div class="circle-card" v-for="circle in circleList">
           <img :src="circle.imageUrl" class="circle-card-image" onerror="this.src='/images/noimage.jpg'">
           <div class="circle-card-info">

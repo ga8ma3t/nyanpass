@@ -88,7 +88,7 @@
           })
         }).then(() => {
           return request.get(`/api/catalogues/${this.$route.params.id}`).then(result => {
-            this.recommendListGroup = result.data.recommend || null
+            this.recommendListGroup = result.data.recommends || null
             this.friendListGroup = result.data.friends || null
             if (!this.friendListGroup) {
               this.isRequireLogin = true
