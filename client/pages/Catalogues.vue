@@ -108,7 +108,6 @@
       onUpdateBookmark(spaceId) {
         // TODO ajax で bookmark の登録削除を実行
         console.log('Catalogues.vue::onUpdateBookmark', spaceId)
-        
       }
     }
   }
