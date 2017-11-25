@@ -1,7 +1,7 @@
 import gulp from 'gulp'
 import uuidv4 from 'uuid/v4'
 import { searchTweets } from '../server/models/twitter'
-import { fetchEventByName } from '../server/models/event'
+import { fetchEventByAlternateId } from '../server/models/event'
 import { findOrCreateUserByTwitterId } from '../server/models/user'
 import { addSpaceMember, findOrCreateSpace } from '../server/models/space'
 import { convertMultiByteToSingleByte } from '../server/utils/util'
@@ -44,7 +44,7 @@ async function crawlC93() {
 
 function insertEntry({user, space}) {
   return Promise.resolve().then(() => {
-    return fetchEventByName('コミックマーケット93')
+    return fetchEventByAlternateId('c93')
   }).then((event) => {
     return Promise.all([
       findOrCreateUserByTwitterId(user),
