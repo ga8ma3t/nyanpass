@@ -15,13 +15,19 @@ export async function fetchCatalogue(req, res) {
   res.json(result)
 }
 
-async function fetchAnonymousCatalogue(event) {
-  const recommend = await fetchRecommendUserListWithSpaceByEvent(event)
-  return { recommend }
-}
-
 function pickTwitterAuth(req) {
   return [req.user.twitterId, req.user.twitterTokenKey, req.user.twitterTokenSecret]
+}
+
+async function fetchAnonymousCatalogue(event) {
+  const recommend = await fetchRecommendUserListWithSpaceByEvent(event)
+  return {
+    recommend: {
+      '2017-12-29': recommend,
+      '2017-12-30': recommend,
+      '2017-12-31': recommend
+    }
+  }
 }
 
 async function fetchLoggedInCatalogue(event, twitterAuth) {
@@ -29,7 +35,18 @@ async function fetchLoggedInCatalogue(event, twitterAuth) {
   const userList = await fetchUserListWithSpaceByEventAndFriendList(event, friendList)
   const friends = await updateUsersByFriendList(userList, friendList)
   const recommend = await fetchRecommendUserListWithSpaceByFriends(event, friends)
-  return { recommend, friends }
+  return {
+    recommend: {
+      '2017-12-29': recommend,
+      '2017-12-30': recommend,
+      '2017-12-31': recommend
+    },
+    friends: {
+      '2017-12-29': friends,
+      '2017-12-30': friends,
+      '2017-12-31': friends
+    }
+  }
 }
 
 /**

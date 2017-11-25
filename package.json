@@ -88,6 +88,7 @@
     "eslint-plugin-promise": "^3.6.0",
     "eslint-plugin-standard": "^3.0.1",
     "file-loader": "^1.1.5",
+    "lodash.omit": "^4.5.0",
     "node-sass": "^4.6.0",
     "nodemon": "^1.12.1",
     "rimraf": "^2.6.2",

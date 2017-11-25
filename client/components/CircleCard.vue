@@ -1,13 +1,16 @@
 <template>
   <div>
     <div class="circle-card-container">
-      <div class="circle-card" v-for="circle in circleList">
-        <img :src="circle.imageUrl" class="circle-card-image" onerror="this.src='/images/noimage.jpg'">
-        <div class="circle-card-info">
-          <p class="circle-card-info-space">{{circle.space.district}} {{circle.space.block}}-{{circle.space.space}}</p>
-          <p class="circle-card-info-circle-name">{{circle.space.name}}</p>
-          <p class="circle-card-info-account-name">{{circle.name}}</p>
-          <p class="circle-card-info-account-twitter">@{{circle.twitterName}}</p>
+      <div v-for="circleList in circleListGroup">
+        <div>n日目</div>
+        <div class="circle-card" v-for="circle in circleList">
+          <img :src="circle.imageUrl" class="circle-card-image" onerror="this.src='/images/noimage.jpg'">
+          <div class="circle-card-info">
+            <p class="circle-card-info-space">{{circle.space.district}} {{circle.space.block}}-{{circle.space.space}}</p>
+            <p class="circle-card-info-circle-name">{{circle.space.name}}</p>
+            <p class="circle-card-info-account-name">{{circle.name}}</p>
+            <p class="circle-card-info-account-twitter">@{{circle.twitterName}}</p>
+          </div>
         </div>
       </div>
     </div>
@@ -15,14 +18,11 @@
 </template>
 
 <script>
-  // 'id', 'name', 'imageUrl', 'twitterId', 'twitterName'
-  // 'id', 'name', 'date', 'district', 'block', 'space'
-
   export default {
-    props: ['circleList'],
+    props: ['circleListGroup'],
     computed: {
       isLoading() {
-        return !this.circleList
+        return !this.circleListGroup
       }
     }
   }

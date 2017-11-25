@@ -4,7 +4,8 @@
     <div class="event-wrapper">
       <div class="container">
         <h2>{{event.name}}</h2>
-        <p>場所：{{event.place}}(未実装) 日付：{{event.dates}}</p>
+        <p>場所：{{event.place}}</p>
+        <p>日付：{{event.dates}}</p>
       </div>
     </div>
 
@@ -37,8 +38,8 @@
           </a>
         </div>
         <div v-else>
-          <Loading v-show="!friendList"></Loading>
-          <circle-card :circle-list="friendList"></circle-card>
+          <Loading v-show="!friendListGroup"></Loading>
+          <circle-card :circle-list-group="friendListGroup"></circle-card>
         </div>
       </div>
     </div>
@@ -46,8 +47,8 @@
     <div class="catalogue-wrapper">
       <div class="container">
         <h3>おすすめのサークル</h3>
-        <Loading v-show="!recommendList"></Loading>
-        <circle-card :circle-list="recommendList"></circle-card>
+        <Loading v-show="!recommendListGroup"></Loading>
+        <circle-card :circle-list-group="recommendListGroup"></circle-card>
       </div>
     </div>
 
@@ -68,8 +69,8 @@
       return {
         event: null,
         bookmarkList: null,
-        friendList: null,
-        recommendList: null,
+        friendListGroup: null,
+        recommendListGroup: null,
         isRequireLogin: false
       }
     },
@@ -87,30 +88,9 @@
           })
         }).then(() => {
           return request.get(`/api/catalogues/${this.$route.params.id}`).then(result => {
-            this.recommendList = result.data.recommend
-            this.recommendList = this.recommendList.map(recommend => {
-              return {
-                id: recommend.id,
-                name: recommend.name,
-                imageUrl: recommend.imageUrl,
-                twitterId: recommend.twitterId,
-                twitterName: recommend.twitterName,
-                space: recommend.spaces[0]
-              }
-            })
-            this.friendList = result.data.friends || null
-            if (this.friendList) {
-              this.friendList = this.friendList.map(friend => {
-                return {
-                  id: friend.id,
-                  name: friend.name,
-                  imageUrl: friend.imageUrl,
-                  twitterId: friend.twitterId,
-                  twitterName: friend.twitterName,
-                  space: friend.spaces[0]
-                }
-              })
-            } else {
+            this.recommendListGroup = result.data.recommend || null
+            this.friendListGroup = result.data.friends || null
+            if (!this.friendListGroup) {
               this.isRequireLogin = true
             }
           })
