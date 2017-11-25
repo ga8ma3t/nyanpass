@@ -2,8 +2,7 @@ import redis from '../models/redis'
 import {fetchFriends} from '../models/twitter'
 import {
   fetchRecommendUserListWithSpaceByEvent, fetchRecommendUserListWithSpaceByFriends,
-  fetchUserListWithSpaceByEventAndFriendList,
-  updateUsersByTwitterUserList
+  fetchUserListWithSpaceByEventAndFriendList
 } from '../models/catalogue'
 import {fetchEventByAlternateId} from '../models/event'
 
@@ -28,8 +27,7 @@ async function fetchAnonymousCatalogue(event) {
 
 async function fetchLoggedInCatalogue(event, twitterAuth) {
   const friendList = await fetchFriendList(...twitterAuth)
-  const userList = await fetchUserListWithSpaceByEventAndFriendList(event, friendList)
-  const friends = await updateUsersByTwitterUserList(userList, friendList)
+  const friends = await fetchUserListWithSpaceByEventAndFriendList(event, friendList)
   const recommends = await fetchRecommendUserListWithSpaceByFriends(event, friends)
   return {
     recommends: splitByDate(event, recommends),
