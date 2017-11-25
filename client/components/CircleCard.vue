@@ -2,10 +2,8 @@
   <div>
     <div v-for="(circleList, index) in circleListGroup">
       <h4>{{index + 1}}日目</h4>
+      <p class="nothing" v-if="circleList.length === 0">みつかりませんでした</p>
       <div class="circle-card-container">
-        <div v-if="circleList.length === 0">
-          <p>サークルはありません</p>
-        </div>
         <div class="circle-card" v-for="circle in circleList">
           <img :src="circle.imageUrl" class="circle-card-image" onerror="this.src='/images/noimage.jpg'">
           <div class="circle-card-info">
@@ -32,11 +30,24 @@
 </script>
 
 <style lang="scss" scoped>
+  h4 {
+    text-align: center;
+    font-size: 20px;
+    margin: 10px;
+    padding: 10px 0;
+    background-color: #0084b4;
+    color: #ffffff;
+  }
+  .nothing {
+    text-align: center;
+    margin: 50px 0;
+  }
   .circle-card-container {
     display: flex;
     flex-wrap: wrap;
     .circle-card {
       box-sizing: border-box;
+      position: relative;
       padding: 2%;
       width: 50%;
       overflow: hidden;

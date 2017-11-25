@@ -102,8 +102,14 @@
 
 <style lang="scss" scoped>
   .event-wrapper {
-    background-color: #ffffff;
-    padding: 20px 0;
+    background-color: #333333;
+    color: #ffffff;
+    .container {
+      padding: 20px 0;
+      background-image: url("/images/bigsight.png");
+      background-position: right top;
+      background-repeat: no-repeat;
+    }
     p {
       margin-bottom: 20px;
     }

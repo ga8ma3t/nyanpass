@@ -71,11 +71,6 @@
     font-size: 24px;
     padding: 20px 0;
   }
-  h4 {
-    text-align: center;
-    font-size: 20px;
-    padding: 20px 0;
-  }
   button {
     margin: 20px;
     padding: 10px 40px;
