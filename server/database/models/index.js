@@ -55,11 +55,23 @@ export const SpaceMemberRelation = sequelize.define('space_member_relation', {
   }
 })
 
+export const BookmarkRelation = sequelize.define('bookmark_relation', {
+  id: {
+    type: Sequelize.UUID,
+    defaultValue: Sequelize.UUIDV4,
+    primaryKey: true
+  }
+})
+
 // Space has one Event
 Space.belongsTo(Event)
 
 // SpaceMemberRelation
 Space.belongsToMany(User, {through: 'space_member_relation'})
 User.belongsToMany(Space, {through: 'space_member_relation'})
+
+// Bookmarks
+Space.belongsToMany(User, {through: 'bookmark_relation', as: 'bookmarked'})
+User.belongsToMany(Space, {through: 'bookmark_relation', as: 'bookmarks'})
 
 sequelize.sync()
