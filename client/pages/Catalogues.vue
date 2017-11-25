@@ -4,8 +4,8 @@
     <div class="event-wrapper">
       <div class="container">
         <h2>{{event.name}}</h2>
-        <p>場所：{{event.place}}</p>
-        <p>日付：{{event.dates}}</p>
+        <p><i class="fa fa-map-marker fa-fw" aria-hidden="true"></i>{{event.place}}</p>
+        <p><i class="fa fa-calendar fa-fw" aria-hidden="true"></i>{{event.dates}}</p>
       </div>
     </div>
 
@@ -20,9 +20,11 @@
           </a>
         </div>
         <div v-else>
-          <p class="center">ブックマーク機能は準備中です</p>
-          <!--<Loading v-show="!bookmarkList"></Loading>-->
-          <!--<circle-card :circle-list="bookmarkList"></circle-card>-->
+          <Loading v-show="!bookmarkListGroup"></Loading>
+          <circle-card
+            :circle-list-group="bookmarkListGroup"
+            @onUpdateBookmark="onUpdateBookmark(...arguments)"
+          ></circle-card>
         </div>
       </div>
     </div>
@@ -39,7 +41,10 @@
         </div>
         <div v-else>
           <Loading v-show="!friendListGroup"></Loading>
-          <circle-card :circle-list-group="friendListGroup"></circle-card>
+          <circle-card
+            :circle-list-group="friendListGroup"
+            @onUpdateBookmark="onUpdateBookmark(...arguments)"
+          ></circle-card>
         </div>
       </div>
     </div>
@@ -48,7 +53,10 @@
       <div class="container">
         <h3>おすすめのサークル</h3>
         <Loading v-show="!recommendListGroup"></Loading>
-        <circle-card :circle-list-group="recommendListGroup"></circle-card>
+        <circle-card
+          :circle-list-group="recommendListGroup"
+          @onUpdateBookmark="onUpdateBookmark(...arguments)"
+        ></circle-card>
       </div>
     </div>
 
@@ -68,7 +76,7 @@
     data() {
       return {
         event: null,
-        bookmarkList: null,
+        bookmarkListGroup: null,
         friendListGroup: null,
         recommendListGroup: null,
         isRequireLogin: false
@@ -90,11 +98,16 @@
           return request.get(`/api/catalogues/${this.$route.params.id}`).then(result => {
             this.recommendListGroup = result.data.recommends || null
             this.friendListGroup = result.data.friends || null
+            this.bookmarkListGroup = result.data.bookmarks || null
             if (!this.friendListGroup) {
-              this.isRequireLogin = true
+              this.isRequireLogin = true // TODO 友達がいない場合もここに来てしまうよな...
             }
           })
         })
+      },
+      onUpdateBookmark(spaceId) {
+        // TODO ajax で bookmark の登録削除を実行
+        console.log('Catalogues.vue::onUpdateBookmark', spaceId)
       }
     }
   }
@@ -104,6 +117,7 @@
   .event-wrapper {
     background-color: #333333;
     color: #ffffff;
+    padding: 0 10px;
     .container {
       padding: 20px 0;
       background-image: url("/images/bigsight.png");
