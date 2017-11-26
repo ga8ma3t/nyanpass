@@ -124,3 +124,7 @@ export function updateUsersByTwitterUserList(users, friendList) {
     }
   }))
 }
+
+export function createUsersByTwitterUserList(friendList) {
+  return User.bulkCreate(friendList)
+}

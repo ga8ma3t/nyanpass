@@ -1,11 +1,13 @@
 import redis from '../models/redis'
-import {fetchTwitterFriendIds} from '../models/twitter'
+import { fetchTwitterFriendIds, lookupUsers } from '../models/twitter'
 import {
+  createUsersByTwitterUserList,
   fetchBookmarkIds, fetchBySpaceIds,
   fetchRecommendUserListWithSpaceByEvent, fetchRecommendUserListWithSpaceByFriends,
   fetchUserListWithSpaceByEventAndFriendIds
 } from '../models/catalogue'
 import {fetchEventByAlternateId} from '../models/event'
+import { fetchUnregisteredTwitterIds } from '../models/user'
 
 export async function fetchCatalogue(req, res) {
   const event = await fetchEventByAlternateId(req.params.eventId)
@@ -27,7 +29,9 @@ async function fetchAnonymousCatalogue(event) {
 }
 
 async function fetchLoggedInCatalogue(event, user) {
-  const friendIds = await fetchFriendIds(...pickTwitterAuth(user))
+  const twitterAuth = pickTwitterAuth(user)
+  const friendIds = await fetchFriendIds(...twitterAuth)
+  await createUnregisteredUsers(friendIds, twitterAuth)
   const friends = await fetchUserListWithSpaceByEventAndFriendIds(event, friendIds)
   const recommends = await fetchRecommendUserListWithSpaceByFriends(event, friends)
   const bookmarkIds = await fetchBookmarkIds(user, event)
@@ -36,6 +40,21 @@ async function fetchLoggedInCatalogue(event, user) {
     bookmarks: formatCircles(event, bookmarks, bookmarkIds),
     recommends: formatCircles(event, recommends, bookmarkIds),
     friends: formatCircles(event, friends, bookmarkIds)
+  }
+}
+
+async function createUnregisteredUsers(ids, twitterAuth) {
+  try {
+    const unregisteredIds = await fetchUnregisteredTwitterIds(ids)
+    const size = 100
+    for (let i = 0; i < unregisteredIds.length; i += size) {
+      const twitterUsers = await lookupUsers(unregisteredIds.slice(i, i + size), ...twitterAuth)
+      createUsersByTwitterUserList(twitterUsers)
+    }
+  } catch (err) {
+    // 途中で失敗した場合は成功したところまでで諦める
+    // (次回アクセス時に続きから登録処理を行う
+    console.log(err)
   }
 }
 

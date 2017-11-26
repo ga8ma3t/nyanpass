@@ -78,12 +78,17 @@ export function searchTweets(cursor = null, sinceId = null) {
   })
 }
 
-export async function lookupUsers(ids) {
-  const client = new Twitter({
-    consumer_key: process.env.TWITTER_CONSUMER_KEY,
-    consumer_secret: process.env.TWITTER_CONSUMER_SECRET,
-    bearer_token: process.env.TWITTER_BEARER_TOKEN
-  })
+export async function lookupUsers(ids, _twitterId, tokenKey, tokenSecret) {
+  const twitterAuth = Object.assign(
+    {
+      consumer_key: process.env.TWITTER_CONSUMER_KEY,
+      consumer_secret: process.env.TWITTER_CONSUMER_SECRET
+    },
+    tokenKey && tokenSecret
+      ? { access_token_key: tokenKey, access_token_secret: tokenSecret }
+      : { bearer_token: process.env.TWITTER_BEARER_TOKEN }
+  )
+  const client = new Twitter(twitterAuth)
   const result = await client.get('users/lookup', {user_id: ids.join(',')})
   return result.map(user => ({
     name: user.name, // 例：なのくろ
