@@ -89,6 +89,6 @@ export async function lookupUsers(ids) {
     name: user.name, // 例：なのくろ
     twitterId: user['id_str'],
     twitterName: user['screen_name'], // 例：nanocloudx
-    image: convertTwitterImageUrl(user['profile_image_url_https'])
+    imageUrl: convertTwitterImageUrl(user['profile_image_url_https'])
   }))
 }

@@ -114,10 +114,10 @@ export function updateUsersByTwitterUserList(users, friendList) {
     if (friend &&
       (user.name !== friend.name ||
         user.twitterName !== friend.twitterName ||
-        user.imageUrl !== friend.image)) {
+        user.imageUrl !== friend.imageUrl)) {
       user.name = friend.name
       user.twitterName = friend.twitterName
-      user.imageUrl = friend.image
+      user.imageUrl = friend.imageUrl
       return user.save().then(() => user)
     } else {
       return user
