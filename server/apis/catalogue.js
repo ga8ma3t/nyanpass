@@ -33,14 +33,21 @@ async function fetchLoggedInCatalogue(event, user) {
   const bookmarkIds = await fetchBookmarkIds(user, event)
   const bookmarks = await fetchBySpaceIds(bookmarkIds)
   return {
-    bookmarks: formatCircles(event, bookmarks),
-    recommends: formatCircles(event, recommends),
-    friends: formatCircles(event, friends)
+    bookmarks: formatCircles(event, bookmarks, bookmarkIds),
+    recommends: formatCircles(event, recommends, bookmarkIds),
+    friends: formatCircles(event, friends, bookmarkIds)
   }
 }
 
-function formatCircles(event, circles) {
-  return event.dates.map((_, i) => circles.filter(circle => circle.space.date === i + 1))
+function formatCircles(event, circles, bookmarkIds = []) {
+  const formattedCircles = circles.map(circle => Object.assign(
+    circle,
+    { space: Object.assign(
+      circle.space,
+      { isBookmarked: bookmarkIds.includes(circle.space.id) }
+    )}
+  ))
+  return event.dates.map((_, i) => formattedCircles.filter(circle => circle.space.date === i + 1))
 }
 
 /**
