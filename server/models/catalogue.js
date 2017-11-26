@@ -100,7 +100,7 @@ function formatUsers(users) {
   return users.map(user => omit(
     Object.assign(
       user.get({plain: true}),
-      { space: user.spaces[0] }
+      { space: user.spaces[0].get({plain: true}) }
     ), 'spaces')
   )
 }
