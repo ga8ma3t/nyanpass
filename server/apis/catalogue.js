@@ -22,7 +22,7 @@ function pickTwitterAuth(user) {
 async function fetchAnonymousCatalogue(event) {
   const recommends = await fetchRecommendUserListWithSpaceByEvent(event)
   return {
-    recommends: splitByDate(event, recommends)
+    recommends: format(event, recommends)
   }
 }
 
@@ -33,13 +33,13 @@ async function fetchLoggedInCatalogue(event, user) {
   const bookmarkIds = await fetchBookmarkIds(user, event)
   const bookmarks = await fetchBySpaceIds(bookmarkIds)
   return {
-    bookmarks: splitByDate(event, bookmarks),
-    recommends: splitByDate(event, recommends),
-    friends: splitByDate(event, friends)
+    bookmarks: format(event, bookmarks),
+    recommends: format(event, recommends),
+    friends: format(event, friends)
   }
 }
 
-function splitByDate(event, users) {
+function format(event, users) {
   return event.dates.map((_, i) => users.filter(user => user.space.date === i + 1))
 }
 
