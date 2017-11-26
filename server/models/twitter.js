@@ -1,7 +1,7 @@
 import Twitter from 'twitter'
 import {convertTwitterImageUrl} from '../utils/util'
 
-export function fetchFriends(twitterId, tokenKey, tokenSecret) {
+export function fetchTwitterFriendIds(twitterId, tokenKey, tokenSecret) {
   const client = new Twitter({
     consumer_key: process.env.TWITTER_CONSUMER_KEY,
     consumer_secret: process.env.TWITTER_CONSUMER_SECRET,
@@ -9,30 +9,22 @@ export function fetchFriends(twitterId, tokenKey, tokenSecret) {
     access_token_secret: tokenSecret
   })
   return new Promise((resolve, reject) => {
-    let friendsList = []
+    let friendIdsList = []
     let limitCounter = 0
     function loop(cursor) {
       limitCounter++
-      return client.get('friends/list', {
+      return client.get('friends/ids', {
         'user_id': twitterId,
-        'skip_status': true,
+        'stringify_ids': true,
         'include_user_entities': false,
-        count: 200, // 一度に取得できるのは200件
+        count: 5000, // 一度に取得できるのは5000件
         cursor: cursor
       }).then(result => {
-        const list = result.users.map(user => {
-          return {
-            name: user.name, // 例：なのくろ
-            twitterId: user['id_str'],
-            twitterName: user['screen_name'], // 例：nanocloudx
-            image: convertTwitterImageUrl(user['profile_image_url_https'])
-          }
-        })
-        Array.prototype.push.apply(friendsList, list)
+        Array.prototype.push.apply(friendIdsList, result.ids)
         const nextCursor = result['next_cursor']
         // 終端まで取得した、あるいはAPIを15回叩いた場合は終了
         if (nextCursor === 0 || limitCounter >= 15) {
-          resolve(friendsList)
+          resolve(friendIdsList)
         } else {
           loop(nextCursor)
         }
