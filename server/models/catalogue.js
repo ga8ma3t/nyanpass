@@ -15,7 +15,7 @@ export function fetchRecommendUserListWithSpaceByEvent(event) {
     order: [
       sequelize.fn('RANDOM')
     ]
-  }).then(users => users.map(user => omit(Object.assign(user.get({plain: true}), {space: user.spaces[0]}), 'spaces')))
+  }).then(formatUsers)
 }
 
 export function fetchRecommendUserListWithSpaceByFriends(event, friends) {
@@ -42,7 +42,7 @@ export function fetchRecommendUserListWithSpaceByFriends(event, friends) {
     order: [
       sequelize.fn('RANDOM')
     ]
-  }).then(users => users.map(user => omit(Object.assign(user.get({plain: true}), {space: user.spaces[0]}), 'spaces')))
+  }).then(formatUsers)
 }
 
 export function fetchUserListWithSpaceByEventAndFriendList(event, friendList) {
@@ -63,7 +63,7 @@ export function fetchUserListWithSpaceByEventAndFriendList(event, friendList) {
       [Space, 'block', 'ASC'],
       [Space, 'space', 'ASC']
     ]
-  }).then(users => users.map(user => omit(Object.assign(user.get({plain: true}), {space: user.spaces[0]}), 'spaces')))
+  }).then(formatUsers)
 }
 
 export async function fetchBookmarkIds(user, event) {
@@ -93,7 +93,16 @@ export async function fetchBySpaceIds(ids) {
       },
       through: {attributes: []}
     }]
-  }).then(users => users.map(user => omit(Object.assign(user.get({plain: true}), {space: user.spaces[0]}), 'spaces')))
+  }).then(formatUsers)
+}
+
+function formatUsers(users) {
+  return users.map(user => omit(
+    Object.assign(
+      user.get({plain: true}),
+      { space: user.spaces[0] }
+    ), 'spaces')
+  )
 }
 
 export function updateUsersByTwitterUserList(users, friendList) {
