@@ -66,6 +66,36 @@ export function fetchUserListWithSpaceByEventAndFriendList(event, friendList) {
   }).then(users => users.map(user => omit(Object.assign(user.get({plain: true}), {space: user.spaces[0]}), 'spaces')))
 }
 
+export async function fetchBookmarkIds(user, event) {
+  return Space.findAll({
+    attributes: ['id'],
+    include: [{
+      model: User,
+      as: 'bookmarked',
+      attributes: [],
+      through: { attributes: [] },
+      where: { id: user.id }
+    }],
+    where: { eventId: event.id }
+  }).then(spaces => spaces.map(space => space.id))
+}
+
+export async function fetchBySpaceIds(ids) {
+  return User.findAll({
+    attributes: ['id', 'name', 'imageUrl', 'twitterId', 'twitterName'],
+    include: [{
+      model: Space,
+      attributes: ['id', 'name', 'date', 'district', 'block', 'space'],
+      where: {
+        id: {
+          [Op.in]: ids
+        }
+      },
+      through: {attributes: []}
+    }]
+  }).then(users => users.map(user => omit(Object.assign(user.get({plain: true}), {space: user.spaces[0]}), 'spaces')))
+}
+
 export function updateUsersByTwitterUserList(users, friendList) {
   const twitterIdMap = friendList.reduce((map, friend) => {
     map[friend.twitterId] = friend
