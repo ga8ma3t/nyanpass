@@ -1,4 +1,4 @@
-import {User} from '../database/models/index'
+import {User, Op} from '../database/models/index'
 
 /**
  * ユーザーをIdから取得します
@@ -16,6 +16,17 @@ export function fetchUserById(userId) {
  */
 export function fetchUserByTwitterId(twitterId) {
   return User.findOne({where: { twitterId: twitterId }})
+}
+
+export async function fetchUnregisteredTwitterIds(twitterIds) {
+  const registeredTwitterIds = await User.findAll({
+    attributes: ['twitterId'],
+    where: { twitterId: {
+      [Op.in]: twitterIds
+    } }
+  })
+  const registeredSet = new Set(registeredTwitterIds.map(user => user.twitterId))
+  return twitterIds.filter(id => !registeredSet.has(id))
 }
 
 /**

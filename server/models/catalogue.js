@@ -45,8 +45,7 @@ export function fetchRecommendUserListWithSpaceByFriends(event, friends) {
   }).then(formatUsers)
 }
 
-export function fetchUserListWithSpaceByEventAndFriendList(event, friendList) {
-  const twitterIds = friendList.map(friend => friend.twitterId)
+export function fetchUserListWithSpaceByEventAndFriendIds(event, friendIds) {
   return User.findAll({
     attributes: ['id', 'name', 'imageUrl', 'twitterId', 'twitterName'],
     include: [{
@@ -56,7 +55,7 @@ export function fetchUserListWithSpaceByEventAndFriendList(event, friendList) {
       through: {attributes: []}
     }],
     where: {
-      twitterId: {[Op.in]: twitterIds}
+      twitterId: {[Op.in]: friendIds}
     },
     order: [
       [Space, 'date', 'ASC'],
@@ -115,13 +114,17 @@ export function updateUsersByTwitterUserList(users, friendList) {
     if (friend &&
       (user.name !== friend.name ||
         user.twitterName !== friend.twitterName ||
-        user.imageUrl !== friend.image)) {
+        user.imageUrl !== friend.imageUrl)) {
       user.name = friend.name
       user.twitterName = friend.twitterName
-      user.imageUrl = friend.image
+      user.imageUrl = friend.imageUrl
       return user.save().then(() => user)
     } else {
       return user
     }
   }))
+}
+
+export function createUsersByTwitterUserList(friendList) {
+  return User.bulkCreate(friendList)
 }
