@@ -1,6 +1,7 @@
 import redis from '../models/redis'
 import {fetchFriends} from '../models/twitter'
 import {
+  fetchBookmarkIds, fetchBySpaceIds,
   fetchRecommendUserListWithSpaceByEvent, fetchRecommendUserListWithSpaceByFriends,
   fetchUserListWithSpaceByEventAndFriendList
 } from '../models/catalogue'
@@ -9,34 +10,44 @@ import {fetchEventByAlternateId} from '../models/event'
 export async function fetchCatalogue(req, res) {
   const event = await fetchEventByAlternateId(req.params.eventId)
   const result = req.user
-    ? await fetchLoggedInCatalogue(event, pickTwitterAuth(req))
+    ? await fetchLoggedInCatalogue(event, req.user)
     : await fetchAnonymousCatalogue(event)
   res.json(result)
 }
 
-function pickTwitterAuth(req) {
-  return [req.user.twitterId, req.user.twitterTokenKey, req.user.twitterTokenSecret]
+function pickTwitterAuth(user) {
+  return [user.twitterId, user.twitterTokenKey, user.twitterTokenSecret]
 }
 
 async function fetchAnonymousCatalogue(event) {
   const recommends = await fetchRecommendUserListWithSpaceByEvent(event)
   return {
-    recommends: splitByDate(event, recommends)
+    recommends: formatCircles(event, recommends)
   }
 }
 
-async function fetchLoggedInCatalogue(event, twitterAuth) {
-  const friendList = await fetchFriendList(...twitterAuth)
+async function fetchLoggedInCatalogue(event, user) {
+  const friendList = await fetchFriendList(...pickTwitterAuth(user))
   const friends = await fetchUserListWithSpaceByEventAndFriendList(event, friendList)
   const recommends = await fetchRecommendUserListWithSpaceByFriends(event, friends)
+  const bookmarkIds = await fetchBookmarkIds(user, event)
+  const bookmarks = await fetchBySpaceIds(bookmarkIds)
   return {
-    recommends: splitByDate(event, recommends),
-    friends: splitByDate(event, friends)
+    bookmarks: formatCircles(event, bookmarks, bookmarkIds),
+    recommends: formatCircles(event, recommends, bookmarkIds),
+    friends: formatCircles(event, friends, bookmarkIds)
   }
 }
 
-function splitByDate(event, users) {
-  return event.dates.map((_, i) => users.filter(user => user.space.date === i + 1))
+function formatCircles(event, circles, bookmarkIds = []) {
+  const formattedCircles = circles.map(circle => Object.assign(
+    circle,
+    { space: Object.assign(
+      circle.space,
+      { isBookmarked: bookmarkIds.includes(circle.space.id) }
+    )}
+  ))
+  return event.dates.map((_, i) => formattedCircles.filter(circle => circle.space.date === i + 1))
 }
 
 /**
