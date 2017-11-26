@@ -22,7 +22,7 @@ function pickTwitterAuth(user) {
 async function fetchAnonymousCatalogue(event) {
   const recommends = await fetchRecommendUserListWithSpaceByEvent(event)
   return {
-    recommends: format(event, recommends)
+    recommends: formatCircles(event, recommends)
   }
 }
 
@@ -33,14 +33,14 @@ async function fetchLoggedInCatalogue(event, user) {
   const bookmarkIds = await fetchBookmarkIds(user, event)
   const bookmarks = await fetchBySpaceIds(bookmarkIds)
   return {
-    bookmarks: format(event, bookmarks),
-    recommends: format(event, recommends),
-    friends: format(event, friends)
+    bookmarks: formatCircles(event, bookmarks),
+    recommends: formatCircles(event, recommends),
+    friends: formatCircles(event, friends)
   }
 }
 
-function format(event, users) {
-  return event.dates.map((_, i) => users.filter(user => user.space.date === i + 1))
+function formatCircles(event, circles) {
+  return event.dates.map((_, i) => circles.filter(circle => circle.space.date === i + 1))
 }
 
 /**
