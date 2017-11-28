@@ -14,7 +14,8 @@ router.get('/status', (req, res) => {
       twitterId: req.user.twitterId,
       name: req.user.name,
       twitterName: req.user.twitterName,
-      imageUrl: req.user.imageUrl
+      imageUrl: req.user.imageUrl,
+      token: req.csrfToken()
     } : null
   })
 })

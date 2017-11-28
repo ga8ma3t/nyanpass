@@ -75,6 +75,7 @@
     name: 'catalogues',
     data() {
       return {
+        session: null,
         event: null,
         bookmarkListGroup: null,
         friendListGroup: null,
@@ -91,6 +92,10 @@
     methods: {
       initialize() {
         return Promise.resolve().then(() => {
+          return request.get('/auth/status').then(result => {
+            this.session = result.data.session
+          })
+        }).then(() => {
           return request.get(`/api/events/${this.$route.params.id}`).then(result => {
             this.event = result.data
           })
@@ -100,14 +105,39 @@
             this.friendListGroup = result.data.friends || null
             this.bookmarkListGroup = result.data.bookmarks || null
             if (!this.friendListGroup) {
-              this.isRequireLogin = true // TODO 友達がいない場合もここに来てしまうよな...
+              this.isRequireLogin = true
             }
           })
         })
       },
-      onUpdateBookmark(spaceId) {
-        // TODO ajax で bookmark の登録削除を実行
-        console.log('Catalogues.vue::onUpdateBookmark', spaceId)
+      onUpdateBookmark(spaceId, isCurrentBookmarked) {
+        if (!this.session) {
+          // ログインしてないとだめ、なんか出す
+          return
+        }
+        Promise.resolve().then(() => {
+          return request.request({
+            url: `/api/bookmarks/${spaceId}`,
+            method: isCurrentBookmarked ? 'delete' : 'post',
+            headers: {'x-csrf-token': this.session.token}
+          })
+        }).then(() => {
+          this.friendListGroup = this.toggleCircleListGroupBookmark(spaceId, this.friendListGroup)
+          this.recommendListGroup = this.toggleCircleListGroupBookmark(spaceId, this.recommendListGroup)
+          this.bookmarkListGroup = this.toggleCircleListGroupBookmark(spaceId, this.bookmarkListGroup)
+        }).catch(() => {
+          // TODO リロードなどで対応
+        })
+      },
+      toggleCircleListGroupBookmark(spaceId, circleListGroup) {
+        return circleListGroup.map(circleList => {
+          return circleList.map(circle => {
+            if (circle.space.id === spaceId) {
+              circle.space.isBookmarked = !circle.space.isBookmarked
+            }
+            return circle
+          })
+        })
       }
     }
   }

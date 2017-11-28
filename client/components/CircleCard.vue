@@ -4,7 +4,7 @@
       <h4 v-if="circleListGroup.length > 1">{{index + 1}}日目</h4>
       <p class="nothing" v-if="circleList.length === 0">みつかりませんでした</p>
       <div class="circle-card-container">
-        <div class="circle-card" v-for="circle in circleList" @click="onClickCircleCard(circle.space.id)">
+        <div class="circle-card" v-for="circle in circleList" @click="onClickCircleCard(circle.space.id, circle.space.isBookmarked)">
           <p class="bookmark" v-show="circle.space.isBookmarked"></p>
           <img :src="circle.imageUrl" class="circle-card-image" onerror="this.src='/images/noimage.jpg'">
           <div class="circle-card-info">
@@ -32,8 +32,8 @@
       }
     },
     methods: {
-      onClickCircleCard(spaceId) {
-        this.$emit('onUpdateBookmark', spaceId)
+      onClickCircleCard(spaceId, isBookmarked) {
+        this.$emit('onUpdateBookmark', spaceId, isBookmarked)
       }
     }
   }
