@@ -100,14 +100,31 @@
             this.friendListGroup = result.data.friends || null
             this.bookmarkListGroup = result.data.bookmarks || null
             if (!this.friendListGroup) {
-              this.isRequireLogin = true // TODO 友達がいない場合もここに来てしまうよな...
+              this.isRequireLogin = true
             }
           })
         })
       },
-      onUpdateBookmark(spaceId) {
-        // TODO ajax で bookmark の登録削除を実行
-        console.log('Catalogues.vue::onUpdateBookmark', spaceId)
+      onUpdateBookmark(spaceId, isCurrentBookmarked) {
+        Promise.resolve().then(() => {
+          return isCurrentBookmarked ? request.delete(`/api/bookmarks/${spaceId}`) : request.post(`/api/bookmarks/${spaceId}`)
+        }).then(() => {
+          this.friendListGroup = this.toggleCircleListGroupBookmark(spaceId, this.friendListGroup)
+          this.recommendListGroup = this.toggleCircleListGroupBookmark(spaceId, this.recommendListGroup)
+          this.bookmarkListGroup = this.toggleCircleListGroupBookmark(spaceId, this.bookmarkListGroup)
+        }).catch(() => {
+          // TODO リロードなどで対応
+        })
+      },
+      toggleCircleListGroupBookmark(spaceId, circleListGroup) {
+        return circleListGroup.map(circleList => {
+          return circleList.map(circle => {
+            if (circle.space.id === spaceId) {
+              circle.space.isBookmarked = !circle.space.isBookmarked
+            }
+            return circle
+          })
+        })
       }
     }
   }
