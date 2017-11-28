@@ -32,15 +32,14 @@ async function fetchLoggedInCatalogue(event, user) {
   const twitterAuth = pickTwitterAuth(user)
   const friendIds = await fetchFriendIds(...twitterAuth)
   await createUnregisteredUsers(friendIds, twitterAuth)
-  const friends = await fetchUserListWithSpaceByEventAndFriendIds(event, friendIds)
-  const recommends = await fetchRecommendUserListWithSpaceByFriends(event, friends)
   const bookmarkIds = await fetchBookmarkIds(user, event)
-  const bookmarks = await fetchBySpaceIds(bookmarkIds)
-  return {
-    bookmarks: formatCircles(event, bookmarks, bookmarkIds),
-    recommends: formatCircles(event, recommends, bookmarkIds),
-    friends: formatCircles(event, friends, bookmarkIds)
-  }
+  const raw_friends = await fetchUserListWithSpaceByEventAndFriendIds(event, friendIds)
+  const friends = formatCircles(event, raw_friends, bookmarkIds)
+  const raw_recommends = await fetchRecommendUserListWithSpaceByFriends(event, raw_friends)
+  const recommends = formatCircles(event, raw_recommends, bookmarkIds)
+  const raw_bookmarks = await fetchBySpaceIds(bookmarkIds)
+  const bookmarks = formatCircles(event, raw_bookmarks, bookmarkIds)
+  return { bookmarks, recommends, friends }
 }
 
 async function createUnregisteredUsers(ids, twitterAuth) {
