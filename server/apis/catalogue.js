@@ -22,25 +22,29 @@ function pickTwitterAuth(user) {
 }
 
 async function fetchAnonymousCatalogue(event) {
-  const recommends = await fetchRecommendUserListWithSpaceByEvent(event)
-  return {
-    recommends: formatCircles(event, recommends)
-  }
+  const rawRecommends = await Promise.all(
+    event.dates.map((_, i) => fetchRecommendUserListWithSpaceByEvent(event, i + 1))
+  )
+  const recommends = formatCircles(event, rawRecommends.reduce((a, b) => a.concat(b)))
+  return { recommends }
 }
 
 async function fetchLoggedInCatalogue(event, user) {
   const twitterAuth = pickTwitterAuth(user)
   const friendIds = await fetchFriendIds(...twitterAuth)
   await createUnregisteredUsers(friendIds, twitterAuth)
-  const friends = await fetchUserListWithSpaceByEventAndFriendIds(event, friendIds)
-  const recommends = await fetchRecommendUserListWithSpaceByFriends(event, friends)
   const bookmarkIds = await fetchBookmarkIds(user, event)
-  const bookmarks = await fetchBySpaceIds(bookmarkIds)
-  return {
-    bookmarks: formatCircles(event, bookmarks, bookmarkIds),
-    recommends: formatCircles(event, recommends, bookmarkIds),
-    friends: formatCircles(event, friends, bookmarkIds)
-  }
+  const rawFriends = await fetchUserListWithSpaceByEventAndFriendIds(event, friendIds)
+  const friends = formatCircles(event, rawFriends, bookmarkIds)
+  const rawRecommends = await Promise.all(friends.map((circles, i) =>
+    circles.length > 0
+      ? fetchRecommendUserListWithSpaceByFriends(event, circles)
+      : fetchRecommendUserListWithSpaceByEvent(event, i + 1)
+  ))
+  const recommends = formatCircles(event, rawRecommends.reduce((a, b) => a.concat(b)), bookmarkIds)
+  const rawBookmarks = await fetchBySpaceIds(bookmarkIds)
+  const bookmarks = formatCircles(event, rawBookmarks, bookmarkIds)
+  return { bookmarks, recommends, friends }
 }
 
 async function createUnregisteredUsers(ids, twitterAuth) {
