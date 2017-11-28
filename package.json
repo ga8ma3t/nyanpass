@@ -22,7 +22,7 @@
   },
   "scripts": {
     "start": "yarn run build && node ./www",
-    "dev": "yarn install && yarn run sequelize db:migrate && yarn run build-dev && (webpack --watch & nodemon www-dev --exec babel-node)",
+    "dev": "yarn install && yarn run sequelize db:migrate && yarn run build-dev && (webpack --watch & nodemon -L www-dev --exec babel-node)",
     "test": "ava --verbose",
     "lint": "eslint --fix --ext .js,.vue .",
     "lint:ci": "eslint --ext .js,.vue .",

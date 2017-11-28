@@ -1,13 +1,13 @@
 import omit from 'lodash.omit'
 import {Space, User, Op, sequelize} from '../database/models/index'
 
-export function fetchRecommendUserListWithSpaceByEvent(event) {
+export function fetchRecommendUserListWithSpaceByEvent(event, date) {
   return User.findAll({
     attributes: ['id', 'name', 'imageUrl', 'twitterId', 'twitterName'],
     include: [{
       model: Space,
       attributes: ['id', 'name', 'date', 'district', 'block', 'space'],
-      where: {eventId: event.id, block: 'あ'},
+      where: {eventId: event.id, block: 'あ', date},
       through: {attributes: []},
       duplicating: false
     }],

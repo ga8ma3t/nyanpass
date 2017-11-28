@@ -22,10 +22,11 @@ function pickTwitterAuth(user) {
 }
 
 async function fetchAnonymousCatalogue(event) {
-  const recommends = await fetchRecommendUserListWithSpaceByEvent(event)
-  return {
-    recommends: formatCircles(event, recommends)
-  }
+  const raw_recommends = await Promise.all(
+    event.dates.map((_, i) => fetchRecommendUserListWithSpaceByEvent(event, i + 1))
+  )
+  const recommends = formatCircles(event, raw_recommends.reduce((a, b) => a.concat(b)))
+  return { recommends }
 }
 
 async function fetchLoggedInCatalogue(event, user) {
@@ -35,8 +36,12 @@ async function fetchLoggedInCatalogue(event, user) {
   const bookmarkIds = await fetchBookmarkIds(user, event)
   const raw_friends = await fetchUserListWithSpaceByEventAndFriendIds(event, friendIds)
   const friends = formatCircles(event, raw_friends, bookmarkIds)
-  const raw_recommends = await fetchRecommendUserListWithSpaceByFriends(event, raw_friends)
-  const recommends = formatCircles(event, raw_recommends, bookmarkIds)
+  const raw_recommends = await Promise.all(friends.map((circles, i) =>
+    circles.length > 0
+      ? fetchRecommendUserListWithSpaceByFriends(event, circles)
+      : fetchRecommendUserListWithSpaceByEvent(event, i + 1)
+  ))
+  const recommends = formatCircles(event, raw_recommends.reduce((a, b) => a.concat(b)), bookmarkIds)
   const raw_bookmarks = await fetchBySpaceIds(bookmarkIds)
   const bookmarks = formatCircles(event, raw_bookmarks, bookmarkIds)
   return { bookmarks, recommends, friends }
