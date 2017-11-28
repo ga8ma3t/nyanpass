@@ -11,7 +11,7 @@
             <p class="circle-card-info-space">{{circle.space.district}} {{circle.space.block}}-{{circle.space.space}}</p>
             <p class="circle-card-info-circle-name">{{circle.space.name}}</p>
             <p class="circle-card-info-account-name">{{circle.name}}</p>
-            <p class="circle-card-info-account-twitter">
+            <p class="circle-card-info-account-twitter" @click.stop="">
               <a :href="`https://twitter.com/${circle.twitterName}`" target="_blank" rel="noopener">
                 <i class="fa fa-twitter" aria-hidden="true"></i>@{{circle.twitterName}}
               </a>
