@@ -9,29 +9,16 @@
       </div>
     </div>
 
-    <div class="catalogue-wrapper">
-      <div class="container">
-        <h3>ブックマークしたサークル</h3>
-        <div class="center" v-if="isRequireLogin">
-          <img src="/images/book.png">
-          <p>Twitterアカウントを連携すると、お気に入りのサークルをブックマークできます</p>
-          <a :href="`/auth/twitter?from=/catalogues/${this.$route.params.id}`">
-            <button>Twitterと連携する</button>
-          </a>
-        </div>
-        <div v-else>
-          <Loading v-show="!bookmarkListGroup"></Loading>
-          <circle-card
-            :circle-list-group="bookmarkListGroup"
-            @onUpdateBookmark="onUpdateBookmark(...arguments)"
-          ></circle-card>
-        </div>
-      </div>
+    <div class="group-selector">
+      <ul>
+        <li @click="onSelectGroup('friends')">フレンド</li>
+        <li @click="onSelectGroup('recommends')">ピックアップ</li>
+        <li @click="onSelectGroup('bookmarks')">ブックマーク</li>
+      </ul>
     </div>
 
-    <div class="catalogue-wrapper">
+    <div class="catalogue-wrapper" v-show="selectedGroup === 'friends'">
       <div class="container">
-        <h3>フレンドのサークル</h3>
         <div class="center" v-if="isRequireLogin">
           <img src="/images/login.png">
           <p>Twitterアカウントを連携すると、フォローしているフレンドのサークル一覧を表示できます</p>
@@ -43,20 +30,41 @@
           <Loading v-show="!friendListGroup"></Loading>
           <circle-card
             :circle-list-group="friendListGroup"
+            :nothing-message="'みつかりませんでした'"
             @onUpdateBookmark="onUpdateBookmark(...arguments)"
           ></circle-card>
         </div>
       </div>
     </div>
 
-    <div class="catalogue-wrapper">
+    <div class="catalogue-wrapper" v-show="selectedGroup === 'recommends'">
       <div class="container">
-        <h3>おすすめのサークル</h3>
         <Loading v-show="!recommendListGroup"></Loading>
         <circle-card
           :circle-list-group="recommendListGroup"
+          :nothing-message="'みつかりませんでした'"
           @onUpdateBookmark="onUpdateBookmark(...arguments)"
         ></circle-card>
+      </div>
+    </div>
+
+    <div class="catalogue-wrapper" v-show="selectedGroup === 'bookmarks'">
+      <div class="container">
+        <div class="center" v-if="isRequireLogin">
+          <img src="/images/book.png">
+          <p>Twitterアカウントを連携すると、お気に入りのサークルをブックマークできます</p>
+          <a :href="`/auth/twitter?from=/catalogues/${this.$route.params.id}`">
+            <button>Twitterと連携する</button>
+          </a>
+        </div>
+        <div v-else>
+          <Loading v-show="!bookmarkListGroup"></Loading>
+          <circle-card
+            :circle-list-group="bookmarkListGroup"
+            :nothing-message="'ブックマークはありません'"
+            @onUpdateBookmark="onUpdateBookmark(...arguments)"
+          ></circle-card>
+        </div>
       </div>
     </div>
 
@@ -80,7 +88,8 @@
         bookmarkListGroup: null,
         friendListGroup: null,
         recommendListGroup: null,
-        isRequireLogin: false
+        isRequireLogin: false,
+        selectedGroup: 'friends'
       }
     },
     created() {
@@ -109,6 +118,9 @@
             }
           })
         })
+      },
+      onSelectGroup(selectGroup) {
+        this.selectedGroup = selectGroup
       },
       onUpdateBookmark(spaceId, isCurrentBookmarked) {
         if (!this.session) {
@@ -144,6 +156,18 @@
 </script>
 
 <style lang="scss" scoped>
+  .group-selector {
+    ul {
+      display: flex;
+      justify-content: center;
+      li {
+        width: 33%;
+        padding: 20px 10px;
+        text-align: center;
+        border:1px solid #f00;
+      }
+    }
+  }
   .event-wrapper {
     background-color: #333333;
     color: #ffffff;
@@ -159,7 +183,6 @@
     }
   }
   .catalogue-wrapper {
-    padding: 20px 0;
     margin-bottom: 10px;
   }
 </style>
