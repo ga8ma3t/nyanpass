@@ -6,8 +6,6 @@
           <li><router-link to="/"><p>トップページ</p></router-link></li>
           <li><router-link to="/about"><p>このサイトについて</p></router-link></li>
           <li><a href="https://www.kurokuroworks.net" target="_blank"><p>開発サークル</p></a></li>
-          <li v-if="session"><router-link to="/auth/logout"><p>ログアウト</p></router-link></li>
-          <li v-else><router-link to="/auth/twitter"><p>ログイン</p></router-link></li>
         </ul>
       </div>
       <div class="copyright">
@@ -18,9 +16,7 @@
 </template>
 
 <script>
-  export default {
-    props: ['session']
-  }
+  export default {}
 </script>
 
 <style lang="scss" scoped>

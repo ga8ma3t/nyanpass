@@ -75,6 +75,7 @@
     name: 'catalogues',
     data() {
       return {
+        session: null,
         event: null,
         bookmarkListGroup: null,
         friendListGroup: null,
@@ -91,6 +92,10 @@
     methods: {
       initialize() {
         return Promise.resolve().then(() => {
+          return request.get('/auth/status').then(result => {
+            this.session = result.data.session
+          })
+        }).then(() => {
           return request.get(`/api/events/${this.$route.params.id}`).then(result => {
             this.event = result.data
           })
@@ -106,8 +111,16 @@
         })
       },
       onUpdateBookmark(spaceId, isCurrentBookmarked) {
+        if (!this.session) {
+          // ログインしてないとだめ、なんか出す
+          return
+        }
         Promise.resolve().then(() => {
-          return isCurrentBookmarked ? request.delete(`/api/bookmarks/${spaceId}`) : request.post(`/api/bookmarks/${spaceId}`)
+          return request.request({
+            url: `/api/bookmarks/${spaceId}`,
+            method: isCurrentBookmarked ? 'delete' : 'post',
+            headers: {'x-csrf-token': this.session.token}
+          })
         }).then(() => {
           this.friendListGroup = this.toggleCircleListGroupBookmark(spaceId, this.friendListGroup)
           this.recommendListGroup = this.toggleCircleListGroupBookmark(spaceId, this.recommendListGroup)

@@ -2,7 +2,7 @@
   <div id="app">
     <header-component></header-component>
     <router-view></router-view>
-    <footer-component :session="session"></footer-component>
+    <footer-component></footer-component>
   </div>
 </template>
 
@@ -18,7 +18,7 @@
     name: 'app',
     data() {
       return {
-        session: null // TODO globalから見れるようにするか、propsみたいに渡したい
+        session: null
       }
     },
     created() {
