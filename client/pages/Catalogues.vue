@@ -76,7 +76,7 @@
     data() {
       return {
         session: null,
-        event: null,
+        event: {},
         bookmarkListGroup: null,
         friendListGroup: null,
         recommendListGroup: null,
