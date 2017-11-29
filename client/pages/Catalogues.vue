@@ -12,14 +12,17 @@
     <div class="group-selector">
       <ul>
         <li
+          class="recommends"
           :class="{selected: selectedGroup === 'recommends'}"
           @click="onSelectGroup('recommends')"
         >ピックアップ</li>
         <li
+          class="friends"
           :class="{selected: selectedGroup === 'friends'}"
           @click="onSelectGroup('friends')"
         >フレンド</li>
         <li
+          class="bookmarks"
           :class="{selected: selectedGroup === 'bookmarks'}"
           @click="onSelectGroup('bookmarks')"
         >ブックマーク</li>
@@ -38,6 +41,7 @@
         <div v-else>
           <Loading v-show="!friendListGroup"></Loading>
           <circle-card
+            :category="'friends'"
             :circle-list-group="friendListGroup"
             :nothing-message="'みつかりませんでした'"
             @onUpdateBookmark="onUpdateBookmark(...arguments)"
@@ -50,6 +54,7 @@
       <div class="container">
         <Loading v-show="!recommendListGroup"></Loading>
         <circle-card
+          :category="'recommends'"
           :circle-list-group="recommendListGroup"
           :nothing-message="'みつかりませんでした'"
           @onUpdateBookmark="onUpdateBookmark(...arguments)"
@@ -69,6 +74,7 @@
         <div v-else>
           <Loading v-show="!bookmarkListGroup"></Loading>
           <circle-card
+            :category="'bookmarks'"
             :circle-list-group="bookmarkListGroup"
             :nothing-message="'ブックマークはありません'"
             @onUpdateBookmark="onUpdateBookmark(...arguments)"
@@ -189,6 +195,15 @@
           margin-bottom: -1px;
           padding-top: 16px;
           border-radius: 3px 3px 0 0;
+          &.recommends {
+            border-top-color: #ed85da;
+          }
+          &.friends {
+            border-top-color: #00aced;
+          }
+          &.bookmarks {
+            border-top-color: #edaf00;
+          }
         }
       }
     }

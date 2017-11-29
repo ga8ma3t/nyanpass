@@ -1,6 +1,6 @@
 <template>
   <div>
-    <div class="day-selector">
+    <div class="day-selector" :class="category">
       <ul v-if="circleListGroup && circleListGroup.length > 1">
         <template v-for="(circleList, index) in circleListGroup">
           <li :class="{selected: selectedDay === index + 1}"
@@ -33,7 +33,7 @@
 
 <script>
   export default {
-    props: ['circleListGroup', 'nothingMessage'],
+    props: ['circleListGroup', 'nothingMessage', 'category'],
     data() {
       return {
         selectedDay: 1
@@ -70,10 +70,16 @@
         padding: 10px;
         color: #ffffff;
         background-color: #555555;
-        &.selected {
-          background-color: #00aced;
-        }
       }
+    }
+    &.recommends ul li.selected {
+      background-color: #ed85da;
+    }
+    &.friends ul li.selected {
+      background-color: #00aced;
+    }
+    &.bookmarks ul li.selected {
+      background-color: #edaf00;
     }
   }
   h4 {
@@ -99,14 +105,16 @@
       overflow: hidden;
       white-space: nowrap;
       text-overflow: ellipsis;
+      transition-duration: .1s;
       @media screen and (min-width: 635px) {
         width: 200px;
         padding: 0 10px 20px;
       }
       &:hover {
         cursor: pointer;
+        transform: scale(1.05);
         .circle-card-info {
-          box-shadow: 0 1px 1px rgba(0,0,0,0.1);
+          box-shadow: 0 1px 1px rgba(0,0,0,0.2);
         }
       }
       .circle-card-image {
