@@ -11,9 +11,21 @@
 
     <div class="group-selector">
       <ul>
-        <li @click="onSelectGroup('friends')">フレンド</li>
-        <li @click="onSelectGroup('recommends')">ピックアップ</li>
-        <li @click="onSelectGroup('bookmarks')">ブックマーク</li>
+        <li
+          class="recommends"
+          :class="{selected: selectedGroup === 'recommends'}"
+          @click="onSelectGroup('recommends')"
+        >ピックアップ</li>
+        <li
+          class="friends"
+          :class="{selected: selectedGroup === 'friends'}"
+          @click="onSelectGroup('friends')"
+        >フレンド</li>
+        <li
+          class="bookmarks"
+          :class="{selected: selectedGroup === 'bookmarks'}"
+          @click="onSelectGroup('bookmarks')"
+        >ブックマーク</li>
       </ul>
     </div>
 
@@ -89,7 +101,7 @@
         friendListGroup: null,
         recommendListGroup: null,
         isRequireLogin: false,
-        selectedGroup: 'friends'
+        selectedGroup: 'recommends'
       }
     },
     created() {
@@ -157,14 +169,30 @@
 
 <style lang="scss" scoped>
   .group-selector {
+    background-image: repeating-linear-gradient(45deg, rgba(0,0,0,0.07), rgba(0,0,0,0.07) 1px, transparent 1px, transparent 4px);
+    background-size: 6px 6px;
+    margin-bottom: 10px;
     ul {
       display: flex;
       justify-content: center;
+      border-bottom: 1px solid #ccc;
       li {
         width: 33%;
+        max-width: 200px;
+        margin-top: 5px;
         padding: 20px 10px;
         text-align: center;
-        border:1px solid #f00;
+        cursor: pointer;
+        font-weight: bold;
+        &.selected {
+          background-color: #fafafa;
+          border-top: 2px solid #ccc;
+          border-left: 1px solid #ccc;
+          border-right: 1px solid #ccc;
+          margin-bottom: -1px;
+          padding-top: 18px;
+          border-radius: 3px 3px 0 0;
+        }
       }
     }
   }

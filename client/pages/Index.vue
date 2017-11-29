@@ -56,8 +56,7 @@
     width: 120%;
     height: 200px;
     margin: 0 -10% -150px;
-    -ms-transform: rotate(3deg);
-    transform: rotate(3deg)
+    transform: rotate(3deg);
   }
   .welcome .cutter:before {
     content: "";
@@ -66,8 +65,7 @@
     height: 400px;
     margin: 0 -10%;
     background: #fafafa;
-    -ms-transform: rotate(-6deg);
-    transform: rotate(-6deg)
+    transform: rotate(-6deg);
   }
 
 </style>
