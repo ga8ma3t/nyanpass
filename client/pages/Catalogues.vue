@@ -9,29 +9,25 @@
       </div>
     </div>
 
-    <div class="catalogue-wrapper">
-      <div class="container">
-        <h3>ブックマークしたサークル</h3>
-        <div class="center" v-if="isRequireLogin">
-          <img src="/images/book.png">
-          <p>Twitterアカウントを連携すると、お気に入りのサークルをブックマークできます</p>
-          <a :href="`/auth/twitter?from=/catalogues/${this.$route.params.id}`">
-            <button>Twitterと連携する</button>
-          </a>
-        </div>
-        <div v-else>
-          <Loading v-show="!bookmarkListGroup"></Loading>
-          <circle-card
-            :circle-list-group="bookmarkListGroup"
-            @onUpdateBookmark="onUpdateBookmark(...arguments)"
-          ></circle-card>
-        </div>
-      </div>
+    <div class="group-selector">
+      <ul>
+        <li
+          :class="{selected: selectedGroup === 'recommends'}"
+          @click="onSelectGroup('recommends')"
+        >ピックアップ</li>
+        <li
+          :class="{selected: selectedGroup === 'friends'}"
+          @click="onSelectGroup('friends')"
+        >フレンド</li>
+        <li
+          :class="{selected: selectedGroup === 'bookmarks'}"
+          @click="onSelectGroup('bookmarks')"
+        >ブックマーク</li>
+      </ul>
     </div>
 
-    <div class="catalogue-wrapper">
+    <div class="catalogue-wrapper" v-show="selectedGroup === 'friends'">
       <div class="container">
-        <h3>フレンドのサークル</h3>
         <div class="center" v-if="isRequireLogin">
           <img src="/images/login.png">
           <p>Twitterアカウントを連携すると、フォローしているフレンドのサークル一覧を表示できます</p>
@@ -43,20 +39,41 @@
           <Loading v-show="!friendListGroup"></Loading>
           <circle-card
             :circle-list-group="friendListGroup"
+            :nothing-message="'みつかりませんでした'"
             @onUpdateBookmark="onUpdateBookmark(...arguments)"
           ></circle-card>
         </div>
       </div>
     </div>
 
-    <div class="catalogue-wrapper">
+    <div class="catalogue-wrapper" v-show="selectedGroup === 'recommends'">
       <div class="container">
-        <h3>おすすめのサークル</h3>
         <Loading v-show="!recommendListGroup"></Loading>
         <circle-card
           :circle-list-group="recommendListGroup"
+          :nothing-message="'みつかりませんでした'"
           @onUpdateBookmark="onUpdateBookmark(...arguments)"
         ></circle-card>
+      </div>
+    </div>
+
+    <div class="catalogue-wrapper" v-show="selectedGroup === 'bookmarks'">
+      <div class="container">
+        <div class="center" v-if="isRequireLogin">
+          <img src="/images/book.png">
+          <p>Twitterアカウントを連携すると、お気に入りのサークルをブックマークできます</p>
+          <a :href="`/auth/twitter?from=/catalogues/${this.$route.params.id}`">
+            <button>Twitterと連携する</button>
+          </a>
+        </div>
+        <div v-else>
+          <Loading v-show="!bookmarkListGroup"></Loading>
+          <circle-card
+            :circle-list-group="bookmarkListGroup"
+            :nothing-message="'ブックマークはありません'"
+            @onUpdateBookmark="onUpdateBookmark(...arguments)"
+          ></circle-card>
+        </div>
       </div>
     </div>
 
@@ -76,11 +93,12 @@
     data() {
       return {
         session: null,
-        event: null,
+        event: {},
         bookmarkListGroup: null,
         friendListGroup: null,
         recommendListGroup: null,
-        isRequireLogin: false
+        isRequireLogin: false,
+        selectedGroup: 'recommends'
       }
     },
     created() {
@@ -109,6 +127,9 @@
             }
           })
         })
+      },
+      onSelectGroup(selectGroup) {
+        this.selectedGroup = selectGroup
       },
       onUpdateBookmark(spaceId, isCurrentBookmarked) {
         if (!this.session) {
@@ -144,6 +165,34 @@
 </script>
 
 <style lang="scss" scoped>
+  .group-selector {
+    background-image: repeating-linear-gradient(45deg, rgba(0,0,0,0.07), rgba(0,0,0,0.07) 1px, transparent 1px, transparent 4px);
+    background-size: 6px 6px;
+    margin-bottom: 15px;
+    ul {
+      display: flex;
+      justify-content: center;
+      border-bottom: 1px solid #ccc;
+      li {
+        width: 30%;
+        max-width: 200px;
+        margin-top: 5px;
+        padding: 18px 10px;
+        text-align: center;
+        cursor: pointer;
+        font-weight: bold;
+        &.selected {
+          background-color: #fafafa;
+          border-top: 2px solid #ccc;
+          border-left: 1px solid #ccc;
+          border-right: 1px solid #ccc;
+          margin-bottom: -1px;
+          padding-top: 16px;
+          border-radius: 3px 3px 0 0;
+        }
+      }
+    }
+  }
   .event-wrapper {
     background-color: #333333;
     color: #ffffff;
@@ -159,7 +208,6 @@
     }
   }
   .catalogue-wrapper {
-    padding: 20px 0;
     margin-bottom: 10px;
   }
 </style>

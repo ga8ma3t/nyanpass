@@ -1,8 +1,16 @@
 <template>
   <div>
-    <div v-for="(circleList, index) in circleListGroup">
-      <h4 v-if="circleListGroup.length > 1">{{index + 1}}日目</h4>
-      <p class="nothing" v-if="circleList.length === 0">みつかりませんでした</p>
+    <div class="day-selector">
+      <ul v-if="circleListGroup && circleListGroup.length > 1">
+        <template v-for="(circleList, index) in circleListGroup">
+          <li :class="{selected: selectedDay === index + 1}"
+              @click="onSelectDay(index + 1)"
+          >{{index + 1}}日目</li>
+        </template>
+      </ul>
+    </div>
+    <div v-for="(circleList, index) in circleListGroup" v-show="selectedDay === index + 1">
+      <p class="nothing" v-if="circleList.length === 0">{{nothingMessage}}</p>
       <div class="circle-card-container">
         <div class="circle-card" v-for="circle in circleList" @click="onClickCircleCard(circle.space.id, circle.space.isBookmarked)">
           <p class="bookmark" v-show="circle.space.isBookmarked"></p>
@@ -11,7 +19,7 @@
             <p class="circle-card-info-space">{{circle.space.district}} {{circle.space.block}}-{{circle.space.space}}</p>
             <p class="circle-card-info-circle-name">{{circle.space.name}}</p>
             <p class="circle-card-info-account-name">{{circle.name}}</p>
-            <p class="circle-card-info-account-twitter">
+            <p class="circle-card-info-account-twitter" @click.stop="">
               <a :href="`https://twitter.com/${circle.twitterName}`" target="_blank" rel="noopener">
                 <i class="fa fa-twitter" aria-hidden="true"></i>@{{circle.twitterName}}
               </a>
@@ -25,7 +33,12 @@
 
 <script>
   export default {
-    props: ['circleListGroup'],
+    props: ['circleListGroup', 'nothingMessage'],
+    data() {
+      return {
+        selectedDay: 1
+      }
+    },
     computed: {
       isLoading() {
         return !this.circleListGroup
@@ -34,22 +47,42 @@
     methods: {
       onClickCircleCard(spaceId, isBookmarked) {
         this.$emit('onUpdateBookmark', spaceId, isBookmarked)
+      },
+      onSelectDay(selectDay) {
+        this.selectedDay = selectDay
       }
     }
   }
 </script>
 
 <style lang="scss" scoped>
+  .day-selector {
+    ul {
+      display: flex;
+      justify-content: center;
+      margin-bottom: 15px;
+      li {
+        width: 30%;
+        max-width: 200px;
+        text-align: center;
+        cursor: pointer;
+        font-weight: bold;
+        padding: 10px;
+        color: #ffffff;
+        background-color: #555555;
+        &.selected {
+          background-color: #00aced;
+        }
+      }
+    }
+  }
   h4 {
     text-align: center;
     font-size: 20px;
-    margin: 10px -10px;
+    margin-bottom: 10px;
     padding: 10px 0;
     background-color: #0084b4;
     color: #ffffff;
-    @media screen and (min-width: 635px) {
-      margin: 10px;
-    }
   }
   .nothing {
     text-align: center;
