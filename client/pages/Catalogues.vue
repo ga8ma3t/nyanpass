@@ -135,7 +135,12 @@
         })
       },
       onSelectGroup(selectGroup) {
-        this.selectedGroup = selectGroup
+        Promise.resolve().then(() => {
+          return request.get(`/api/catalogues/${this.$route.params.id}`).then(result => {
+            this.bookmarkListGroup = result.data.bookmarks || null
+            this.selectedGroup = selectGroup
+          })
+        })
       },
       onUpdateBookmark(spaceId, isCurrentBookmarked) {
         if (!this.session) {

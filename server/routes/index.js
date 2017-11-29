@@ -8,13 +8,14 @@ const router = express.Router()
 router.get('/api/events', fetchEventList)
 router.get('/api/events/:eventId', fetchEvent)
 router.get('/api/catalogues/:eventId', fetchCatalogue)
+router.post('/api/bookmarks/:spaceId', addBookmark)
+router.delete('/api/bookmarks/:spaceId', removeBookmark)
+
 router.get(['/', '/catalogues/:eventId', '/about'], (req, res) => {
   res.render('index', {
     user: req.user,
     token: req.csrfToken()
   })
 })
-router.post('/api/bookmarks/:spaceId', addBookmark)
-router.delete('/api/bookmarks/:spaceId', removeBookmark)
 
 export default router
