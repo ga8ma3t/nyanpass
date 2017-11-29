@@ -70,6 +70,9 @@
         padding: 10px;
         color: #ffffff;
         background-color: #555555;
+        &:hover {
+          background-color: #777777;
+        }
       }
     }
     &.recommends ul li.selected {
