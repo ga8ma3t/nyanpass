@@ -29,7 +29,7 @@ app.enable('trust proxy')
 app.disable('x-powered-by')
 app.use(helmet())
 app.use(compression())
-app.use(favicon(path.join(dirname, 'public', 'favicon.ico')));
+app.use(favicon(path.join(dirname, 'public', 'favicon.ico')))
 app.use(express.static(path.join(dirname, 'public')))
 app.use(logger('dev'))
 app.use(bodyParser.json())
