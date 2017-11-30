@@ -136,9 +136,11 @@
       },
       onSelectGroup(selectGroup) {
         Promise.resolve().then(() => {
-          this.bookmarkListGroup = this.bookmarkListGroup.map(circleList => {
-            return circleList.filter(circle => circle.space.isBookmarked)
-          })
+          if (this.bookmarkListGroup) {
+            this.bookmarkListGroup = this.bookmarkListGroup.map(circleList => {
+              return circleList.filter(circle => circle.space.isBookmarked)
+            })
+          }
           this.selectedGroup = selectGroup
           window.ga('set', 'page', `/catalogues/${this.$route.params.id}#${selectGroup}`)
           window.ga('send', 'pageview')
