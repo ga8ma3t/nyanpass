@@ -5,7 +5,7 @@
       <div class="container">
         <h2>{{event.name}}</h2>
         <p><i class="fa fa-map-marker fa-fw" aria-hidden="true"></i>{{event.place}}</p>
-        <p><i class="fa fa-calendar fa-fw" aria-hidden="true"></i>{{event.dates}}</p>
+        <p><i class="fa fa-calendar fa-fw" aria-hidden="true"></i>{{event.dates.join(', ')}}</p>
       </div>
     </div>
 
