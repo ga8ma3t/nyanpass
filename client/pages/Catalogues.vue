@@ -139,6 +139,8 @@
           return request.get(`/api/catalogues/${this.$route.params.id}`).then(result => {
             this.bookmarkListGroup = result.data.bookmarks || null
             this.selectedGroup = selectGroup
+            window.ga('set', 'page', `/catalogues/${this.$route.params.id}#${selectGroup}`)
+            window.ga('send', 'pageview')
           })
         })
       },
