@@ -136,12 +136,12 @@
       },
       onSelectGroup(selectGroup) {
         Promise.resolve().then(() => {
-          return request.get(`/api/catalogues/${this.$route.params.id}`).then(result => {
-            this.bookmarkListGroup = result.data.bookmarks || null
-            this.selectedGroup = selectGroup
-            window.ga('set', 'page', `/catalogues/${this.$route.params.id}#${selectGroup}`)
-            window.ga('send', 'pageview')
+          this.bookmarkListGroup = this.bookmarkListGroup.map(circleList => {
+            return circleList.filter(circle => circle.space.isBookmarked)
           })
+          this.selectedGroup = selectGroup
+          window.ga('set', 'page', `/catalogues/${this.$route.params.id}#${selectGroup}`)
+          window.ga('send', 'pageview')
         })
       },
       onUpdateBookmark(spaceId, isCurrentBookmarked) {
@@ -156,9 +156,19 @@
             headers: {'x-csrf-token': this.session.token}
           })
         }).then(() => {
+          const containBookmarks = this.bookmarkListGroup.some(circleListGroup => {
+            return circleListGroup.some(circle => circle.space.id === spaceId)
+          })
+          const circle = Array.prototype.concat(...this.friendListGroup, ...this.recommendListGroup)
+            .find(circle => circle.space.id === spaceId)
+          const bookmarkListGroup = this.bookmarkListGroup.map((circleList, i) => {
+            return !containBookmarks && (i + 1 === circle.space.date)
+              ? circleList.concat([Object.assign({}, circle, { space: Object.assign({}, circle.space) })])
+              : circleList
+          })
           this.friendListGroup = this.toggleCircleListGroupBookmark(spaceId, this.friendListGroup)
           this.recommendListGroup = this.toggleCircleListGroupBookmark(spaceId, this.recommendListGroup)
-          this.bookmarkListGroup = this.toggleCircleListGroupBookmark(spaceId, this.bookmarkListGroup)
+          this.bookmarkListGroup = this.toggleCircleListGroupBookmark(spaceId, bookmarkListGroup)
         }).catch(() => {
           // TODO リロードなどで対応
         })
