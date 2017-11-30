@@ -1,6 +1,6 @@
 import express from 'express'
 import path from 'path'
-// import favicon from 'serve-favicon'
+import favicon from 'serve-favicon'
 import logger from 'morgan'
 import Rollbar from 'rollbar'
 import cookieParser from 'cookie-parser'
@@ -29,7 +29,7 @@ app.enable('trust proxy')
 app.disable('x-powered-by')
 app.use(helmet())
 app.use(compression())
-// app.use(favicon(path.join(dirname, 'public', 'favicon.ico')));
+app.use(favicon(path.join(dirname, 'public', 'favicon.ico')))
 app.use(express.static(path.join(dirname, 'public')))
 app.use(logger('dev'))
 app.use(bodyParser.json())
