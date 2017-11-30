@@ -30,11 +30,11 @@ app.disable('x-powered-by')
 app.use(helmet())
 app.use(compression())
 // app.use(favicon(path.join(dirname, 'public', 'favicon.ico')));
+app.use(express.static(path.join(dirname, 'public')))
 app.use(logger('dev'))
 app.use(bodyParser.json())
 app.use(bodyParser.urlencoded({ extended: false }))
 app.use(cookieParser())
-app.use(express.static(path.join(dirname, 'public')))
 
 if (process.env.ROLLBAR_ACCESS_TOKEN) {
   const rollbar = new Rollbar(process.env.ROLLBAR_ACCESS_TOKEN)
