@@ -37,7 +37,7 @@ app.use(cookieParser())
 app.use(express.static(path.join(dirname, 'public')))
 
 if (process.env.ROLLBAR_ACCESS_TOKEN) {
-  const rollbar = new Rollbar(process.env.ROLLBAR_ACCESS_TOKEN);
+  const rollbar = new Rollbar(process.env.ROLLBAR_ACCESS_TOKEN)
   app.use(rollbar.errorHandler())
 }
 
