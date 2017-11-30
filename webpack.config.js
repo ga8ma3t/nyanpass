@@ -1,4 +1,5 @@
 const path = require('path')
+const webpack = require('webpack')
 
 module.exports = {
   entry: './client/main.js',
@@ -6,6 +7,14 @@ module.exports = {
     filename: 'bundle.js',
     path: path.join(__dirname, 'dist/public/')
   },
+  plugins: [
+    new webpack.DefinePlugin({
+      'process.env': {
+        NODE_ENV: '"production"'
+      }
+    }),
+    new webpack.optimize.UglifyJsPlugin()
+  ],
   module: {
     rules: [
       {
