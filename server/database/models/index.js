@@ -3,7 +3,7 @@ import Sequelize from 'sequelize'
 export const Op = Sequelize.Op
 
 export const sequelize = new Sequelize(process.env.DATABASE_URL, {
-  // sequelize models options
+  logging: false
 })
 
 export const User = sequelize.define('user', {
