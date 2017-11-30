@@ -34,6 +34,7 @@ const router = new Router({
 })
 
 router.beforeEach((to, from, next) => {
+  window.gtag('config', 'UA-82809079-2', {'page_path': to.path})
   if (to.matched.some(record => record.meta.forceReload)) {
     location.href = to.path
   } else {
