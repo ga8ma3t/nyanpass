@@ -34,6 +34,8 @@ const router = new Router({
 })
 
 router.beforeEach((to, from, next) => {
+  window.ga('set', 'page', to.path)
+  window.ga('send', 'pageview')
   if (to.matched.some(record => record.meta.forceReload)) {
     location.href = to.path
   } else {
