@@ -2,6 +2,7 @@ import express from 'express'
 import path from 'path'
 // import favicon from 'serve-favicon'
 import logger from 'morgan'
+import Rollbar from 'rollbar'
 import cookieParser from 'cookie-parser'
 import bodyParser from 'body-parser'
 
@@ -34,6 +35,11 @@ app.use(bodyParser.json())
 app.use(bodyParser.urlencoded({ extended: false }))
 app.use(cookieParser())
 app.use(express.static(path.join(dirname, 'public')))
+
+if (process.env.ROLLBAR_ACCESS_TOKEN) {
+  const rollbar = new Rollbar(process.env.ROLLBAR_ACCESS_TOKEN)
+  app.use(rollbar.errorHandler())
+}
 
 // --------------------------------------------------
 // Session
