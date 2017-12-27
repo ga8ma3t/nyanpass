@@ -51,6 +51,12 @@
     </div>
 
     <div class="catalogue-wrapper" v-show="selectedGroup === 'recommends'">
+      <div class="center" v-if="isRequireLogin">
+        <p>Twitterアカウントを連携すると、フォローしているフレンドと似たサークルを表示できます</p>
+        <a :href="`/auth/twitter?from=/catalogues/${this.$route.params.id}`">
+          <button>Twitterと連携する</button>
+        </a>
+      </div>
       <div class="container">
         <Loading v-show="!recommendListGroup"></Loading>
         <circle-card
