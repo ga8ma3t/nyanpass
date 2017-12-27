@@ -45,7 +45,7 @@
       },
       onSelectDay(selectedDay) {
         this.$emit('onUpdateSelectedDay', selectedDay)
-      },
+      }
     }
   }
 </script>
