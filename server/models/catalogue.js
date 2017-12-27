@@ -91,7 +91,12 @@ export async function fetchBySpaceIds(ids) {
         }
       },
       through: {attributes: []}
-    }]
+    }],
+    order: [
+      [Space, 'date', 'ASC'],
+      [Space, 'block', 'ASC'],
+      [Space, 'space', 'ASC']
+    ]
   }).then(formatUsers)
 }
 
