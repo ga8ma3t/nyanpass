@@ -42,8 +42,10 @@
           <Loading v-show="!friendListGroup"></Loading>
           <circle-card
             :category="'friends'"
+            :selectedDay="selectedDay"
             :circle-list-group="friendListGroup"
             :nothing-message="'みつかりませんでした'"
+            @onUpdateSelectedDay="onUpdateSelectedDay(...arguments)"
             @onUpdateBookmark="onUpdateBookmark(...arguments)"
           ></circle-card>
         </div>
@@ -61,8 +63,10 @@
         <Loading v-show="!recommendListGroup"></Loading>
         <circle-card
           :category="'recommends'"
+          :selectedDay="selectedDay"
           :circle-list-group="recommendListGroup"
           :nothing-message="'みつかりませんでした'"
+          @onUpdateSelectedDay="onUpdateSelectedDay(...arguments)"
           @onUpdateBookmark="onUpdateBookmark(...arguments)"
         ></circle-card>
       </div>
@@ -81,8 +85,10 @@
           <Loading v-show="!bookmarkListGroup"></Loading>
           <circle-card
             :category="'bookmarks'"
+            :selectedDay="selectedDay"
             :circle-list-group="bookmarkListGroup"
             :nothing-message="'ブックマークはありません'"
+            @onUpdateSelectedDay="onUpdateSelectedDay(...arguments)"
             @onUpdateBookmark="onUpdateBookmark(...arguments)"
           ></circle-card>
         </div>
@@ -110,7 +116,8 @@
         friendListGroup: null,
         recommendListGroup: null,
         isRequireLogin: false,
-        selectedGroup: 'recommends'
+        selectedGroup: 'recommends',
+        selectedDay: 1
       }
     },
     created() {
@@ -151,6 +158,9 @@
           window.ga('set', 'page', `/catalogues/${this.$route.params.id}#${selectGroup}`)
           window.ga('send', 'pageview')
         })
+      },
+      onUpdateSelectedDay(selectDay) {
+        this.selectedDay = selectDay
       },
       onUpdateBookmark(spaceId, isCurrentBookmarked) {
         if (!this.session) {
