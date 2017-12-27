@@ -33,12 +33,7 @@
 
 <script>
   export default {
-    props: ['circleListGroup', 'nothingMessage', 'category'],
-    data() {
-      return {
-        selectedDay: 1
-      }
-    },
+    props: ['circleListGroup', 'nothingMessage', 'category', 'selectedDay'],
     computed: {
       isLoading() {
         return !this.circleListGroup
@@ -48,9 +43,9 @@
       onClickCircleCard(spaceId, isBookmarked) {
         this.$emit('onUpdateBookmark', spaceId, isBookmarked)
       },
-      onSelectDay(selectDay) {
-        this.selectedDay = selectDay
-      }
+      onSelectDay(selectedDay) {
+        this.$emit('onUpdateSelectedDay', selectedDay)
+      },
     }
   }
 </script>
